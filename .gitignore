@@ -1,7 +1,6 @@
 data/output.txt
 data/texts.txt
 env/
-ide/
 output.png
 .DS_Store
 *.pyc
