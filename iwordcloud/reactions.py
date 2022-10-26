@@ -3,7 +3,7 @@ from typing import List, Tuple, Dict, Optional, Union
 
 import pandas as pd
 
-import errors
+from . import errors
 
 
 class Reaction:
@@ -83,10 +83,12 @@ class Reactions:
         'Questioned',
     ]
 
-    def __init__(self):
-        '''Inits the Reactions object.'''
+    def __init__(self, messages: pd.DataFrame=None):
+        '''Inits the Reactions object, with message data if specified.'''
 
         self._reactions = self._create_reaction_objects()
+        if messages is not None:
+            self.update(messages)
 
     def _create_reaction_objects(self) -> Dict[str, Reaction]:
         '''Returns a dictionary of reaction objects.'''
@@ -186,7 +188,7 @@ class Reactions:
         the reaction name will be None.
         '''
 
-        for name in Reactions.names:
+        for name in Reactions._REACTIONS:
             # Determine if the line is a reaction message
             search = re.match(fr'^{name} \"(.*)\"$', line)
             if search:

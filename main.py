@@ -34,7 +34,7 @@ cloud = WordCloud(
 cloud.generate(text)
 cloud.recolor(color_func=grey_color_func, random_state=3)
 
-cloud.to_file('output.png')
+cloud.to_file('data/output.png')
 # plt.imshow(cloud, interpolation='bilinear')
 # plt.axis('off')
 # plt.show()
