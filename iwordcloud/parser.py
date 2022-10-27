@@ -153,7 +153,7 @@ class iMessages:
             data = self._remove_reactions(self.received)['message']
         return data if as_df else '\n'.join(data)
 
-    def trim(self, start: str, end: str, replace: bool=True):
+    def trim(self, start: str, end: str, replace: bool=True) -> pd.DataFrame:
         ''''''
 
         trimmed = self._data.loc[start:end]
@@ -174,16 +174,21 @@ class iMessages:
         return data[data['reaction'].isnull()]
 
     @property
-    def data(self):
+    def data(self) -> pd.DataFrame:
         ''''''
         return self._data
 
     @property
-    def sent(self):
+    def sent(self) -> pd.DataFrame:
         ''''''
         return self._data[self._data['sender'] == self._own_name]
     
     @property
-    def received(self):
+    def received(self) -> pd.DataFrame:
         ''''''
         return self._data[self._data['sender'] != self._own_name]
+    
+    @property
+    def reactions(self) -> reactions.Reactions:
+        ''''''
+        return self._reactions
