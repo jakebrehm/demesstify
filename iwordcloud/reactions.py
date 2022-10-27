@@ -45,6 +45,10 @@ class Reaction:
         '''Returns the messages dataframe.'''
         return self._messages
     
+    def set_messages(self, messages: pd.DataFrame):
+        '''Sets or overwrites the messages dataframe.'''
+        self._messages = messages
+
     def append_messages(self, new_messages: pd.DataFrame):
         '''Appends a new messages dataframe to the existing dataframe.
         
@@ -55,10 +59,6 @@ class Reaction:
         
         self._messages = pd.concat([self._messages, new_messages])
     
-    def set_messages(self, messages: pd.DataFrame):
-        '''Sets or overwrites the messages dataframe.'''
-        self._messages = messages
-
     def get_count(self) -> int:
         '''Returns the number of times the reaction has appeared.'''
         return len(self._messages)
@@ -68,10 +68,10 @@ class Reactions:
     '''Collection of Reaction objects.
     
     Properties:
-        reactions:
-            List of reaction objects.
         names:
             List of reaction names.
+        reactions:
+            List of reaction objects.
     '''
 
     _REACTIONS = [
@@ -89,14 +89,16 @@ class Reactions:
         self._reactions = self._create_reaction_objects()
         if messages is not None:
             self.update(messages)
-
-    def _create_reaction_objects(self) -> Dict[str, Reaction]:
-        '''Returns a dictionary of reaction objects.'''
-        return {name: Reaction(name) for name in self._REACTIONS}
     
-    def _get_counts(self) -> Dict[str, int]:
-        '''Returns a dictionary of reactions and their corresponding counts.'''
-        return {name: r.get_count() for name, r in self._reactions.items()}
+    @property
+    def names(self) -> List[str]:
+        '''Returns a list of reaction names.'''
+        return self.get_reaction_names()
+
+    @property
+    def reactions(self) -> List[Reaction]:
+        '''Returns a list of reaction objects.'''
+        return self.get_reaction_objects()
 
     def get_reaction_names(self) -> List[str]:
         '''Returns a list of reaction names.'''
@@ -161,24 +163,6 @@ class Reactions:
             data = dataframe[dataframe['reaction'] == reaction.name]
             reaction.set_messages(data)
 
-    def __getitem__(self, name: str) -> Reaction:
-        '''Returns the reaction object with the specified name.'''
-        return self._reactions[name]
-
-    def __iter__(self):
-        '''Returns an iterable reactions object.'''
-        return ReactionsIterable(self.reactions)
-
-    @property
-    def reactions(self) -> List[Reaction]:
-        '''Returns a list of reaction objects.'''
-        return self.get_reaction_objects()
-    
-    @property
-    def names(self) -> List[str]:
-        '''Returns a list of reaction names.'''
-        return self.get_reaction_names()
-
     @staticmethod
     def is_reaction(line: str) -> Tuple[Optional[str], str]:
         '''Determines if the line is a reaction message.
@@ -196,6 +180,22 @@ class Reactions:
                 return name, search.group(1)
         # Otherwise, just return the original line
         return None, line
+
+    def _create_reaction_objects(self) -> Dict[str, Reaction]:
+        '''Returns a dictionary of reaction objects.'''
+        return {name: Reaction(name) for name in self._REACTIONS}
+    
+    def _get_counts(self) -> Dict[str, int]:
+        '''Returns a dictionary of reactions and their corresponding counts.'''
+        return {name: r.get_count() for name, r in self._reactions.items()}
+
+    def __getitem__(self, name: str) -> Reaction:
+        '''Returns the reaction object with the specified name.'''
+        return self._reactions[name]
+
+    def __iter__(self):
+        '''Returns an iterable reactions object.'''
+        return ReactionsIterable(self.reactions)
 
 
 class ReactionsIterable:
