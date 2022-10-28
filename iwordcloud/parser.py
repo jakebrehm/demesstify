@@ -119,7 +119,6 @@ class DataParser:
         return df.set_index(df['datetime'])
     
 
-
 class iMessages:
     '''The main object for analyzing iMessage conversations.
     

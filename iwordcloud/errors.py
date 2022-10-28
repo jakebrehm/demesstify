@@ -26,3 +26,20 @@ class ReactionNameError(Exception):
         message = f"'{self._invalid_name}' is an invalid reaction name. "
         message += f"Valid reaction names are {self._all_names}."
         return message
+
+
+class MessageArgumentError(Exception):
+    '''An exception that is thrown when an invalid messages type is used.'''
+
+    def __init__(self, message_type: str):
+        '''Inits the MessageArgumentError exception.
+        
+        Args:
+            message_type:
+                The attempted invalid message type.
+        '''
+
+        error_message = f"Messages type of {message_type} is invalid. "
+        error_message += "Must either be of type 'str'"
+        error_message += " or 'iwordcloud.parser.iMessages'"
+        super().__init__(error_message)

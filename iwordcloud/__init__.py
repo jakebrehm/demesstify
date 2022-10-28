@@ -1,1 +1,2 @@
-from .parser import iMessages as iMessages
+from .parser import iMessages
+from .wordcloud import MessageCloud
