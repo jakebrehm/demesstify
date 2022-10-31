@@ -86,6 +86,7 @@ class DataParser:
 
         all_texts = []
         record = False
+        previous_message = None
         for line in transcript.get():
             if not self._is_valid_message(line):
                 record = False
@@ -94,7 +95,9 @@ class DataParser:
                 name = name if direction == 'From' else self._own_name
                 phone = phone if direction == 'From' else self._own_phone
                 reaction, cleaned = reactions.Reactions.is_reaction(line)
-                all_texts.append((name, phone, dt_object, cleaned, reaction))
+                if cleaned != previous_message:
+                    all_texts.append((name, phone, dt_object, cleaned, reaction))
+                    previous_message = cleaned
                 record = False
                 continue
             if re.match(self._BLOCK_EXPRESSION, line):
