@@ -1,5 +1,6 @@
+import collections
 import random
-from typing import Callable, Dict, Set, Union
+from typing import Callable, List, Dict, Tuple, Set, Union
 
 import numpy as np
 from PIL import Image
@@ -7,6 +8,17 @@ from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
 from . import parser
 from . import errors
+
+
+def requires_cloud(method):
+    ''''''
+
+    def inner(self, *args, **kwargs):
+        if self.is_valid() is None:
+            raise errors.CloudNotGeneratedError()
+        else:
+            return method(self, *args, **kwargs)
+    return inner
 
 
 class MessageCloud:
@@ -34,6 +46,12 @@ class MessageCloud:
         self._margin = None
 
         self._wordcloud = None
+        self._words = Words()
+
+    @property
+    def words(self) -> 'Words':
+        ''''''
+        return self._words
 
     def feed_text_file(self, path: str):
         ''''''
@@ -124,6 +142,7 @@ class MessageCloud:
                 # margin=self._margin,
             )
             self._wordcloud.generate(self._messages)
+            self._words.update(self)
         else:
             raise ValueError('No messages stored.')
 
@@ -136,11 +155,46 @@ class MessageCloud:
         ''''''
 
         self._wordcloud.to_file(path)
+
+
+class Words:
+    ''''''
+
+    def __init__(self, messagecloud: MessageCloud=None):
+        ''''''
+
+        if messagecloud is not None:
+            self.update(messagecloud)
+        else:
+            self._messagecloud = None
+            self._wordcloud = None
+            self._messages = None
+
+    def is_valid(self) -> bool:
+        ''''''
+
+        attributes = [self._messagecloud, self._wordcloud, self._messages]
+        return all(attribute is not None for attribute in attributes)
+
+    def update(self, messagecloud: MessageCloud):
+        ''''''
+
+        self._messagecloud = messagecloud
+        self._wordcloud = self._messagecloud._wordcloud
+        self._messages = self._messagecloud._messages
     
+    @requires_cloud
     def get_counts(self) -> Dict[str, int]:
         ''''''
 
         return self._wordcloud.process_text(self._messages)
+
+    @requires_cloud
+    def get_most_frequent(self, n: int) -> List[Tuple[str, int]]:
+        ''''''
+
+        counter = collections.Counter(self.get_counts())
+        return counter.most_common(n)
 
 
 def generate_random_gray(
@@ -148,33 +202,3 @@ def generate_random_gray(
 ):
     ''''''
     return "hsl(0, 0%%, %d%%)" % random.randint(60, 100)
-
-
-
-
-
-# text = open('data/output.txt', 'r').read()
-# stopwords = set(STOPWORDS)
-
-# # custom_mask = np.array(Image.open('data/manatee_white.png'))
-# custom_mask = np.array(Image.open('data/manatee_blur.png'))
-# cloud = WordCloud(
-#     # background_color='white',
-#     # background_color='gray',
-#     background_color=(0, 105, 148),
-#     stopwords=stopwords,
-#     mask=custom_mask,
-#     # height=600,
-#     # width=400,
-#     contour_width=10,
-#     # contour_color='black',
-#     contour_color='gray',
-#     margin=10,
-# )
-# cloud.generate(text)
-# cloud.recolor(color_func=grey_color_func, random_state=3)
-
-# cloud.to_file('data/output.png')
-# # plt.imshow(cloud, interpolation='bilinear')
-# # plt.axis('off')
-# # plt.show()

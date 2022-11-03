@@ -43,3 +43,17 @@ class MessageArgumentError(Exception):
         error_message += "Must either be of type 'str'"
         error_message += " or 'iwordcloud.parser.iMessages'"
         super().__init__(error_message)
+
+
+class CloudNotGeneratedError(Exception):
+    '''
+    An exception that is thrown when trying to access something that requires
+    a wordcloud to be generated first.
+    '''
+
+    def __init__(self):
+        '''Constructs and returns the error message.'''
+
+        error_message = "Wordcloud has not yet been generated. "
+        error_message += "Please generate using MessageCloud.generate()."
+        super().__init__(error_message)

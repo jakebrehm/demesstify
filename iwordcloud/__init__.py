@@ -1,4 +1,4 @@
 from . import parser
-from . import wordcloud
+from . import cloud
 from .parser import iMessages
-from .wordcloud import MessageCloud
+from .cloud import MessageCloud
