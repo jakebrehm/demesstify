@@ -51,12 +51,31 @@ class Transcript:
         '''Returns either the original or cleaned data.'''
         return self.original if original else self.cleaned
 
+    def _remove_urls(self, line: str) -> str:
+        '''Removes URLs from a given string.'''
+
+        reacts = reactions.Reactions._REACTIONS
+        reactions_string = '|'.join(reacts)
+
+        url_expression = (
+            r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)"
+            r"(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s("
+            r")<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
+        )
+        url_reaction_expression = fr"({reactions_string}) \"{url_expression}\""
+        if re.match(url_reaction_expression, line):
+            return line
+        line = re.sub(url_expression, '', line)
+        return line
+
     def _clean_line(self, line: str) -> str:
         '''Performs some cleaning operations on a string/line.'''
 
-        line = line.replace('“', '"')
-        line = line.replace('”', '"')
-        line = line.replace('�', '') # iMessage games
+        line = line.replace('“', '"')   # Replace quotes
+        line = line.replace('”', '"')   # Replace quotes
+        line = line.replace('’', "'")   # Replace quotes
+        line = line.replace('�', '')    # Remove iMessage games
+        line = self._remove_urls(line)  # Remove links unless reacted to
         line = line.strip()
         return line
 
