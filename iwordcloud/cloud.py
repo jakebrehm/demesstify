@@ -6,199 +6,147 @@ import numpy as np
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
-from . import parser
 from . import errors
+from . import parser
 
 
 def requires_cloud(method):
-    ''''''
+    '''
+    Decorator that determines whether it is okay to run a method
+    that typically requires first generating the WordCloud.
+    '''
 
     def inner(self, *args, **kwargs):
-        if self.is_valid() is None:
+        if not self.is_valid():
             raise errors.CloudNotGeneratedError()
         else:
             return method(self, *args, **kwargs)
     return inner
 
 
-class MessageCloud:
-    ''''''
+class MessageCloud(WordCloud):
+    '''Wrapper for the WordCloud object with added functionality.
+    
+    Can also store and analyze messages.
+
+    Properties:
+        words:
+            Easy access to an object that provides message-analyzing
+            functionality.
+        mask:
+            The custom mask that is used when generating the WordCloud.
+    '''
 
     def __init__(self, messages: Union[str, parser.iMessages]=None):
-        ''''''
+        '''Inits the MessageCloud instance, optionally with messages.'''
 
+        # Store the messages, or raise an exception is class is invalid
         if messages is None:
             self._messages = None
-        elif isinstance(messages, str):
-            self.feed_text_file(messages)
-        elif isinstance(messages, parser.iMessages):
-            self.feed_imessages(messages)
         else:
-            raise errors.MessageArgumentError(type(messages))
-        
-        self._background_color = (0, 105, 148) # TODO: find a better default
-        self._stopwords = STOPWORDS
-        self._mask = None
-        self._height = None
-        self._width = None
-        self._contour_width = None
-        self._contour_color = None
-        self._margin = None
+            self.feed_messages(messages)
 
-        self._wordcloud = None
+        # Init the parent class and initialize class variables
+        super().__init__()
         self._words = Words()
+        self._mask = None
 
+        # Set default parameters
+        self._set_defaults()
+    
     @property
     def words(self) -> 'Words':
-        ''''''
+        '''Return the words instance.'''
         return self._words
 
-    def feed_text_file(self, path: str):
-        ''''''
+    @property
+    def mask(self) -> np.ndarray:
+        '''Returns the mask.'''
 
-        with open(path, 'r') as text:
-            self._messages = text.read()
+        return self._mask
 
-    def feed_imessages(self, imessages: parser.iMessages):
-        ''''''
+    @mask.setter
+    def mask(self, value: Union[str, np.array]):
+        '''Sets the mask. Can be either a path to the file or a NumPy array.'''
 
-        self._messages = imessages.get_all()
+        if value is None:
+            self._mask = None
+        elif isinstance(value, str):
+            self._mask = np.array(Image.open(value))
+        elif isinstance(value, np.ndarray):
+            self._mask = value
+        else:
+            raise ValueError(f'{type(value)} is not a valid type for a mask.')
 
-    def set_background_color(self, *args: int):
-        ''''''
+    def feed_messages(self, messages: Union[str, parser.iMessages]):
+        '''Analyzes and stores the given messages as a class variable.'''
 
-        if len(args) != 3:
-            raise ValueError('Invalid number of arguments.')
-
-        self._background_color = tuple(args)
-
-    def set_stopwords(self, words: Set[str]):
-        ''''''
-
-        self._stopwords = words
-
-    def set_image_mask(self, path: str):
-        ''''''
-
-        self._mask = np.array(Image.open(path))
-
-    def set_height(self, height: int):
-        ''''''
-
-        self._height = height
-
-    def set_width(self, width: int):
-        ''''''
-
-        self._width = width
-
-    def set_contour_width(self, width: int):
-        ''''''
-
-        self._contour_width = width
-    
-    def set_contour_color(self, color: str):
-        ''''''
-
-        self._contour_color = color
-    
-    def set_margin(self, margin: int):
-        ''''''
-
-        self._margin = margin
+        if isinstance(messages, str):
+            with open(messages, 'r') as text:
+                self._messages = text.read()
+        elif isinstance(messages, parser.iMessages):
+            self._messages = messages.get_all()
+        else:
+            raise errors.MessageArgumentError(type(messages))
 
     def generate(self):
-        ''''''
+        '''Generates the WordCloud and updates the Words instance.'''
 
-        if self._messages:
-
-            kwargs = {}
-            if self._background_color is not None:
-                kwargs.update({'background_color': self._background_color})
-            if self._stopwords is not None:
-                kwargs.update({'stopwords': self._stopwords})
-            if self._mask is not None:
-                kwargs.update({'mask': self._mask})
-            if self._height is not None:
-                kwargs.update({'height': self._height})
-            if self._width is not None:
-                kwargs.update({'width': self._width})
-            if self._contour_width is not None:
-                kwargs.update({'contour_width': self._contour_width})
-            if self._contour_color is not None:
-                kwargs.update({'contour_color': self._contour_color})
-            if self._margin is not None:
-                kwargs.update({'background_color': self._background_color})
-
-            self._wordcloud = WordCloud(
-                **kwargs
-                # background_color=self._background_color,
-                # stopwords=self._stopwords,
-                # mask=self._mask,
-                # height=self._height,
-                # width=self._width,
-                # contour_width=self._contour_width,
-                # contour_color=self._contour_color,
-                # margin=self._margin,
-            )
-            self._wordcloud.generate(self._messages)
-            self._words.update(self)
-        else:
-            raise ValueError('No messages stored.')
-
-    def recolor(self, color_func: Callable, random_state: int):
-        ''''''
-
-        self._wordcloud.recolor(color_func=color_func, random_state=random_state)
+        super().generate(self._messages)
+        self._words.update(self)
 
     def save(self, path: str):
-        ''''''
+        '''Wrapper around WordCloud's to_file method.'''
 
-        self._wordcloud.to_file(path)
+        self.to_file(path)
+
+    def _set_defaults(self):
+        '''Sets default WordCloud parameters.'''
+
+        self.stopwords = set(STOPWORDS)
 
 
 class Words:
-    ''''''
+    '''Helper class that provides access to word-related functions.'''
 
     def __init__(self, messagecloud: MessageCloud=None):
-        ''''''
+        '''Inits the Words object, with cloud data if specified.'''
 
         if messagecloud is not None:
             self.update(messagecloud)
         else:
-            self._messagecloud = None
-            self._wordcloud = None
+            self._cloud = None
             self._messages = None
+            self._frequencies = None
 
     def is_valid(self) -> bool:
-        ''''''
+        '''
+        Determines if it is viable to perform certain methods that require
+        the WordCloud to be generated.
+        
+        Essentially checks if a MessageCloud object has been fed to the
+        instance of Words.
+        '''
 
-        attributes = [self._messagecloud, self._wordcloud, self._messages]
+        attributes = [self._cloud]
         return all(attribute is not None for attribute in attributes)
 
     def update(self, messagecloud: MessageCloud):
-        ''''''
+        '''Updates the cloud reference as well as other variables.'''
 
-        self._messagecloud = messagecloud
-        self._wordcloud = self._messagecloud._wordcloud
-        self._messages = self._messagecloud._messages
-    
+        self._cloud = messagecloud
+        self._messages = self._cloud._messages
+        self._frequencies = self._cloud.process_text(self._messages)
+
     @requires_cloud
     def get_counts(self) -> Dict[str, int]:
-        ''''''
+        '''Returns a dictionary with frequencies for each token.'''
 
-        return self._wordcloud.process_text(self._messages)
+        return self._frequencies
 
     @requires_cloud
     def get_most_frequent(self, n: int) -> List[Tuple[str, int]]:
-        ''''''
+        '''Returns the n most frequent tokens as a list of tuples.'''
 
         counter = collections.Counter(self.get_counts())
         return counter.most_common(n)
-
-
-def generate_random_gray(
-    word, font_size, position, orientation, random_state=None, **kwargs
-):
-    ''''''
-    return "hsl(0, 0%%, %d%%)" % random.randint(60, 100)

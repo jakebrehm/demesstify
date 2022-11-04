@@ -1,41 +1,37 @@
-import matplotlib.pyplot as plt
-import numpy as np
-import random
-import sys
-import os
-from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+import iwordcloud as iwc
 
+if __name__ == '__main__':
+    input_path = r'data/texts.txt'
+    output_path = r'data/output.txt'
 
-def grey_color_func(word, font_size, position, orientation, random_state=None,
-                    **kwargs):
-    return "hsl(0, 0%%, %d%%)" % random.randint(60, 100)
+    imessages = iwc.iMessages(input_path, own_name='Jake Brehm')
+    # imessages.get_all()
 
-# text = open('data/speech.txt', mode='r', encoding='utf-8').read()
-# text = open('data/speech.txt', 'r').read()
-text = open('data/output.txt', 'r').read()
-stopwords = set(STOPWORDS)
+    # print(imessages.get_sent())
+    # print(imessages.sent)
+    
+    # imessages.trim('2022-07-02 16:00:00', '2022-07-02 23:59:59')
+    # imessages.trim('2022-07-02 00:00:00', '2022-07-02 23:59:59')
+    # imessages.trim('2022-07-02 16:00:00', '2022-07-02 18:00:00')
+    # print(imessages.sent)
 
-# custom_mask = np.array(Image.open('data/manatee_white.png'))
-custom_mask = np.array(Image.open('data/manatee_blur.png'))
-cloud = WordCloud(
-    # background_color='white',
-    # background_color='gray',
-    background_color=(0, 105, 148),
-    stopwords=stopwords,
-    mask=custom_mask,
-    # height=600,
-    # width=400,
-    contour_width=10,
-    # contour_color='black',
-    contour_color='gray',
-    margin=10,
-)
-cloud.generate(text)
-cloud.recolor(color_func=grey_color_func, random_state=3)
+    # for reaction in imessages.reactions:
+    #     print(reaction.name)
 
-cloud.to_file('data/output.png')
-# plt.imshow(cloud, interpolation='bilinear')
-# plt.axis('off')
-# plt.show()
+    # print(imessages.reactions.get_count())
+    # print(imessages.reactions.get_count('Loved'))
+    # print(imessages.reactions.get_messages('Disliked'))
 
+    # imessages.save_all(output_path)
+
+    cloud = iwc.MessageCloud(imessages)
+    cloud.background_color = (0, 105, 148)
+    cloud.mask = 'data/manatee_small_blur.png'
+    cloud.contour_width = 3
+    cloud.contour_color = 'gray'
+    cloud.margin = 10
+    cloud.generate()
+    cloud.recolor(color_func=iwc.color_funcs.random_gray, random_state=3)
+    cloud.save('data/output3.png')
+    print(cloud.words.get_counts())
+    print(cloud.words.get_most_frequent(20))
