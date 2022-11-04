@@ -8,7 +8,7 @@ from . import reactions
 
 
 class Transcript:
-    '''Reads the text file and does some preliminary cleaning.
+    """Reads the text file and does some preliminary cleaning.
     
     Properties:
         path:
@@ -17,10 +17,10 @@ class Transcript:
             The original contents of the text file, split by line.
         cleaned:
             The cleaned contents of the text file, split by line.
-    '''
+    """
 
     def __init__(self, path: str):
-        '''Inits the Transcript object.'''
+        """Inits the Transcript object."""
 
         self._path = path
 
@@ -34,25 +34,25 @@ class Transcript:
 
     @property
     def path(self) -> str:
-        '''Returns the path of the text file.'''
+        """Returns the path of the text file."""
         return self._path
     
     @property
     def original(self) -> List[str]:
-        '''Returns the original contents of the text file, split by line.'''
+        """Returns the original contents of the text file, split by line."""
         return self._original
 
     @property
     def cleaned(self) -> List[str]:
-        '''Returns the cleaned contents of the text file, split by line.'''
+        """Returns the cleaned contents of the text file, split by line."""
         return self._cleaned
 
     def get(self, original: bool=False) -> List[str]:
-        '''Returns either the original or cleaned data.'''
+        """Returns either the original or cleaned data."""
         return self.original if original else self.cleaned
 
     def _remove_urls(self, line: str) -> str:
-        '''Removes URLs from a given string.'''
+        """Removes URLs from a given string."""
 
         reacts = reactions.Reactions._REACTIONS
         reactions_string = '|'.join(reacts)
@@ -69,7 +69,7 @@ class Transcript:
         return line
 
     def _clean_line(self, line: str) -> str:
-        '''Performs some cleaning operations on a string/line.'''
+        """Performs some cleaning operations on a string/line."""
 
         line = line.replace('“', '"')   # Replace quotes
         line = line.replace('”', '"')   # Replace quotes
@@ -81,13 +81,13 @@ class Transcript:
 
 
 class DataParser:
-    '''Parses and cleans a text file containing text messages.'''
+    """Parses and cleans a text file containing text messages."""
 
     _LABELS = ['sender', 'phone', 'datetime', 'message', 'reaction']
     _BLOCK_EXPRESSION = r'^(From|Send To) (.*)\((.*)\) at (.*)$'
 
     def __init__(self, path: str, own_name: str=None, own_phone: str=None):
-        ''''''
+        """"""
 
         self._path = path
         self._own_name = own_name
@@ -97,11 +97,11 @@ class DataParser:
         self._data = self._parse(self._transcript)
     
     def get(self) -> pd.DataFrame:
-        '''Returns the message dataframe.'''
+        """Returns the message dataframe."""
         return self._data
 
     def _parse(self, transcript: Transcript) -> pd.DataFrame:
-        '''Parses and cleans the transcript into a dataframe.'''
+        """Parses and cleans the transcript into a dataframe."""
 
         all_texts = []
         record = False
@@ -130,19 +130,19 @@ class DataParser:
         return self._create_dataframe(all_texts)
 
     def _is_valid_message(self, line: str) -> bool:
-        '''Determines if a line is valid for recording.'''
+        """Determines if a line is valid for recording."""
 
         return line.strip() # Essentially checks if the line is empty
 
     def _create_dataframe(self, data: List[str]) -> pd.DataFrame:
-        '''Creates a dataframe from a list of strings/lines.'''
+        """Creates a dataframe from a list of strings/lines."""
         
         df = pd.DataFrame(data, columns=self._LABELS)
         return df.set_index(df['datetime'])
     
 
 class iMessages:
-    '''The main object for analyzing iMessage conversations.
+    """The main object for analyzing iMessage conversations.
     
     Properties:
         data:
@@ -154,10 +154,10 @@ class iMessages:
         reactions:
             The Reactions object for convenient access to its properties and
             methods.
-    '''
+    """
 
     def __init__(self, path: str, own_name: str='Me', own_phone: str='*'):
-        '''Inits the iMessages object.'''
+        """Inits the iMessages object."""
 
         self._path = path
         self._own_name = own_name
@@ -170,29 +170,29 @@ class iMessages:
 
     @property
     def data(self) -> pd.DataFrame:
-        '''Returns the main dataframe.'''
+        """Returns the main dataframe."""
         return self._data
 
     @property
     def sent(self) -> pd.DataFrame:
-        '''Returns the main dataframe filtered by sent messages.'''
+        """Returns the main dataframe filtered by sent messages."""
         return self._data[self._data['sender'] == self._own_name]
     
     @property
     def received(self) -> pd.DataFrame:
-        '''Returns the main dataframe filtered by received messages.'''
+        """Returns the main dataframe filtered by received messages."""
         return self._data[self._data['sender'] != self._own_name]
     
     @property
     def reactions(self) -> reactions.Reactions:
-        '''
+        """
         Returns the Reactions object for convenient access to its
         properties and methods.
-        '''
+        """
         return self._reactions
 
     def get_all(self, include_reactions: bool=False, as_df: bool=False) -> str:
-        '''Returns all messages with or without reactions messages.'''
+        """Returns all messages with or without reactions messages."""
 
         if include_reactions:
             data = self.data['message']
@@ -201,7 +201,7 @@ class iMessages:
         return data if as_df else '\n'.join(data)
     
     def get_sent(self, include_reactions: bool=False, as_df: bool=False) -> str:
-        '''Returns all sent messages with or without reactions messages.'''
+        """Returns all sent messages with or without reactions messages."""
 
         if include_reactions:
             data = self.sent['message']
@@ -210,7 +210,7 @@ class iMessages:
         return data if as_df else '\n'.join(data)
     
     def get_received(self, include_reactions: bool=False, as_df: bool=False) -> str:
-        '''Returns all received messages with or without reactions messages.'''
+        """Returns all received messages with or without reactions messages."""
 
         if include_reactions:
             data = self.received['message']
@@ -219,7 +219,7 @@ class iMessages:
         return data if as_df else '\n'.join(data)
 
     def trim(self, start: str, end: str, replace: bool=True) -> pd.DataFrame:
-        '''Trims the data to messages sent between a specified time interval.'''
+        """Trims the data to messages sent between a specified time interval."""
 
         trimmed = self._data.loc[start:end]
         if replace:
@@ -227,12 +227,12 @@ class iMessages:
         return trimmed
 
     def save_all(self, path: str):
-        '''Saves all messages to a text file.'''
+        """Saves all messages to a text file."""
 
         messages = self.get_all()
         with open(path, 'w') as text:
             text.write(messages)
 
     def _remove_reactions(self, data: pd.DataFrame) -> pd.DataFrame:
-        '''Filters out reactions from a message dataframe.'''
+        """Filters out reactions from a message dataframe."""
         return data[data['reaction'].isnull()]

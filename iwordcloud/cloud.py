@@ -11,10 +11,10 @@ from . import parser
 
 
 def requires_cloud(method):
-    '''
+    """
     Decorator that determines whether it is okay to run a method
     that typically requires first generating the WordCloud.
-    '''
+    """
 
     def inner(self, *args, **kwargs):
         if not self.is_valid():
@@ -25,7 +25,7 @@ def requires_cloud(method):
 
 
 class MessageCloud(WordCloud):
-    '''Wrapper for the WordCloud object with added functionality.
+    """Wrapper for the WordCloud object with added functionality.
     
     Can also store and analyze messages.
 
@@ -35,10 +35,10 @@ class MessageCloud(WordCloud):
             functionality.
         mask:
             The custom mask that is used when generating the WordCloud.
-    '''
+    """
 
     def __init__(self, messages: Union[str, parser.iMessages]=None):
-        '''Inits the MessageCloud instance, optionally with messages.'''
+        """Inits the MessageCloud instance, optionally with messages."""
 
         # Store the messages, or raise an exception is class is invalid
         if messages is None:
@@ -56,18 +56,18 @@ class MessageCloud(WordCloud):
     
     @property
     def words(self) -> 'Words':
-        '''Return the words instance.'''
+        """Return the words instance."""
         return self._words
 
     @property
     def mask(self) -> np.ndarray:
-        '''Returns the mask.'''
+        """Returns the mask."""
 
         return self._mask
 
     @mask.setter
     def mask(self, value: Union[str, np.array]):
-        '''Sets the mask. Can be either a path to the file or a NumPy array.'''
+        """Sets the mask. Can be either a path to the file or a NumPy array."""
 
         if value is None:
             self._mask = None
@@ -79,7 +79,7 @@ class MessageCloud(WordCloud):
             raise ValueError(f'{type(value)} is not a valid type for a mask.')
 
     def feed_messages(self, messages: Union[str, parser.iMessages]):
-        '''Analyzes and stores the given messages as a class variable.'''
+        """Analyzes and stores the given messages as a class variable."""
 
         if isinstance(messages, str):
             with open(messages, 'r') as text:
@@ -90,27 +90,27 @@ class MessageCloud(WordCloud):
             raise errors.MessageArgumentError(type(messages))
 
     def generate(self):
-        '''Generates the WordCloud and updates the Words instance.'''
+        """Generates the WordCloud and updates the Words instance."""
 
         super().generate(self._messages)
         self._words.update(self)
 
     def save(self, path: str):
-        '''Wrapper around WordCloud's to_file method.'''
+        """Wrapper around WordCloud's to_file method."""
 
         self.to_file(path)
 
     def _set_defaults(self):
-        '''Sets default WordCloud parameters.'''
+        """Sets default WordCloud parameters."""
 
         self.stopwords = set(STOPWORDS)
 
 
 class Words:
-    '''Helper class that provides access to word-related functions.'''
+    """Helper class that provides access to word-related functions."""
 
     def __init__(self, messagecloud: MessageCloud=None):
-        '''Inits the Words object, with cloud data if specified.'''
+        """Inits the Words object, with cloud data if specified."""
 
         if messagecloud is not None:
             self.update(messagecloud)
@@ -120,19 +120,19 @@ class Words:
             self._frequencies = None
 
     def is_valid(self) -> bool:
-        '''
+        """
         Determines if it is viable to perform certain methods that require
         the WordCloud to be generated.
         
         Essentially checks if a MessageCloud object has been fed to the
         instance of Words.
-        '''
+        """
 
         attributes = [self._cloud]
         return all(attribute is not None for attribute in attributes)
 
     def update(self, messagecloud: MessageCloud):
-        '''Updates the cloud reference as well as other variables.'''
+        """Updates the cloud reference as well as other variables."""
 
         self._cloud = messagecloud
         self._messages = self._cloud._messages
@@ -140,13 +140,13 @@ class Words:
 
     @requires_cloud
     def get_counts(self) -> Dict[str, int]:
-        '''Returns a dictionary with frequencies for each token.'''
+        """Returns a dictionary with frequencies for each token."""
 
         return self._frequencies
 
     @requires_cloud
     def get_most_frequent(self, n: int) -> List[Tuple[str, int]]:
-        '''Returns the n most frequent tokens as a list of tuples.'''
+        """Returns the n most frequent tokens as a list of tuples."""
 
         counter = collections.Counter(self.get_counts())
         return counter.most_common(n)
