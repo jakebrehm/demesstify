@@ -32,6 +32,6 @@ if __name__ == '__main__':
     cloud.margin = 10
     cloud.generate()
     cloud.recolor(color_func=iwc.color_funcs.random_gray, random_state=3)
-    cloud.save('data/output3.png')
+    cloud.save('data/output.png')
     print(cloud.words.get_counts())
     print(cloud.words.get_most_frequent(20))
