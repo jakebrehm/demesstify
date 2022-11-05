@@ -8,11 +8,14 @@ import pandas as pd
 class Emoji:
     """"""
 
-    def __init__(self, emoji: str, messages_df: pd.DataFrame, imessages: 'parser.iMessages'):
+    def __init__(
+            self, emoji: str, messages: pd.DataFrame,
+            imessages: 'parser.iMessages'
+        ):
         """"""
 
         self._emoji = emoji
-        self._messages_df = messages_df
+        self._messages = messages
         self._imessages = imessages
 
     @property
@@ -35,35 +38,39 @@ class Emoji:
     def get_all_count(self) -> int:
         """"""
 
-        return len(self._messages_df)
+        return self._count_emojis(self._messages)
 
-    def get_all(self) -> pd.DataFrame:
+    def get_all_messages(self) -> pd.DataFrame:
         """"""
 
-        return self._messages_df
+        return self._messages
     
-    def get_sent(self) -> pd.DataFrame:
+    def get_sent_messages(self) -> pd.DataFrame:
         """"""
 
-        messages = self.get_all()
+        messages = self.get_all_messages()
         return messages[messages['sender'] == self._imessages.own_name]
     
     def get_sent_count(self) -> int:
         """"""
 
-        return len(self.get_sent())
+        return self._count_emojis(self.get_sent_messages())
     
-    def get_received(self) -> pd.DataFrame:
+    def get_received_messages(self) -> pd.DataFrame:
         """"""
 
-        messages = self.get_all()
+        messages = self.get_all_messages()
         return messages[messages['sender'] != self._imessages.own_name]
     
     def get_received_count(self) -> int:
         """"""
 
-        return len(self.get_received())
+        return self._count_emojis(self.get_received_messages())
     
+    def _count_emojis(self, df: pd.DataFrame) -> int:
+        """"""
+
+        return df['message'].str.count(self.name).sum()
 
 class Emojis:
     """"""
@@ -114,7 +121,8 @@ class Emojis:
         emoji_objects = {}
         for emoji in emojis:
             df = messages[messages['message'].str.contains(emoji)]
-            emoji_object = Emoji(emoji, messages_df=df, imessages=self._imessages)
+            # Need to count multiple emojis in single line
+            emoji_object = Emoji(emoji, messages=df, imessages=self._imessages)
             emoji_objects[emoji] = emoji_object
         return emoji_objects
     
