@@ -5,6 +5,7 @@ from typing import List
 import pandas as pd
 
 from . import reactions
+from . import emojis
 
 
 class Transcript:
@@ -75,6 +76,7 @@ class Transcript:
         line = line.replace('”', '"')   # Replace quotes
         line = line.replace('’', "'")   # Replace quotes
         line = line.replace('�', '')    # Remove iMessage games
+        line = line.replace('…', '...') # Remove unicode ellipses
         line = self._remove_urls(line)  # Remove links unless reacted to
         line = line.strip()
         return line
@@ -147,12 +149,19 @@ class iMessages:
     Properties:
         data:
             The main dataframe.
+        own_name:
+            The sender's name.
+        own_phone:
+            The sender's phone number.
         sent:
             The main dataframe filtered by sent messages.
         received:
             The main dataframe filtered by received messages.
         reactions:
             The Reactions object for convenient access to its properties and
+            methods.
+        emojis:
+            The Emojis object for convenient access to its properties and
             methods.
     """
 
@@ -167,6 +176,7 @@ class iMessages:
         self._data = parser.get()
 
         self._reactions = reactions.Reactions(messages=self._data)
+        self._emojis = emojis.Emojis(imessages=self)
 
     @property
     def data(self) -> pd.DataFrame:
@@ -174,14 +184,24 @@ class iMessages:
         return self._data
 
     @property
+    def own_name(self) -> str:
+        """Returns the sender's name."""
+        return self._own_name
+
+    @property
+    def own_phone(self) -> str:
+        """Returns the sender's phone."""
+        return self._own_phone
+
+    @property
     def sent(self) -> pd.DataFrame:
         """Returns the main dataframe filtered by sent messages."""
-        return self._data[self._data['sender'] == self._own_name]
+        return self._data[self._data['sender'] == self.own_name]
     
     @property
     def received(self) -> pd.DataFrame:
         """Returns the main dataframe filtered by received messages."""
-        return self._data[self._data['sender'] != self._own_name]
+        return self._data[self._data['sender'] != self.own_name]
     
     @property
     def reactions(self) -> reactions.Reactions:
@@ -190,6 +210,15 @@ class iMessages:
         properties and methods.
         """
         return self._reactions
+
+    @property
+    def emojis(self) -> emojis.Emojis:
+        """
+        Returns the Emojis object for convenient access to its
+        properties and methods.
+        """
+
+        return self._emojis
 
     def get_all(self, include_reactions: bool=False, as_df: bool=False) -> str:
         """Returns all messages with or without reactions messages."""
