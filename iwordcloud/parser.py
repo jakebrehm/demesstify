@@ -122,7 +122,6 @@ class DataParser:
                 reaction, cleaned = reactions.Reactions.is_reaction(line)
                 is_sender = (direction != 'From')
                 if cleaned != previous_message:
-                    # all_texts.append((name, phone, dt_object, cleaned, reaction))
                     all_texts.append((dt_object, is_sender, cleaned, reaction))
                     previous_message = cleaned
                 record = False
