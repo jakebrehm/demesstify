@@ -1,8 +1,9 @@
-data/output.txt
-data/texts.txt
-env/
-output.png
 .DS_Store
 *.pyc
 __pycache__/
-test.py
+data/fonts/
+data/output.txt
+data/texts.txt
+data/output.png
+env/
+tests/
