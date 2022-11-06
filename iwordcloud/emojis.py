@@ -97,6 +97,14 @@ class Emoji:
 
         return df['message'].str.count(self.name).sum()
 
+    def __str__(self) -> str:
+        """Returns a string representation of the emoji."""
+        return self.name
+    
+    def __repr__(self) -> str:
+        """Returns a printable string representation of an instance of Emoji."""
+        return f'{self.__class__.__name__}({self.name})'
+
 
 class Emojis:
     """Collection of Emoji objects.
