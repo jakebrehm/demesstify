@@ -46,14 +46,14 @@ class Emoji:
         """Gets all messages from the sender that contain the emoji."""
 
         messages = self.get_all_messages()
-        return messages[messages['sender'] == self._imessages.own_name]
+        return messages[messages['is_sender'] == 1]
     
     def get_received_messages(self) -> pd.DataFrame:
         """Gets all messages from the receiver that contain the emoji."""
 
         messages = self.get_all_messages()
-        return messages[messages['sender'] != self._imessages.own_name]
-
+        return messages[messages['is_sender'] == 0]
+    
     def get_count(self, which: str='all') -> int:
         """Gets the number of occurrences of the emoji.
         

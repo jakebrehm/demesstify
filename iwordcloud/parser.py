@@ -93,15 +93,13 @@ class Transcript:
 class DataParser:
     """Parses and cleans a text file containing text messages."""
 
-    _LABELS = ['sender', 'phone', 'datetime', 'message', 'reaction']
+    _LABELS = ['datetime', 'is_sender', 'message', 'reaction']
     _BLOCK_EXPRESSION = r'^(From|Send To) (.*)\((.*)\) at (.*)$'
 
-    def __init__(self, path: str, own_name: str=None, own_phone: str=None):
+    def __init__(self, path: str):
         """"""
 
         self._path = path
-        self._own_name = own_name
-        self._own_phone = own_phone
 
         self._transcript = Transcript(self._path)
         self._data = self._parse(self._transcript)
@@ -121,11 +119,11 @@ class DataParser:
                 record = False
                 continue
             if record:
-                name = name if direction == 'From' else self._own_name
-                phone = phone if direction == 'From' else self._own_phone
                 reaction, cleaned = reactions.Reactions.is_reaction(line)
+                is_sender = (direction != 'From')
                 if cleaned != previous_message:
-                    all_texts.append((name, phone, dt_object, cleaned, reaction))
+                    # all_texts.append((name, phone, dt_object, cleaned, reaction))
+                    all_texts.append((dt_object, is_sender, cleaned, reaction))
                     previous_message = cleaned
                 record = False
                 continue
@@ -157,10 +155,6 @@ class iMessages:
     Properties:
         data:
             The main dataframe.
-        own_name:
-            The sender's name.
-        own_phone:
-            The sender's phone number.
         sent:
             The main dataframe filtered by sent messages.
         received:
@@ -173,14 +167,12 @@ class iMessages:
             methods.
     """
 
-    def __init__(self, path: str, own_name: str='Me', own_phone: str='*'):
+    def __init__(self, path: str):
         """Inits the iMessages object."""
 
         self._path = path
-        self._own_name = own_name
-        self._own_phone = own_phone
 
-        parser = DataParser(self._path, self._own_name, self._own_phone)
+        parser = DataParser(self._path)
         self._data = parser.get()
 
         self._reactions = reactions.Reactions(messages=self._data)
@@ -192,25 +184,15 @@ class iMessages:
         return self._data
 
     @property
-    def own_name(self) -> str:
-        """Returns the sender's name."""
-        return self._own_name
-
-    @property
-    def own_phone(self) -> str:
-        """Returns the sender's phone."""
-        return self._own_phone
-
-    @property
     def sent(self) -> pd.DataFrame:
         """Returns the main dataframe filtered by sent messages."""
-        return self._data[self._data['sender'] == self.own_name]
+        return self._data[self._data['is_sender'] == 1]
     
     @property
     def received(self) -> pd.DataFrame:
         """Returns the main dataframe filtered by received messages."""
-        return self._data[self._data['sender'] != self.own_name]
-    
+        return self._data[self._data['is_sender'] == 0]
+
     @property
     def reactions(self) -> reactions.Reactions:
         """
