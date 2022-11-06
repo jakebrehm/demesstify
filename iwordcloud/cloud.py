@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Provides functionality for creating a WordCloud from an iMessage conversation,
+as well as functionality for further analyzing of the messages.
+"""
+
+
 import collections
 import random
 from typing import Callable, List, Dict, Tuple, Set, Union

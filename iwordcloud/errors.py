@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Contains custom errors for the 'iwordcloud' project.
+"""
+
+
 from typing import List
 
 

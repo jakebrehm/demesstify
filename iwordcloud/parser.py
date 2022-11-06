@@ -1,3 +1,11 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Provides functionality for parsing and analyzing an iMessage conversation.
+"""
+
+
 import re
 from datetime import datetime
 from typing import List

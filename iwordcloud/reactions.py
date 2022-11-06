@@ -1,3 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+"""
+Provides functionality for tracking and analyzing the reactions that occur in
+a given iMessage conversation.
+"""
+
+
 import re
 from typing import List, Tuple, Dict, Optional, Union
 
