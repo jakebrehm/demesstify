@@ -23,15 +23,11 @@ class Emoji:
             The name/representation of the emoji.
     """
 
-    def __init__(
-            self, emoji: str, messages: pd.DataFrame,
-            imessages: 'parser.iMessages'
-        ):
+    def __init__(self, emoji: str, messages: pd.DataFrame):
         """Inits the Emoji object."""
 
         self._emoji = emoji
         self._messages = messages
-        self._imessages = imessages
 
     @property
     def name(self) -> str:
@@ -169,7 +165,7 @@ class Emojis:
         emoji_objects = {}
         for emoji in emojis:
             df = messages[messages['message'].str.contains(emoji)]
-            emoji_object = Emoji(emoji, messages=df, imessages=self._imessages)
+            emoji_object = Emoji(emoji, messages=df)
             emoji_objects[emoji] = emoji_object
         return emoji_objects
     
