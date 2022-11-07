@@ -6,6 +6,7 @@ Provides functionality for parsing and analyzing an iMessage conversation.
 """
 
 
+import csv
 import re
 from datetime import datetime
 from typing import List
@@ -16,7 +17,7 @@ from . import reactions
 from . import emojis
 
 
-class Transcript:
+class TanseeTranscript:
     """Reads the text file and does some preliminary cleaning.
     
     Properties:
@@ -29,17 +30,23 @@ class Transcript:
     """
 
     def __init__(self, path: str):
-        """Inits the Transcript object."""
+        """Inits the TanseeTranscript object."""
 
         self._path = path
 
         self._original = []
         self._cleaned = []
         with open(self._path, 'r') as text:
-            for line in text:
-                cleaned_line = self._clean_line(line)
-                self._cleaned.append(cleaned_line)
-                self._original.append(line)
+            transcript = self._remove_urls(text.read())
+        for line in transcript.splitlines():
+            cleaned_line = self._clean_line(line)
+            self._cleaned.append(cleaned_line)
+            self._original.append(line)
+        # with open(self._path, 'r') as text:
+        #     for line in text:
+        #         cleaned_line = self._clean_line(line)
+        #         self._cleaned.append(cleaned_line)
+        #         self._original.append(line)
 
     @property
     def path(self) -> str:
@@ -80,14 +87,79 @@ class Transcript:
     def _clean_line(self, line: str) -> str:
         """Performs some cleaning operations on a string/line."""
 
+        line = line.replace('￼', '')    # Remove empty space
         line = line.replace('“', '"')   # Replace quotes
         line = line.replace('”', '"')   # Replace quotes
         line = line.replace('’', "'")   # Replace quotes
         line = line.replace('�', '')    # Remove iMessage games
-        line = line.replace('…', '...') # Remove unicode ellipses
-        line = self._remove_urls(line)  # Remove links unless reacted to
+        line = line.replace('…', '...') # Replace unicode ellipses
+        # line = self._remove_urls(line)  # Remove links unless reacted to
         line = line.strip()
         return line
+
+
+class iMessageCSVTranscript(TanseeTranscript):
+    """"""
+
+    def __init__(
+        self, path: str, newline: str='\n', delimiter: str=',', 
+        date_column: int=0, is_from_me_column: int=1, text_column: int=2, 
+        includes_header: bool=True,
+    ):
+        """"""
+
+        self._path = path
+        self._newline = newline
+        self._delimiter = delimiter
+        self._date_column = date_column
+        self._is_from_me_column = is_from_me_column
+        self._text_column = text_column
+        self._includes_header = includes_header
+
+        self._original = []
+        self._cleaned = []
+
+        with open(self._path, 'r') as csv_file:
+            transcript = csv_file.read()
+        transcript = self._remove_urls(transcript)
+
+        reader = csv.reader(transcript.splitlines(), delimiter=self._delimiter)
+        for r, row in enumerate(reader):
+            joined_line = self._delimiter.join(row)
+            if self._includes_header and (r == 0):
+                self._original.append(joined_line)
+                continue
+            self._original.append(joined_line)
+            self._cleaned.append(row)
+
+        self._cleaned = self._convert_to_standard_format(self._cleaned)
+        
+    def _convert_mactime_to_datetime(self, date: str) -> datetime:
+        """Converts from Mac Absolute Time to a DateTime object.
+        
+        MacTime represents the number of nanoseconds since 01/01/2001
+        instead of seconds since 01/01/1970 (which is typical practice).
+        """
+
+        # Convert to seconds and add 31 years
+        converted = (int(date)/1e9) + 978307200
+        return datetime.fromtimestamp(converted)
+
+    def _convert_to_standard_format(self, messages: List[List]) -> List[str]:
+        """"""
+
+        transcript = []
+        for date, is_sender, message in messages:
+            direction = 'Send To' if is_sender else 'From'
+            name = 'Other Name'
+            phone = 'Phone'
+            dt_object = self._convert_mactime_to_datetime(date)
+            formatted_date = datetime.strftime(dt_object, r'%b %d, %Y %H:%M:%S')
+            header = f'{direction} {name}({phone}) at {formatted_date}'
+            transcript.append(header)
+            transcript.append(self._clean_line(message))
+            transcript.append('')
+        return transcript
 
 
 class DataParser:
@@ -96,19 +168,25 @@ class DataParser:
     _LABELS = ['datetime', 'is_sender', 'message', 'reaction']
     _BLOCK_EXPRESSION = r'^(From|Send To) (.*)\((.*)\) at (.*)$'
 
-    def __init__(self, path: str):
-        """"""
+    def __init__(self, path: str, source: str='Tansee'):
+        """Inits the DataParser object."""
 
         self._path = path
+        self._source = source
 
-        self._transcript = Transcript(self._path)
+        if source == 'Tansee':
+            self._transcript = TanseeTranscript(self._path)
+        elif source == 'iMessage CSV':
+            self._transcript = iMessageCSVTranscript(self._path)
+        else:
+            raise ValueError(f"'{source}' is not a valid message source.")
         self._data = self._parse(self._transcript)
     
     def get(self) -> pd.DataFrame:
         """Returns the message dataframe."""
         return self._data
 
-    def _parse(self, transcript: Transcript) -> pd.DataFrame:
+    def _parse(self, transcript: TanseeTranscript) -> pd.DataFrame:
         """Parses and cleans the transcript into a dataframe."""
 
         all_texts = []
@@ -166,12 +244,13 @@ class iMessages:
             methods.
     """
 
-    def __init__(self, path: str):
+    def __init__(self, path: str, source='Tansee'):
         """Inits the iMessages object."""
 
         self._path = path
+        self._source = source
 
-        parser = DataParser(self._path)
+        parser = DataParser(self._path, source=source)
         self._data = parser.get()
 
         self._reactions = reactions.Reactions(messages=self._data)

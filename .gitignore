@@ -7,3 +7,4 @@ data/texts.txt
 data/output.png
 env/
 tests/
+test.py
