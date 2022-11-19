@@ -333,3 +333,13 @@ class iMessages:
     def _remove_reactions(self, data: pd.DataFrame) -> pd.DataFrame:
         """Filters out reactions from a message dataframe."""
         return data[data['reaction'].isnull()]
+
+    @classmethod
+    def from_tansee_text_file(cls, path: str) -> 'iMessages':
+        """Inits an iMessages object using a Tansee text file."""
+        return cls(path=path, source='Tansee')
+
+    @classmethod
+    def from_imessage_csv(cls, path: str) -> 'iMessages':
+        """Inits an iMessages object using an iMessage CSV file."""
+        return cls(path=path, source='iMessage CSV')
