@@ -42,11 +42,6 @@ class TanseeTranscript:
             cleaned_line = self._clean_line(line)
             self._cleaned.append(cleaned_line)
             self._original.append(line)
-        # with open(self._path, 'r') as text:
-        #     for line in text:
-        #         cleaned_line = self._clean_line(line)
-        #         self._cleaned.append(cleaned_line)
-        #         self._original.append(line)
 
     @property
     def path(self) -> str:
@@ -150,7 +145,7 @@ class iMessageCSVTranscript(TanseeTranscript):
 
         transcript = []
         for date, is_sender, message in messages:
-            direction = 'Send To' if is_sender else 'From'
+            direction = 'Send To' if int(is_sender) else 'From'
             name = 'Other Name'
             phone = 'Phone'
             dt_object = self._convert_mactime_to_datetime(date)
@@ -224,7 +219,47 @@ class DataParser:
         
         df = pd.DataFrame(data, columns=self._LABELS)
         return df.set_index(df['datetime'])
+
+
+class Messages:
+    """Helper class that provides access to message analysis functions."""
+
+    def __init__(self, data: pd.DataFrame):
+        """Inits the Messages object with message data."""
+
+        self._data = data
     
+    def get(self) -> pd.DataFrame:
+        """Returns the message data."""
+        return self._data
+    
+    def get_total(self) -> float:
+        """Returns the total number of messages exchanged."""
+        return len(self._data['message'])
+
+    def get_average_length(self) -> float:
+        """Returns the average length of individual messages."""
+        return self._data['message'].str.len().mean()
+    
+    def get_least_sent_per_day(self) -> float:
+        """Returns the least number of texts sent in a day."""
+        return self._data['message'].groupby(self._data.index.date).count().min()
+    
+    def get_most_sent_per_day(self) -> float:
+        """Returns the greatest number of texts sent in a day."""
+        return self._data['message'].groupby(self._data.index.date).count().max()
+    
+    def get_average_sent_per_day(self) -> float:
+        """Returns the average number of texts sent in a day."""
+        return self._data['message'].groupby(self._data.index.date).count().mean()
+    
+    def get_count_of_word(self, word: str) -> int:
+        """Returns the number of occurrences of a word.
+        
+        Note that this function also matches substrings (parts of a word).
+        """
+        return self._data['message'].str.count(word).sum()
+
 
 class iMessages:
     """The main object for analyzing iMessage conversations.
@@ -232,10 +267,12 @@ class iMessages:
     Properties:
         data:
             The main dataframe.
+        all:
+            A Messages object containing data for all messages.
         sent:
-            The main dataframe filtered by sent messages.
+            A Messages object containing data for sent messages.
         received:
-            The main dataframe filtered by received messages.
+            A Messages object containing data for received messages.
         reactions:
             The Reactions object for convenient access to its properties and
             methods.
@@ -253,6 +290,10 @@ class iMessages:
         parser = DataParser(self._path, source=source)
         self._data = parser.get()
 
+        self._all = Messages(self.data)
+        self._sent = Messages(self._filter_sent())
+        self._received = Messages(self._filter_received())
+
         self._reactions = reactions.Reactions(messages=self._data)
         self._emojis = emojis.Emojis(imessages=self)
 
@@ -262,14 +303,19 @@ class iMessages:
         return self._data
 
     @property
-    def sent(self) -> pd.DataFrame:
-        """Returns the main dataframe filtered by sent messages."""
-        return self._data[self._data['is_sender'] == 1]
+    def all(self) -> Messages:
+        """Returns the main Messages object."""
+        return self._all
+
+    @property
+    def sent(self) -> Messages:
+        """Returns the sent Messages object."""
+        return self._sent
     
     @property
-    def received(self) -> pd.DataFrame:
-        """Returns the main dataframe filtered by received messages."""
-        return self._data[self._data['is_sender'] == 0]
+    def received(self) -> Messages:
+        """Returns the received Messages object."""
+        return self._received
 
     @property
     def reactions(self) -> reactions.Reactions:
@@ -301,18 +347,18 @@ class iMessages:
         """Returns all sent messages with or without reactions messages."""
 
         if include_reactions:
-            data = self.sent['message']
+            data = self._filter_sent()['message']
         else:
-            data = self._remove_reactions(self.sent)['message']
+            data = self._remove_reactions(self._filter_sent())['message']
         return data if as_df else '\n'.join(data)
     
     def get_received(self, include_reactions: bool=False, as_df: bool=False) -> str:
         """Returns all received messages with or without reactions messages."""
 
         if include_reactions:
-            data = self.received['message']
+            data = self._filter_received()['message']
         else:
-            data = self._remove_reactions(self.received)['message']
+            data = self._remove_reactions(self._filter_received())['message']
         return data if as_df else '\n'.join(data)
 
     def trim(self, start: str, end: str, replace: bool=True) -> pd.DataFrame:
@@ -329,6 +375,14 @@ class iMessages:
         messages = self.get_all()
         with open(path, 'w') as text:
             text.write(messages)
+
+    def _filter_sent(self) -> pd.DataFrame:
+        """Returns the main dataframe filtered by sent messages."""
+        return self._data[self._data['is_sender'] == 1]
+    
+    def _filter_received(self) -> pd.DataFrame:
+        """Returns the main dataframe filtered by received messages."""
+        return self._data[self._data['is_sender'] == 0]
 
     def _remove_reactions(self, data: pd.DataFrame) -> pd.DataFrame:
         """Filters out reactions from a message dataframe."""
