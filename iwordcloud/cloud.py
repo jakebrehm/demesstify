@@ -109,6 +109,14 @@ class MessageCloud(WordCloud):
 
         self.to_file(path)
 
+    def add_stopwords(self, stopwords: Union[str, List[str]]):
+        """Adds one or more words to the default set of stopwords."""
+
+        if isinstance(stopwords, str):
+            self.stopwords.add(stopwords)
+        else:
+            self.stopwords.update(stopwords)
+
     def _set_defaults(self):
         """Sets default WordCloud parameters."""
 

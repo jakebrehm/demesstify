@@ -8,7 +8,7 @@ given iMessage conversation.
 
 
 import collections
-from typing import List, Dict, Tuple
+from typing import List, Dict, Tuple, Union
 
 import emoji
 import pandas as pd
@@ -132,6 +132,15 @@ class Emojis:
         """Returns a list of emoji objects."""
         return list(self._emoji_objects.values())
 
+    @property
+    def emoji_objects(self) -> Dict[str, Emoji]:
+        """Returns a dictionary of emoji objects."""
+        return self._emoji_objects
+    
+    def get_emoji_object(self, emoji: str) -> Emoji:
+        """Returns the associated emoji object for an emoji."""
+        return self.emoji_objects[emoji]
+
     def get_uniques(self) -> List[str]:
         """Returns a list of unique emojis that were found in the messages."""
         return self._unique_emojis
@@ -144,11 +153,17 @@ class Emojis:
         """Returns the dictionary of emojis and their counts."""
         return self._counts
 
-    def get_most_frequent(self, n: int) -> List[Tuple[str, int]]:
+    def get_most_frequent(self,
+            n: int, return_objects: bool=False
+        ) -> List[Tuple[Union[str, Emoji], int]]:
         """Returns the n most frequent emojis as a list of tuples."""
 
         counter = collections.Counter(self.get_counts())
-        return counter.most_common(n)
+        most_common = counter.most_common(n)
+        if return_objects:
+            for e, (emoji, count) in enumerate(most_common):
+                most_common[e] = (self.get_emoji_object(emoji), count)
+        return most_common
 
     def _count_emojis(self, emoji_objects: Dict[str, Emoji]):
         """Counts the number of occurences of each unique emoji."""

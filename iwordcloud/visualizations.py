@@ -6,7 +6,7 @@ Provides functionality for visualizing iMessage messages.
 """
 
 
-from typing import Tuple, Union, Optional
+from typing import List, Tuple, Union, Optional
 
 import matplotlib as mpl
 import matplotlib.pyplot as plt
@@ -14,6 +14,7 @@ import numpy as np
 import pandas as pd
 
 from . import parser
+from . import emojis
 
 
 class WeekdayRadialHeatmap:
@@ -49,9 +50,11 @@ class WeekdayRadialHeatmap:
     def generate(self,
             figsize: Tuple[int, int]=(7, 7),
             cmap: Union[str, mpl.colors.Colormap]='viridis',
-            spine_color: str='black',
+            outline_color: str='black',
             grid_color: str='black',
-            text_color: str='black',
+            # text_color: str='black',
+            weekday_color: str='black',
+            hour_color: str='black',
             font_name: 'str'='Helvetica',
             font_size: float=10,
             donut_hole: bool=True,
@@ -66,6 +69,8 @@ class WeekdayRadialHeatmap:
             cbar_padding: Optional[float]=None,
             cbar_aspect: float=20,
             cbar_label: Optional[str]=None,
+            cbar_text_color: str='black',
+            cbar_tick_color: str='black',
             cbar_outline_color: str='black',
             cbar_outline_linewidth: float=1,
             cbar_title: Optional[str]=None,
@@ -124,7 +129,7 @@ class WeekdayRadialHeatmap:
                     fontsize=font_size, fontname=font_name,
                 )
                 label.set_rotation(self._rotate_text(i, angle, slice_degrees))
-                label.set_color(text_color)
+                label.set_color(hour_color)
 
         # Rotate and orient the weekday labels
         if show_weekdays:
@@ -138,14 +143,14 @@ class WeekdayRadialHeatmap:
                     fontsize=font_size, fontname=font_name,
                 )
                 label.set_rotation(-45)
-                label.set_color(text_color)
+                label.set_color(weekday_color)
         
         # Turn off tick labels because they were replaced with text annotations
         self.axis.set_xticklabels([])
         self.axis.set_yticklabels([])
 
         # Customize spines
-        self.axis.spines['polar'].set_color(spine_color)
+        self.axis.spines['polar'].set_color(outline_color)
         self.axis.spines['polar'].set_visible(show_outline)
 
         # Turn on the grid if desired
@@ -180,17 +185,17 @@ class WeekdayRadialHeatmap:
                 self.colorbar.minorticks_on()
             if cbar_label:
                 self.colorbar.set_label(
-                    cbar_label, color=text_color, fontsize=font_size,
+                    cbar_label, color=cbar_text_color, fontsize=font_size,
                 )
             if cbar_title:
                 self.colorbar.ax.set_title(
-                    cbar_title, color=text_color, fontsize=font_size,
+                    cbar_title, color=cbar_text_color, fontsize=font_size,
                 )
             self.colorbar.ax.xaxis.set_tick_params(
-                color=cbar_outline_color, labelcolor=text_color,
+                color=cbar_outline_color, labelcolor=cbar_tick_color,
             )
             self.colorbar.ax.yaxis.set_tick_params(
-                color=cbar_outline_color, labelcolor=text_color,
+                color=cbar_outline_color, labelcolor=cbar_tick_color,
             )
         else:
             self.colorbar = None
@@ -245,3 +250,183 @@ class WeekdayRadialHeatmap:
     def _rotate_text(self, i: int, angle: float, slice_degrees: float) -> float:
         """Rotates the hour labels to be facing radially perpendicular."""
         return angle - (2*i+1)*slice_degrees/2 - (i-1)*slice_degrees
+
+
+class FrequencyBarChart:
+    """Class to create a frequency bar chart."""
+
+    def __init__(self, data: List[Tuple[emojis.Emoji, int]]):
+        """Inits the FrequencyBarChart object."""
+        
+        self._data = data
+        self._labels = [d[0] for d in self._data]
+        self._counts = [d[1] for d in self._data]
+
+    def generate(self,
+        figsize: Tuple[int, int]=(7, 7),
+        bar_color: str='blue',
+        grid_color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+        x_tick_size: Union[int, float]=10,
+        x_tick_color: str='black',
+        y_tick_size: Union[int, float]=10,
+        y_tick_color: str='black',
+        invert_yaxis: bool=True,
+        bar_alpha: float=0.75,
+    ):
+        """Generates the frequency bar chart."""
+
+        self.figure, self.axis = plt.subplots(figsize=figsize)
+
+        stack_1 = self.axis.barh(
+            self._labels, self._counts,
+            color=bar_color, edgecolor=bar_color, alpha=bar_alpha,
+        )
+
+        if invert_yaxis:
+            self.axis.invert_yaxis()
+
+        self.axis.grid(
+            True, axis='y', which='minor',
+            color=grid_color[:3], alpha=grid_color[3],
+        )
+        self.axis.grid(False, axis='y', which='major')
+        self.axis.grid(
+            True, axis='x', which='major',
+            color=grid_color[:3], alpha=grid_color[3],
+        )
+        self.axis.set_axisbelow(True)
+
+        y_ticks = self.axis.get_yticks()
+        self.axis.set_yticks(self._move_ticks_around_bars(y_ticks), minor=True)
+        self.axis.xaxis.set_tick_params(
+            which='major', color=grid_color,
+            labelcolor=x_tick_color, labelsize=x_tick_size,
+        )
+        self.axis.yaxis.set_tick_params(which='minor', color=grid_color)
+        self.axis.yaxis.set_tick_params(
+            which='major', left=False,
+            labelcolor=y_tick_color, labelsize=y_tick_size,
+        )
+
+        self.axis.spines['top'].set_visible(False)
+        self.axis.spines['bottom'].set_visible(False)
+        self.axis.spines['right'].set_visible(False)
+        self.axis.spines['left'].set_color(grid_color)
+        
+    def save(self, *args, **kwargs):
+        """Wrapper around plt.savefig()."""
+        plt.savefig(*args, **kwargs)
+    
+    def show(self):
+        """Wrapper around plt.show()."""
+        plt.show()
+
+    def _move_ticks_around_bars(self, ticks: List[int]) -> List[int]:
+        """
+        Takes a list of ticks that are placed at the center of bars and
+        calculates a new list of ticks that are placed outside the bars.
+        """
+        ticks = [tick+0.5 for tick in ticks]
+        return [ticks[0] - 1] + ticks
+
+
+class StackedFrequencyBarChart(FrequencyBarChart):
+    """
+    Class to create a stacked frequency bar chart that shows the difference
+    between sent and received data.
+    """
+
+    def __init__(self, data: List[Tuple[emojis.Emoji, int, int, int]]):
+        """Inits the StackedFrequencyBarChart object."""
+        
+        self._data = data
+        self._labels = [d[0] for d in self._data]
+        self._all = [d[1] for d in self._data]
+        self._sent = [d[2] for d in self._data]
+        self._received = [d[3] for d in self._data]
+
+    def generate(self,
+        figsize: Tuple[int, int]=(7, 7),
+        sent_label: str='Sent',
+        sent_color: str='blue',
+        received_label: str='Received',
+        received_color: str='orange',
+        grid_color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+        x_tick_size: Union[int, float]=10,
+        x_tick_color: str='black',
+        y_tick_size: Union[int, float]=10,
+        y_tick_color: str='black',
+        invert_yaxis: bool=True,
+        bar_alpha: float=0.75,
+        legend: bool=True,
+        legend_label_size: Union[int, float]=10,
+        legend_label_color: str='black',
+        legend_location: str='top',
+    ):
+        """Generates the stacked frequency bar chart."""
+
+        valid_legend_locations = ['top', 'bottom']
+        if legend_location not in valid_legend_locations:
+            raise ValueError((
+                f'{legend_location} is not a valid value for legend_location. '
+                f'Valid values are: {valid_legend_locations}'
+            ))
+
+        self.figure, self.axis = plt.subplots(figsize=figsize)
+
+        stack_1 = self.axis.barh(
+            self._labels, self._sent,
+            color=sent_color, edgecolor=sent_color, alpha=bar_alpha,
+        )
+        stack_2 = self.axis.barh(
+            self._labels, self._received, left=self._sent,
+            color=received_color, edgecolor=received_color, alpha=bar_alpha,
+        )
+
+        box = self.axis.get_position()
+
+        if legend:
+            if legend_location == 'top':
+                box_y = box.y0
+                anchor = (0.5, 1.15)
+            else:
+                box_y = box.y0 + box.height * 0.1
+                anchor = (0.5, -0.05)
+            self.axis.set_position([box.x0, box_y, box.width, box.height * 0.9])
+            self.axis.legend(
+                [stack_1, stack_2], [sent_label, received_label],
+                loc="upper center", frameon=False, fancybox=False, shadow=False,
+                ncol=2, handleheight=1, handlelength=1, bbox_to_anchor=anchor,
+                labelcolor=legend_label_color, prop={'size': legend_label_size},
+            )
+
+        if invert_yaxis:
+            self.axis.invert_yaxis()
+
+        self.axis.grid(
+            True, axis='y', which='minor',
+            color=grid_color[:3], alpha=grid_color[3],
+        )
+        self.axis.grid(False, axis='y', which='major')
+        self.axis.grid(
+            True, axis='x', which='major',
+            color=grid_color[:3], alpha=grid_color[3],
+        )
+        self.axis.set_axisbelow(True)
+
+        y_ticks = self.axis.get_yticks()
+        self.axis.set_yticks(self._move_ticks_around_bars(y_ticks), minor=True)
+        self.axis.xaxis.set_tick_params(
+            which='major', color=grid_color,
+            labelcolor=x_tick_color, labelsize=x_tick_size,
+        )
+        self.axis.yaxis.set_tick_params(which='minor', color=grid_color)
+        self.axis.yaxis.set_tick_params(
+            which='major', left=False,
+            labelcolor=y_tick_color, labelsize=y_tick_size,
+        )
+
+        self.axis.spines['top'].set_visible(False)
+        self.axis.spines['bottom'].set_visible(False)
+        self.axis.spines['right'].set_visible(False)
+        self.axis.spines['left'].set_color(grid_color)
