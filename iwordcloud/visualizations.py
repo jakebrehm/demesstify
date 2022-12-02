@@ -255,15 +255,28 @@ class WeekdayRadialHeatmap:
 class FrequencyBarChart:
     """Class to create a frequency bar chart."""
 
-    def __init__(self, data: List[Tuple[emojis.Emoji, int]]):
+    _VALID_SPINES = ['top', 'bottom', 'left', 'right']
+    _VALID_AXES = ['x', 'y']
+    _VALID_TICKS = ['major', 'minor']
+
+    def __init__(self,
+            data: List[Tuple[emojis.Emoji, int]],
+            figsize: Tuple[int, int]=(7, 7),
+        ):
         """Inits the FrequencyBarChart object."""
         
+        # Store the specified argument values
         self._data = data
+        self._figsize = figsize
+
+        # Split the data
         self._labels = [d[0] for d in self._data]
         self._counts = [d[1] for d in self._data]
 
+        # Create the axis and figure
+        self.figure, self.axis = plt.subplots(figsize=self._figsize)
+
     def generate(self,
-        figsize: Tuple[int, int]=(7, 7),
         bar_color: str='blue',
         grid_color: Tuple[float, float, float, float]=(0, 0, 0, 1),
         x_tick_size: Union[int, float]=10,
@@ -275,44 +288,211 @@ class FrequencyBarChart:
     ):
         """Generates the frequency bar chart."""
 
-        self.figure, self.axis = plt.subplots(figsize=figsize)
-
-        stack_1 = self.axis.barh(
+        # Plot the bar chart
+        self.axis.barh(
             self._labels, self._counts,
             color=bar_color, edgecolor=bar_color, alpha=bar_alpha,
         )
 
-        if invert_yaxis:
-            self.axis.invert_yaxis()
-
-        self.axis.grid(
-            True, axis='y', which='minor',
-            color=grid_color[:3], alpha=grid_color[3],
-        )
-        self.axis.grid(False, axis='y', which='major')
-        self.axis.grid(
-            True, axis='x', which='major',
-            color=grid_color[:3], alpha=grid_color[3],
-        )
-        self.axis.set_axisbelow(True)
-
+        # Customize the x axis
+        self.set_grid_color('x', 'major', color=grid_color)
+        self.set_grid_visibility('x', 'minor', visible=False)
+        self.set_tick_label_color('x', 'major', color=x_tick_color)
+        self.set_tick_label_size('x', 'major', size=x_tick_size)
+        # Customize the y axis
+        self.set_grid_color('y', 'minor', color=grid_color)
+        self.set_grid_visibility('y', 'major', visible=False)
+        self.set_tick_label_color('y', 'major', color=y_tick_color)
+        self.set_tick_label_size('y', 'major', size=y_tick_size)
+        self.set_left_tick_visibility(False)
+        self.invert_yaxis(invert_yaxis)
         y_ticks = self.axis.get_yticks()
         self.axis.set_yticks(self._move_ticks_around_bars(y_ticks), minor=True)
-        self.axis.xaxis.set_tick_params(
-            which='major', color=grid_color,
-            labelcolor=x_tick_color, labelsize=x_tick_size,
-        )
-        self.axis.yaxis.set_tick_params(which='minor', color=grid_color)
-        self.axis.yaxis.set_tick_params(
-            which='major', left=False,
-            labelcolor=y_tick_color, labelsize=y_tick_size,
-        )
+        # General customization
+        self.set_tick_colors(['x', 'y'], ['major', 'minor'], color=grid_color)
+        self.move_grid_below_plot(True)
+        self.toggle_spines(['top', 'right', 'bottom'], visible=False)
+        self.set_spine_color('left', color=grid_color)
 
-        self.axis.spines['top'].set_visible(False)
-        self.axis.spines['bottom'].set_visible(False)
-        self.axis.spines['right'].set_visible(False)
-        self.axis.spines['left'].set_color(grid_color)
+    def invert_yaxis(self, invert: bool=True):
+        """Invert the y-axis of the plot."""
+
+        if invert:
+            self.axis.invert_yaxis()
+
+    def move_grid_below_plot(self, below: bool=True):
+        """Moves the grid below the plot."""
+        self.axis.set_axisbelow(below)
+
+    def set_left_tick_visibility(self, show_ticks: bool=False):
+        """Toggles visibility of ticks on the left side of the chart."""
+        self.axis.tick_params(axis='y', which='major', left=show_ticks)
+
+    def set_tick_colors(self, axes: str, which: str, color: str='black'):
+        """Set the colors of the specified ticks."""
+
+        # Sets default axes and converts to a list if necessary
+        if axes is None:
+            axes = self._VALID_AXES
+        elif isinstance(axes, str):
+            axes = [axes]
+        # Sets default ticks and converts to a list if necessary
+        if which is None:
+            which = self._VALID_TICKS
+        elif isinstance(which, str):
+            which = [which]
+        # Checks if the inputs are valid
+        self._check_valid_axes(axes)
+        self._check_valid_ticks(which)
+
+        # Set the tick colors
+        for axis in axes:
+            for tick in which:
+                self.axis.tick_params(axis=axis, which=tick, color=color)
+
+    def set_tick_label_color(self,
+            axes: str, which: str, color: str='black',
+        ):
+        """Set the colors of the specified tick labels."""
+
+        # Sets default axes and converts to a list if necessary
+        if axes is None:
+            axes = self._VALID_AXES
+        elif isinstance(axes, str):
+            axes = [axes]
+        # Sets default ticks and converts to a list if necessary
+        if which is None:
+            which = self._VALID_TICKS
+        elif isinstance(which, str):
+            which = [which]
+        # Checks if the inputs are valid
+        self._check_valid_axes(axes)
+        self._check_valid_ticks(which)
+
+        # Set the tick label colors
+        for axis in axes:
+            for tick in which:
+                self.axis.tick_params(axis=axis, which=tick, labelcolor=color)
+
+    def set_tick_label_size(self,
+            axes: str, which: str, size: float=10,
+        ):
+        """Set the size of the specified tick labels."""
+
+        # Sets default axes and converts to a list if necessary
+        if axes is None:
+            axes = self._VALID_AXES
+        elif isinstance(axes, str):
+            axes = [axes]
+        # Sets default ticks and converts to a list if necessary
+        if which is None:
+            which = self._VALID_TICKS
+        elif isinstance(which, str):
+            which = [which]
+        # Checks if the inputs are valid
+        self._check_valid_axes(axes)
+        self._check_valid_ticks(which)
+
+        # Set the tick label sizes
+        for axis in axes:
+            for tick in which:
+                self.axis.tick_params(axis=axis, which=tick, labelsize=size)
+
+    def set_grid_color(self,
+            axes: str,
+            which: str,
+            color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+        ):
+        """Set the color of the gridlines. Also makes the grids visible."""
+
+        # Sets default axes and converts to a list if necessary
+        if axes is None:
+            axes = self._VALID_AXES
+        elif isinstance(axes, str):
+            axes = [axes]
+        # Sets default ticks and converts to a list if necessary
+        if which is None:
+            which = self._VALID_TICKS
+        elif isinstance(which, str):
+            which = [which]
+        # Checks if the inputs are valid
+        self._check_valid_axes(axes)
+        self._check_valid_ticks(which)
+
+        # Set the grid color
+        for axis in axes:
+            for tick in which:
+                self.axis.grid(
+                    True, axis=axis, which=tick,
+                    color=color[:3], alpha=color[3],
+                )
+
+    def set_grid_visibility(self, axes: str, which: str, visible: bool=True):
+        """Set the visibility of the gridlines."""
+
+        # Sets default axes and converts to a list if necessary
+        if axes is None:
+            axes = self._VALID_AXES
+        elif isinstance(axes, str):
+            axes = [axes]
+        # Sets default ticks and converts to a list if necessary
+        if which is None:
+            which = self._VALID_TICKS
+        elif isinstance(which, str):
+            which = [which]
+        # Checks if the inputs are valid
+        self._check_valid_axes(axes)
+        self._check_valid_ticks(which)
+
+        # Set the grid visibility
+        for axis in axes:
+            for tick in which:
+                self.axis.grid(visible, axis=axis, which=tick)
+
+    def enable_spines(self, spines: Optional[Union[str, List[str]]]=None):
+        """Enables all specified spines of the chart."""
+        self.toggle_spines(spines, visible=True)
+
+    def disable_spines(self, spines: Optional[Union[str, List[str]]]=None):
+        """Disabes all specified spines of the chart."""
+        self.toggle_spines(spines, visible=False)
+
+    def toggle_spines(self,
+            spines: Optional[Union[str, List[str]]]=None,
+            visible: bool=False,
+        ):
+        """Sets the visibility of all specified spines of the chart."""
         
+        # Sets default spines and converts to a list if necessary
+        if spines is None:
+            spines = self._VALID_SPINES
+        elif isinstance(spines, str):
+            spines = [spines]
+        # Checks if the inputs are valid
+        self._check_valid_spines(spines)
+
+        # Set the spine visibilities
+        for spine in spines:
+            self.axis.spines[spine].set_visible(visible)
+
+    def set_spine_color(self,
+            spines: Optional[Union[str, List[str]]]=None,
+            color: str='black',
+        ):
+        """Sets the color of all specified spines of the chart."""
+        
+        # Sets default spines and converts to a list if necessary
+        if spines is None:
+            spines = self._VALID_SPINES
+        elif isinstance(spines, str):
+            spines = [spines]
+        # Checks if the inputs are valid
+        self._check_valid_spines(spines)
+
+        # Set the spine colors
+        for spine in spines:
+            self.axis.spines[spine].set_color(color)
+
     def save(self, *args, **kwargs):
         """Wrapper around plt.savefig()."""
         plt.savefig(*args, **kwargs)
@@ -329,6 +509,33 @@ class FrequencyBarChart:
         ticks = [tick+0.5 for tick in ticks]
         return [ticks[0] - 1] + ticks
 
+    def _check_valid_axes(self, axes: Optional[Union[str, List[str]]]):
+        """Raises an error if the user-specified axes are not valid."""
+
+        if any(axis not in self._VALID_AXES for axis in axes):
+           raise ValueError((
+            f'{axes} is not a valid value for axis. '
+            f'Valid values are {self._VALID_AXES}'
+        ))
+
+    def _check_valid_ticks(self, ticks: Optional[Union[str, List[str]]]):
+        """Raises an error if the user-specified ticks are not valid."""
+
+        if any(tick not in self._VALID_TICKS for tick in ticks):
+           raise ValueError((
+            f'{ticks} is not a valid value for which. '
+            f'Valid values are {self._VALID_TICKS}'
+        ))
+
+    def _check_valid_spines(self, spines: Optional[Union[str, List[str]]]):
+        """Raises an error if the user-specified spines are not valid."""
+
+        if any(spine not in self._VALID_SPINES for spine in spines):
+           raise ValueError((
+            f'{spines} is not a valid value for spines. '
+            f'Valid values are {self._VALID_SPINES}'
+        ))
+
 
 class StackedFrequencyBarChart(FrequencyBarChart):
     """
@@ -336,14 +543,26 @@ class StackedFrequencyBarChart(FrequencyBarChart):
     between sent and received data.
     """
 
-    def __init__(self, data: List[Tuple[emojis.Emoji, int, int, int]]):
+    _VALID_LEGEND_LOCATIONS = ['top', 'bottom']
+
+    def __init__(self,
+            data: List[Tuple[emojis.Emoji, int, int, int]],
+            figsize: Tuple[int, int]=(7, 7),
+        ):
         """Inits the StackedFrequencyBarChart object."""
         
+        # Store the specified argument values
         self._data = data
+        self._figsize = figsize
+
+        # Split the data
         self._labels = [d[0] for d in self._data]
         self._all = [d[1] for d in self._data]
         self._sent = [d[2] for d in self._data]
         self._received = [d[3] for d in self._data]
+
+        # Create the axis and figure
+        self.figure, self.axis = plt.subplots(figsize=self._figsize)
 
     def generate(self,
         figsize: Tuple[int, int]=(7, 7),
@@ -359,21 +578,17 @@ class StackedFrequencyBarChart(FrequencyBarChart):
         invert_yaxis: bool=True,
         bar_alpha: float=0.75,
         legend: bool=True,
+        legend_y_offset: float=0,
         legend_label_size: Union[int, float]=10,
         legend_label_color: str='black',
         legend_location: str='top',
     ):
         """Generates the stacked frequency bar chart."""
 
-        valid_legend_locations = ['top', 'bottom']
-        if legend_location not in valid_legend_locations:
-            raise ValueError((
-                f'{legend_location} is not a valid value for legend_location. '
-                f'Valid values are: {valid_legend_locations}'
-            ))
+        # Verify that inputs are valid
+        self._check_valid_legend(legend_location)
 
-        self.figure, self.axis = plt.subplots(figsize=figsize)
-
+        # Plot the stacked bar chart
         stack_1 = self.axis.barh(
             self._labels, self._sent,
             color=sent_color, edgecolor=sent_color, alpha=bar_alpha,
@@ -383,15 +598,15 @@ class StackedFrequencyBarChart(FrequencyBarChart):
             color=received_color, edgecolor=received_color, alpha=bar_alpha,
         )
 
-        box = self.axis.get_position()
-
+        # Customize the legend
         if legend:
+            box = self.axis.get_position()
             if legend_location == 'top':
                 box_y = box.y0
-                anchor = (0.5, 1.15)
+                anchor = (0.5, 1.15 + legend_y_offset)
             else:
                 box_y = box.y0 + box.height * 0.1
-                anchor = (0.5, -0.05)
+                anchor = (0.5, -0.05 + legend_y_offset)
             self.axis.set_position([box.x0, box_y, box.width, box.height * 0.9])
             self.axis.legend(
                 [stack_1, stack_2], [sent_label, received_label],
@@ -400,33 +615,31 @@ class StackedFrequencyBarChart(FrequencyBarChart):
                 labelcolor=legend_label_color, prop={'size': legend_label_size},
             )
 
-        if invert_yaxis:
-            self.axis.invert_yaxis()
-
-        self.axis.grid(
-            True, axis='y', which='minor',
-            color=grid_color[:3], alpha=grid_color[3],
-        )
-        self.axis.grid(False, axis='y', which='major')
-        self.axis.grid(
-            True, axis='x', which='major',
-            color=grid_color[:3], alpha=grid_color[3],
-        )
-        self.axis.set_axisbelow(True)
-
+        # Customize the x axis
+        self.set_grid_color('x', 'major', color=grid_color)
+        self.set_grid_visibility('x', 'minor', visible=False)
+        self.set_tick_label_color('x', 'major', color=x_tick_color)
+        self.set_tick_label_size('x', 'major', size=x_tick_size)
+        # Customize the y axis
+        self.set_grid_color('y', 'minor', color=grid_color)
+        self.set_grid_visibility('y', 'major', visible=False)
+        self.set_tick_label_color('y', 'major', color=y_tick_color)
+        self.set_tick_label_size('y', 'major', size=y_tick_size)
+        self.set_left_tick_visibility(False)
+        self.invert_yaxis(invert_yaxis)
         y_ticks = self.axis.get_yticks()
         self.axis.set_yticks(self._move_ticks_around_bars(y_ticks), minor=True)
-        self.axis.xaxis.set_tick_params(
-            which='major', color=grid_color,
-            labelcolor=x_tick_color, labelsize=x_tick_size,
-        )
-        self.axis.yaxis.set_tick_params(which='minor', color=grid_color)
-        self.axis.yaxis.set_tick_params(
-            which='major', left=False,
-            labelcolor=y_tick_color, labelsize=y_tick_size,
-        )
+        # General customization
+        self.set_tick_colors(['x', 'y'], ['major', 'minor'], color=grid_color)
+        self.move_grid_below_plot(True)
+        self.toggle_spines(['top', 'right', 'bottom'], visible=False)
+        self.set_spine_color('left', color=grid_color)
 
-        self.axis.spines['top'].set_visible(False)
-        self.axis.spines['bottom'].set_visible(False)
-        self.axis.spines['right'].set_visible(False)
-        self.axis.spines['left'].set_color(grid_color)
+    def _check_valid_legend(self, location: Optional[Union[str, List[str]]]):
+        """Raises an error if the user-specified location is not valid."""
+
+        if location not in self._VALID_LEGEND_LOCATIONS:
+            raise ValueError((
+                f'{location} is not a valid value for legend_location. '
+                f'Valid values are: {self._VALID_LEGEND_LOCATIONS}'
+            ))
