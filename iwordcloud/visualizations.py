@@ -52,7 +52,6 @@ class WeekdayRadialHeatmap:
             cmap: Union[str, mpl.colors.Colormap]='viridis',
             outline_color: str='black',
             grid_color: str='black',
-            # text_color: str='black',
             weekday_color: str='black',
             hour_color: str='black',
             font_name: 'str'='Helvetica',
