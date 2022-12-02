@@ -1,12 +1,8 @@
 .DS_Store
 *.pyc
 __pycache__/
-data/fonts/
-data/output*.txt
-data/texts.txt
-data/output*.png
+
 env/
-tests/
-test.py
-data/
-test.png
+data/personal/
+docs/reminders/
+script/
