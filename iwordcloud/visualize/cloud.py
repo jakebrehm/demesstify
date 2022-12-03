@@ -15,8 +15,8 @@ import numpy as np
 from PIL import Image
 from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
 
-from . import errors
-from . import parser
+from .. import errors
+from .. import parser
 
 
 def requires_cloud(method):

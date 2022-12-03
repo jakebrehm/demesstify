@@ -1,8 +1,13 @@
+# General undesirables
 .DS_Store
 *.pyc
 __pycache__/
 
+# Project directories
 env/
 data/personal/
 docs/reminders/
-script/
+script/*
+
+# Exceptions
+!script/generate_sample_texts.py

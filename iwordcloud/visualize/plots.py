@@ -13,8 +13,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from . import parser
-from . import emojis
+from .. import parser
+from .. import emojis
 
 
 class WeekdayRadialHeatmap:
