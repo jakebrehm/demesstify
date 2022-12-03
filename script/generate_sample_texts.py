@@ -1,7 +1,7 @@
 import os
 import random
 from datetime import datetime
-from typing import List,Union
+from typing import List, Union
 
 import lorem
 import numpy as np
@@ -43,7 +43,7 @@ def generate_datetimes(
     return dates
 
 
-def generate_block_sizes(n, total):
+def generate_block_sizes(n: int, total: int):
     """
     Essentially returns a random list of n positive integers summing to a
     specified total.

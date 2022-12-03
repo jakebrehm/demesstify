@@ -9,12 +9,13 @@ Provides functionality for parsing and analyzing an iMessage conversation.
 import csv
 import re
 from datetime import datetime
-from typing import List
+from typing import Any, List, Dict, Optional
 
 import pandas as pd
 
-from . import reactions
 from . import emojis
+from . import reactions
+from .testing import messages
 
 
 class TanseeTranscript:
@@ -157,20 +158,49 @@ class iMessageCSVTranscript(TanseeTranscript):
         return transcript
 
 
+class GeneratedSampleText(TanseeTranscript):
+    """"""
+
+    def __init__(self, **kwargs):
+        """"""
+
+        text = messages.generate_sample_text(**kwargs)
+
+        self._original = []
+        self._cleaned = []
+        transcript = self._remove_urls(text)
+        for line in transcript.splitlines():
+            cleaned_line = self._clean_line(line)
+            self._cleaned.append(cleaned_line)
+            self._original.append(line)
+
+
 class DataParser:
     """Parses and cleans a text file containing text messages."""
 
     _LABELS = ['datetime', 'is_sender', 'message', 'reaction']
     _BLOCK_EXPRESSION = r'^(From|Send To) (.*)\((.*)\) at (.*)$'
 
-    def __init__(self, path: str, source: str='Tansee'):
+    def __init__(self,
+        path: str=None,
+        source: str='Tansee',
+        _random_kwargs: Dict[str, Any]=None,
+    ):
         """Inits the DataParser object."""
+
+        if (path is None) and (source != 'Random'):
+            raise ValueError((
+                'A path is required for any source that is not a randomly '
+                'generated sample.'
+            ))
 
         self._path = path
         self._source = source
 
         if source == 'Tansee':
             self._transcript = TanseeTranscript(self._path)
+        elif source == 'Random':
+            self._transcript = GeneratedSampleText(**_random_kwargs)
         elif source == 'iMessage CSV':
             self._transcript = iMessageCSVTranscript(self._path)
         else:
@@ -281,13 +311,27 @@ class iMessages:
             methods.
     """
 
-    def __init__(self, path: str, source='Tansee'):
+    def __init__(self,
+        path: Optional[str]=None,
+        source='Tansee',
+        _random_kwargs: Optional[Dict[str, Any]]=None,
+    ):
         """Inits the iMessages object."""
+
+        if (path is None) and (source != 'Random'):
+            raise ValueError((
+                'A path is required for any source that is not a randomly '
+                'generated sample.'
+            ))
 
         self._path = path
         self._source = source
 
-        parser = DataParser(self._path, source=source)
+        parser = DataParser(
+            self._path,
+            source=self._source,
+            _random_kwargs=_random_kwargs,
+        )
         self._data = parser.get()
 
         self._all = Messages(self.data)
@@ -392,6 +436,11 @@ class iMessages:
     def from_tansee_text_file(cls, path: str) -> 'iMessages':
         """Inits an iMessages object using a Tansee text file."""
         return cls(path=path, source='Tansee')
+
+    @classmethod
+    def from_random(cls, **kwargs) -> 'iMessages':
+        """Inits an iMessages object using randomly generated messages."""
+        return cls(source='Random', _random_kwargs=kwargs)
 
     @classmethod
     def from_imessage_csv(cls, path: str) -> 'iMessages':
