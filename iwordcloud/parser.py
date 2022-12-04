@@ -271,17 +271,20 @@ class Messages:
         """Returns the average length of individual messages."""
         return self._data['message'].str.len().mean()
     
-    def get_least_sent_per_day(self) -> float:
-        """Returns the least number of texts sent in a day."""
-        return self._data['message'].groupby(self._data.index.date).count().min()
+    def get_least_per_day(self) -> float:
+        """Returns the least number of texts exchanged in a day."""
+        grouped = self._data['message'].groupby(self._data.index.date)
+        return grouped.count().min()
     
-    def get_most_sent_per_day(self) -> float:
-        """Returns the greatest number of texts sent in a day."""
-        return self._data['message'].groupby(self._data.index.date).count().max()
+    def get_most_per_day(self) -> float:
+        """Returns the greatest number of texts exchanged in a day."""
+        grouped = self._data['message'].groupby(self._data.index.date)
+        return grouped.count().max()
     
-    def get_average_sent_per_day(self) -> float:
-        """Returns the average number of texts sent in a day."""
-        return self._data['message'].groupby(self._data.index.date).count().mean()
+    def get_average_per_day(self) -> float:
+        """Returns the average number of texts exchanged in a day."""
+        grouped = self._data['message'].groupby(self._data.index.date)
+        return grouped.count().mean()
     
     def get_count_of_word(self, word: str) -> int:
         """Returns the number of occurrences of a word.
@@ -334,9 +337,7 @@ class iMessages:
         )
         self._data = parser.get()
 
-        self._all = Messages(self.data)
-        self._sent = Messages(self._filter_sent())
-        self._received = Messages(self._filter_received())
+        self._split_data()
 
         self._reactions = reactions.Reactions(messages=self._data)
         self._emojis = emojis.Emojis(imessages=self)
@@ -345,6 +346,12 @@ class iMessages:
     def data(self) -> pd.DataFrame:
         """Returns the main dataframe."""
         return self._data
+
+    @data.setter
+    def data(self, new_data):
+        """Set the main dataframes."""
+        self._data = new_data
+        self._split_data()
 
     @property
     def all(self) -> Messages:
@@ -406,11 +413,19 @@ class iMessages:
         return data if as_df else '\n'.join(data)
 
     def trim(self, start: str, end: str, replace: bool=True) -> pd.DataFrame:
-        """Trims the data to messages sent between a specified time interval."""
+        """
+        Trims the data to messages sent between a specified time interval.
+        
+        The start and end arguments generally should follow one of the
+        following previoulsly-tested formats:
+            %Y-%m-%d %H:%M:%S
+            %Y-%m-%d
+        That said, other formats may work.
+        """
 
         trimmed = self._data.loc[start:end]
         if replace:
-            self._data = trimmed
+            self.data = trimmed
         return trimmed
 
     def save_all(self, path: str):
@@ -419,6 +434,13 @@ class iMessages:
         messages = self.get_all()
         with open(path, 'w') as text:
             text.write(messages)
+
+    def _split_data(self):
+        """Splits data into three message groups: all, sent, and received."""
+
+        self._all = Messages(self.data)
+        self._sent = Messages(self._filter_sent())
+        self._received = Messages(self._filter_received())
 
     def _filter_sent(self) -> pd.DataFrame:
         """Returns the main dataframe filtered by sent messages."""
