@@ -32,7 +32,13 @@ def generate_datetimes(
     if periods is None:
         periods = s.TOTAL_MESSAGES
 
-    dates = pd.date_range(start, end, periods=periods, inclusive='both')
+    dates = pd.date_range(
+        start,
+        end,
+        periods=periods,
+        inclusive='both',
+    ).to_pydatetime()
+    
     if as_string:
         dates = [date.strftime(s.DATE_FORMAT) for date in dates]
     return dates
