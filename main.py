@@ -1,10 +1,10 @@
-import iwordcloud as iwc
+import demesstify as dm
 
 
 if __name__ == '__main__':
 
     # Create the iMessages object
-    imessages = iwc.iMessages.from_random(total_messages=10)
+    imessages = dm.iMessages.from_random(total_messages=10)
 
     # Determine the 3 most frequent emojis
     most_frequent_emojis = imessages.emojis.get_most_frequent(3)
@@ -23,7 +23,7 @@ if __name__ == '__main__':
     print(velit_count)
 
     # Create a MessageCloud object
-    cloud = iwc.MessageCloud(imessages)
+    cloud = dm.MessageCloud(imessages)
     cloud.min_word_length = 3
     cloud.repeat = False                # will not repeat any words
     cloud.collocations = False          # will not include pairs of words
