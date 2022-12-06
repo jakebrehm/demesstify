@@ -2,8 +2,6 @@
     demesstify
 </h1>
 
-<hr/>
-
 <p align="center">
     <strong>demesstify</strong> is a Python library that allows for easy analyzing and visualizing of message conversations.
 </p>
