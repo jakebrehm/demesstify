@@ -14,6 +14,7 @@
     * [Dependencies](#dependencies)
 * [Example usage](#example-usage)
     * [Basic example](#basic-example)
+<!-- * [Future improvements](#future-improvements) -->
 * [Authors](#authors)
 
 ## Installation
@@ -39,8 +40,6 @@ The source code can be viewed on GitHub [here](https://github.com/jakebrehm/deme
 | [wordcloud](https://github.com/amueller/word_cloud)    | For creating wordclouds               |
 | [emoji](https://github.com/carpedm20/emoji)            | For working with emojis               |
 | [lorem](https://github.com/sfischer13/python-lorem)    | For creating dummy text               |
-
-## 
 
 ## Example usage
 
@@ -105,6 +104,8 @@ With the MessageCloud object, we can see which words were used the most frequent
 # Determine the 5 most frequent words
 cloud.words.get_most_frequent(5)
 ```
+
+<!-- ## Future improvements -->
 
 ## Authors
 
