@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-    <strong>demesstify</strong> is a Python library that allows for easy analyzing and visualizing of message conversations.
+    <strong>demesstify</strong> is a Python library that demystifies your messages and allows for easy analysis and visualization of conversations.
 </p>
 
 <hr/>
