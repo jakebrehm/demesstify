@@ -1,6 +1,9 @@
-<h1 align='center'>
-    demesstify
-</h1>
+<div align="center">
+
+  <img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo"/>
+
+  <br>
+</div>
 
 <p align="center">
     <strong>demesstify</strong> is a Python library that demystifies your messages and allows for easy analysis and visualization of conversations.
@@ -14,7 +17,7 @@
     * [Dependencies](#dependencies)
 * [Example usage](#example-usage)
     * [Basic example](#basic-example)
-<!-- * [Future improvements](#future-improvements) -->
+* [Future improvements](#future-improvements)
 * [Authors](#authors)
 
 ## Installation
@@ -105,7 +108,14 @@ With the MessageCloud object, we can see which words were used the most frequent
 cloud.words.get_most_frequent(5)
 ```
 
-<!-- ## Future improvements -->
+## Future improvements
+
+- Add support for identifying attachments
+- Read messages directly from the iMessages chat.db
+- Add support for other message sources, such as Android or social media platforms
+- Add more interesting calculations and analyses
+- Add unit tests
+- Make the package available on PyPI
 
 ## Authors
 
