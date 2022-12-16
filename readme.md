@@ -89,7 +89,7 @@ imessages.all.get_count_of_word('velit')
 
 For even more analytics, we can create a MessageCloud object.
 
-Because the MessageCloud object is essentially a wrapper around the `WordCloud` object of the [wordcloud](https://github.com/amueller/word_cloud) library, we have access to its parameters as well. This way, we can specify exactly what time of words we want to include in the statistics.
+Because the `MessageCloud` object is essentially a wrapper around the `WordCloud` object of the [wordcloud](https://github.com/amueller/word_cloud) library, we have access to its parameters as well. This way, we can specify exactly what time of words we want to include in the statistics.
 
 ```python
 cloud = dm.MessageCloud(imessages)
@@ -103,7 +103,6 @@ cloud.generate()
 With the MessageCloud object, we can see which words were used the most frequently and how often.
 
 ```python
-# Determine the 5 most frequent words
 cloud.words.get_most_frequent(5)
 ```
 
