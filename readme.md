@@ -1,15 +1,14 @@
-<div align="center">
+<h1 align="center">
+<img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo"/>
+</h1>
 
-  <img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo"/>
-
-  <br>
-</div>
+<br>
 
 <p align="center">
     <strong>demesstify</strong> is a Python library that demystifies your messages and allows for easy analysis and visualization of conversations.
 </p>
 
-<hr/>
+<hr>
 
 ## Table of contents
 
