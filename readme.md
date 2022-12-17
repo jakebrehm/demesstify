@@ -1,14 +1,24 @@
-<h1 align="center">
-<img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo"/>
-</h1>
+<div align="center">
+<img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo" width="600"/>
 
 <br>
+<br>
+
+<h1>Demystify your messages.</h1>
+
+<br>
+
+<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge">
+<img alt="GitHub" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge">
+
+<br>
+</div>
+
+<hr>
 
 <p align="center">
     <strong>demesstify</strong> is a Python library that demystifies your messages and allows for easy analysis and visualization of conversations.
 </p>
-
-<hr>
 
 ## Table of contents
 
@@ -112,6 +122,7 @@ cloud.words.get_most_frequent(5)
 - Read messages directly from the iMessages chat.db
 - Add support for other message sources, such as Android or social media platforms
 - Add more interesting calculations and analyses
+- Incorporate sentiment analysis
 - Add unit tests
 - Make the package available on PyPI
 
