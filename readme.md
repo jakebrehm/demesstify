@@ -2,7 +2,6 @@
 <img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo" width="600"/>
 
 <br>
-<br>
 
 <h1>Demystify your messages.</h1>
 
