@@ -8,7 +8,8 @@
 <br>
 
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge">
-<img alt="GitHub" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge">
+<img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge">
+<img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-limegreen?style=for-the-badge&logo=python&logoColor=white">
 
 <br>
 </div>
