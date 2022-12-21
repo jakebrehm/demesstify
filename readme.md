@@ -1,5 +1,5 @@
 <div align="center">
-<img src="https://github.com/jakebrehm/demesstify/blob/master/img/logo.png" alt="Demesstify Logo" width="600"/>
+<img src="https://raw.githubusercontent.com/jakebrehm/demesstify/master/img/logo.png" alt="Demesstify Logo" width="600"/>
 
 <br>
 
@@ -9,6 +9,7 @@
 
 <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge">
 <img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge">
+<img alt="PyPI" src="https://img.shields.io/pypi/v/demesstify?color=blue&logo=pypi&logoColor=white&style=for-the-badge">
 <img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-limegreen?style=for-the-badge&logo=python&logoColor=white">
 
 <br>
@@ -31,13 +32,11 @@
 
 ## Installation
 
-<!-- *demesstify* can be installed via pip:
+*demesstify* can be installed via pip:
 
 ```
 pip install demesstify
 ```
-
-The source code can also be viewed on GitHub [here](https://github.com/jakebrehm/demesstify). -->
 
 The source code can be viewed on GitHub [here](https://github.com/jakebrehm/demesstify).
 

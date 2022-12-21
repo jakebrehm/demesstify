@@ -9,5 +9,10 @@ data/personal/
 docs/reminders/
 script/*
 
+# Package directories
+/build
+/dist
+*.egg-info/
+
 # Exceptions
 !script/generate_sample_texts.py
