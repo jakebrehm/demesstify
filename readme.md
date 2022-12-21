@@ -7,19 +7,19 @@
 
 <br>
 
-<img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge">
-<img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge">
-<img alt="PyPI" src="https://img.shields.io/pypi/v/demesstify?color=blue&logo=pypi&logoColor=white&style=for-the-badge">
-<img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-limegreen?style=for-the-badge&logo=python&logoColor=white">
+<a href="https://github.com/jakebrehm/demesstify"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge"></a>
+<a href="https://github.com/jakebrehm/demesstify/blob/master/license.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge"></a>
+<a href="https://pypi.org/project/demesstify/"><img alt="PyPI" src="https://img.shields.io/pypi/v/demesstify?color=blue&logo=pypi&logoColor=white&style=for-the-badge"></a>
+<a href="https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=&cad=rja&uact=8&ved=2ahUKEwjh4_Onzon8AhWVEVkFHdVmBfwQFnoECBYQAQ&url=https%3A%2F%2Fwww.python.org%2F&usg=AOvVaw0QREvGsjwHKp2GtoYvs1JH"><img alt="Made with Python" src="https://img.shields.io/badge/Made%20with-Python-limegreen?style=for-the-badge&logo=python&logoColor=white"></a>
 
 <br>
 </div>
 
-<hr>
-
 <p align="center">
     <strong>demesstify</strong> is a Python library that demystifies your messages and allows for easy analysis and visualization of conversations.
 </p>
+
+<hr>
 
 ## Table of contents
 
