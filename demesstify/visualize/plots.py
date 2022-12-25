@@ -8,6 +8,7 @@ Provides functionality for visualizing iMessage messages.
 
 from typing import List, Tuple, Union, Optional
 
+import calmap
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 import numpy as np
@@ -642,3 +643,52 @@ class StackedFrequencyBarChart(FrequencyBarChart):
                 f'{location} is not a valid value for legend_location. '
                 f'Valid values are: {self._VALID_LEGEND_LOCATIONS}'
             ))
+
+
+class CalendarHeatmap:
+    """
+    Class to create a calendar heatmap similar to Github's contributions plot.
+    """
+
+    def __init__(self,
+        imessages: parser.iMessages, whom: str='all',
+        year: Optional[int]=None, **kwargs,
+    ):
+        """Inits the CalendarHeatmap instance.
+        
+        For information on keyword arguments, please see the documentation
+        for the calmap library.
+        """
+
+        # Extract relevant data from iMessages object
+        self._imessages = imessages
+        if whom == 'all':
+            self._data = self._imessages.all.get()
+        elif whom == 'sender':
+            self._data = self._imessages.sent.get()
+        elif whom == 'recipient':
+            self._data = self._imessages.received.get()
+        else:
+            raise ValueError(f"'{whom}' is not a valid value for 'whom'.")
+        
+        # Group the data by date and get the frequency for each
+        grouped = self._data['message'].groupby([self._data.index.date]).count()
+
+        # Convert the grouped data into a series
+        events = pd.Series(grouped)
+        events.index = pd.to_datetime(events.index)
+
+        # Create the calendar heatmaps
+        if isinstance(year, int):
+            calmap.yearplot(events, year=year, **kwargs)
+        else:
+            # If no year is specified, plot all years
+            calmap.calendarplot(events, **kwargs)
+
+    def save(self, *args, **kwargs):
+        """Wrapper around plt.savefig()."""
+        plt.savefig(*args, **kwargs)
+    
+    def show(self):
+        """Wrapper around plt.show()."""
+        plt.show()

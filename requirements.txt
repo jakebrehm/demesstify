@@ -1,3 +1,4 @@
+calmap==0.0.9
 cycler==0.11.0
 emoji==2.2.0
 fonttools==4.35.0
