@@ -8,6 +8,7 @@ Provides functionality for interacting with the local iMessage database.
 
 import os
 import sqlite3
+from typing import Optional
 
 import pandas as pd
 
@@ -15,13 +16,18 @@ import pandas as pd
 class ChatDB:
     """Interacts with the local iMessage database."""
 
-    def __init__(self, db_location: str):
+    def __init__(self, db_location: Optional[str]=None):
         """Inits the ChatDB instance.
         
         The chat.db file is located in: ~/Library/Messages/chat.db
 
-        However, this file cannot be read unless it is copied and pasted
-        somewhere else.
+        However, this file cannot easily be read unless it is copied and
+        pasted somewhere else. It is advised to do this, and then pass the
+        new filepath as an argument.
+
+        A workaround to this is to provide full disk access to your terminal,
+        IDE, etc. in your system preferences. You will then be able to read the
+        database without having to copy and paste it.
         """
 
         # Use default database location if not specified

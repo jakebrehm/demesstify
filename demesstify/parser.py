@@ -229,12 +229,12 @@ class DataParser:
 
     def __init__(self,
         path: str=None,
-        source: str='Tansee',
+        source: str='iMessage DB',
         _random_kwargs: Dict[str, Any]=None,
     ):
         """Inits the DataParser object."""
 
-        if (path is None) and (source != 'Random'):
+        if (path is None) and (source not in ['Random', 'iMessage DB']):
             raise ValueError((
                 'A path is required for any source that is not a randomly '
                 'generated sample.'
@@ -251,7 +251,7 @@ class DataParser:
             self._transcript = iMessageCSVTranscript(self._path)
         elif source == 'iMessage DB':
             self._transcript = iMessageDBTranscript(
-                self._path, **_random_kwargs,
+                path=self._path, **_random_kwargs,
             )
         else:
             raise ValueError(f"'{source}' is not a valid message source.")
@@ -366,17 +366,12 @@ class iMessages:
 
     def __init__(self,
         path: Optional[str]=None,
-        source='Tansee',
+        source='iMessage DB',
         _random_kwargs: Optional[Dict[str, Any]]=None,
     ):
         """Inits the iMessages object."""
 
-        if (path is None) and (source != 'Random'):
-            raise ValueError((
-                'A path is required for any source that is not a randomly '
-                'generated sample.'
-            ))
-
+        # Store instance variables
         self._path = path
         self._source = source
 
@@ -520,6 +515,6 @@ class iMessages:
         return cls(path=path, source='iMessage CSV')
 
     @classmethod
-    def from_imessage_db(cls, path: str, **kwargs) -> 'iMessages':
+    def from_imessage_db(cls, path: Optional[str]=None, **kwargs) -> 'iMessages':
         """Inits an iMessages object using an iMessage CSV file."""
         return cls(path=path, source='iMessage DB', _random_kwargs=kwargs)
