@@ -9,12 +9,12 @@ Provides functionality for parsing and analyzing an iMessage conversation.
 import csv
 import re
 from datetime import datetime
-from typing import Any, List, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 import pandas as pd
 
-from . import emojis
-from . import reactions
+from . import database as db
+from . import emojis, reactions
 from .testing import messages
 
 
@@ -33,6 +33,7 @@ class TanseeTranscript:
     def __init__(self, path: str):
         """Inits the TanseeTranscript object."""
 
+        # Store instance variables
         self._path = path
 
         self._original = []
@@ -97,20 +98,13 @@ class TanseeTranscript:
 class iMessageCSVTranscript(TanseeTranscript):
     """"""
 
-    def __init__(
-        self, path: str, newline: str='\n', delimiter: str=',', 
-        date_column: int=0, is_from_me_column: int=1, text_column: int=2, 
-        includes_header: bool=True,
-    ):
-        """"""
+    def __init__(self, path: str, delimiter: str=',', header: bool=True):
+        """Inits the iMessageCSVTranscript instance."""
 
+        # Store instance variables
         self._path = path
-        self._newline = newline
         self._delimiter = delimiter
-        self._date_column = date_column
-        self._is_from_me_column = is_from_me_column
-        self._text_column = text_column
-        self._includes_header = includes_header
+        self._header = header
 
         self._original = []
         self._cleaned = []
@@ -122,14 +116,15 @@ class iMessageCSVTranscript(TanseeTranscript):
         reader = csv.reader(transcript.splitlines(), delimiter=self._delimiter)
         for r, row in enumerate(reader):
             joined_line = self._delimiter.join(row)
-            if self._includes_header and (r == 0):
+            if self._header and (r == 0):
                 self._original.append(joined_line)
                 continue
             self._original.append(joined_line)
             self._cleaned.append(row)
 
+        # Convert the cleaned lines to the standard readable format
         self._cleaned = self._convert_to_standard_format(self._cleaned)
-        
+
     def _convert_mactime_to_datetime(self, date: str) -> datetime:
         """Converts from Mac Absolute Time to a DateTime object.
         
@@ -158,11 +153,62 @@ class iMessageCSVTranscript(TanseeTranscript):
         return transcript
 
 
+class iMessageDBTranscript(iMessageCSVTranscript):
+    """Pulls information from iMessage database to generate a transcript."""
+
+    def __init__(self, 
+            path: str, delimiter: str=',', header: bool=True, **kwargs
+        ):
+        """Inits the ChatDBTranscript instance."""
+  
+        # Handle kwargs
+        valid_kwargs = ["handle_id", "phone", "email"]
+        for kwarg in kwargs:
+            if kwarg not in valid_kwargs:
+                raise ValueError(
+                    f"{kwarg} is an invalid keyword argument. "
+                    f"Valid arguments are: {valid_kwargs}"
+                )
+
+        # Store instance variables
+        self._path = path
+        self._delimiter = delimiter
+        self._header = header
+        self._handle_id = kwargs.get("handle_id", None)
+        self._phone = kwargs.get("phone", None)
+        self._email = kwargs.get("email", None)
+
+        self._original = []
+        self._cleaned = []
+
+        chatdb = db.chat.ChatDB(self._path)
+        if self._handle_id:
+            df = chatdb.get_from_handle_id(self._handle_id)
+        elif self._phone:
+            df = chatdb.get_from_phone(self._phone)
+        elif self._email:
+            df = chatdb.get_from_email(self._email)
+        transcript = df.to_csv(index=False)
+        transcript = self._remove_urls(transcript)
+
+        reader = csv.reader(transcript.splitlines(), delimiter=self._delimiter)
+        for r, row in enumerate(reader):
+            joined_line = self._delimiter.join(row)
+            if self._header and (r == 0):
+                self._original.append(joined_line)
+                continue
+            self._original.append(joined_line)
+            self._cleaned.append(row)
+
+        # Convert the cleaned lines to the standard readable format
+        self._cleaned = self._convert_to_standard_format(self._cleaned)      
+
+
 class GeneratedSampleText(TanseeTranscript):
-    """"""
+    """Generates a transcript from placeholder text."""
 
     def __init__(self, **kwargs):
-        """"""
+        """Inits the GeneratedSampleText instance."""
 
         text = messages.generate_sample_text(**kwargs)
 
@@ -203,6 +249,10 @@ class DataParser:
             self._transcript = GeneratedSampleText(**_random_kwargs)
         elif source == 'iMessage CSV':
             self._transcript = iMessageCSVTranscript(self._path)
+        elif source == 'iMessage DB':
+            self._transcript = iMessageDBTranscript(
+                self._path, **_random_kwargs,
+            )
         else:
             raise ValueError(f"'{source}' is not a valid message source.")
         self._data = self._parse(self._transcript)
@@ -468,3 +518,8 @@ class iMessages:
     def from_imessage_csv(cls, path: str) -> 'iMessages':
         """Inits an iMessages object using an iMessage CSV file."""
         return cls(path=path, source='iMessage CSV')
+
+    @classmethod
+    def from_imessage_db(cls, path: str, **kwargs) -> 'iMessages':
+        """Inits an iMessages object using an iMessage CSV file."""
+        return cls(path=path, source='iMessage DB', _random_kwargs=kwargs)
