@@ -8,7 +8,7 @@ README_PATH = os.path.join(THIS_DIRECTORY, "readme.md")
 with codecs.open(README_PATH, encoding="utf-8") as handle:
     long_description = "\n" + handle.read()
 
-VERSION = '0.0.03'
+VERSION = '1.0.0'
 DESCRIPTION = (
     '📱Demystifies your messages and allows for easy analysis '
     'and visualization of conversations.'

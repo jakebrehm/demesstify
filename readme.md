@@ -49,6 +49,7 @@ The source code can be viewed on GitHub [here](https://github.com/jakebrehm/deme
 | [pandas](https://github.com/pandas-dev/pandas)         | For easy manipulation of message data |
 | [matplotlib](https://github.com/matplotlib/matplotlib) | For visualizations                    |
 | [wordcloud](https://github.com/amueller/word_cloud)    | For creating wordclouds               |
+| [vaderSentiment](https://github.com/cjhutto/vaderSentiment)    | For sentiment analysis               |
 | [calmap](https://github.com/martijnvermaat/calmap)    | For creating calendar heatmaps               |
 | [emoji](https://github.com/carpedm20/emoji)            | For working with emojis               |
 | [lorem](https://github.com/sfischer13/python-lorem)    | For creating dummy text               |
@@ -121,7 +122,6 @@ cloud.words.get_most_frequent(5)
 - Add support for identifying attachments
 - Add support for other message sources, e.g. Android or social media platforms
 - Add more interesting calculations and analyses
-- Incorporate sentiment analysis
 - Add unit tests
 
 ## Authors
