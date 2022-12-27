@@ -3,7 +3,7 @@
 
 """
 Provides functionality for tracking and analyzing the reactions that occur in
-a given iMessage conversation.
+a given message conversation.
 """
 
 
@@ -12,7 +12,7 @@ from typing import List, Tuple, Dict, Optional, Union
 
 import pandas as pd
 
-from . import errors
+from .. import errors
 
 
 class Reaction:
@@ -92,12 +92,12 @@ class Reactions:
         'Questioned',
     ]
 
-    def __init__(self, messages: pd.DataFrame=None):
+    def __init__(self, data: pd.DataFrame=None):
         """Inits the Reactions object, with message data if specified."""
 
         self._reactions = self._create_reaction_objects()
-        if messages is not None:
-            self.update(messages)
+        if data is not None:
+            self.update(data)
     
     @property
     def names(self) -> List[str]:
@@ -173,7 +173,7 @@ class Reactions:
             reaction.set_messages(data)
 
     @staticmethod
-    def is_reaction(line: str) -> Tuple[Optional[str], str]:
+    def get_reaction(line: str) -> Tuple[Optional[str], str]:
         """Determines if the line is a reaction message.
         
         Returns a tuple in the form (reaction name, message reacted to).
@@ -185,10 +185,10 @@ class Reactions:
             # Determine if the line is a reaction message
             search = re.match(fr'^{name} \"(.*)\"$', line)
             if search:
-                # If so, return the reaction and the message being reacted to
-                return name, search.group(1)
-        # Otherwise, just return the original line
-        return None, line
+                # If so, return the name of the reaction
+                return name
+        # Otherwise, return None
+        return None
 
     def _create_reaction_objects(self) -> Dict[str, Reaction]:
         """Returns a dictionary of reaction objects."""

@@ -120,7 +120,7 @@ def generate_sample_text(
     end_date: Optional[datetime]=None,
     total_messages: Optional[int]=None,
 ):
-    """Generates a sample text file."""
+    """Generates a sample text file modeled after a Tansee text file."""
 
     if receiver_name is None:
         receiver_name = s.RECEIVER_NAME

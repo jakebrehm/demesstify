@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Contains custom errors for the 'iwordcloud' project.
+Contains custom errors.
 """
 
 

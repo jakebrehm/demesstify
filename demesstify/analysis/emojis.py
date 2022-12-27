@@ -3,7 +3,7 @@
 
 """
 Provides functionality for tracking and analyzing the emojis that appear in a
-given iMessage conversation.
+given message conversation.
 """
 
 
@@ -23,11 +23,11 @@ class Emoji:
             The name/representation of the emoji.
     """
 
-    def __init__(self, emoji: str, messages: pd.DataFrame):
+    def __init__(self, emoji: str, data: pd.DataFrame):
         """Inits the Emoji object."""
 
         self._emoji = emoji
-        self._messages = messages
+        self._data = data
 
     @property
     def name(self) -> str:
@@ -36,7 +36,7 @@ class Emoji:
 
     def get_all_messages(self) -> pd.DataFrame:
         """Gets all messages that contain the emoji."""
-        return self._messages
+        return self._data
     
     def get_sent_messages(self) -> pd.DataFrame:
         """Gets all messages from the sender that contain the emoji."""
@@ -72,7 +72,7 @@ class Emoji:
     def get_all_count(self) -> int:
         """Gets the number of occurrences of the emoji across all messages."""
 
-        return self._count_emojis(self._messages)
+        return self._count_emojis(self._data)
     
     def get_sent_count(self) -> int:
         """
@@ -112,12 +112,11 @@ class Emojis:
             List of emoji objects.
     """
 
-    def __init__(self, imessages: 'parser.iMessages'):
+    def __init__(self, data: pd.DataFrame):
         """"""
 
-        self._imessages = imessages
-
-        messages = self._imessages.get_all()
+        self._data = data
+        messages = '\n'.join(self._data['message'])
         self._unique_emojis = emoji.distinct_emoji_list(messages)
         self._emoji_objects = self._create_emoji_objects(self._unique_emojis)
         self._counts = self._count_emojis(self._emoji_objects)
@@ -176,11 +175,11 @@ class Emojis:
     def _create_emoji_objects(self, emojis: str) -> Dict[str, Emoji]:
         """Returns a dictionary of emoji objects."""
 
-        messages = self._imessages.data
+        messages = self._data
         emoji_objects = {}
         for emoji in emojis:
             df = messages[messages['message'].str.contains(emoji)]
-            emoji_object = Emoji(emoji, messages=df)
+            emoji_object = Emoji(emoji, data=df)
             emoji_objects[emoji] = emoji_object
         return emoji_objects
     

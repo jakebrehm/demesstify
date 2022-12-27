@@ -2,11 +2,11 @@
 # -*- coding: utf-8 -*-
 
 """
-Provides functionality for visualizing iMessage messages.
+Provides functionality for visualizing messages.
 """
 
 
-from typing import List, Tuple, Union, Optional
+from typing import List, Optional, Tuple, Union
 
 import calmap
 import matplotlib as mpl
@@ -14,8 +14,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from .. import parser
-from .. import emojis
+from .. import parse
+from ..analysis import emojis
 
 
 class WeekdayRadialHeatmap:
@@ -30,17 +30,17 @@ class WeekdayRadialHeatmap:
     _DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
              'Friday', 'Saturday']
 
-    def __init__(self, imessages: parser.iMessages, whom: str='all'):
+    def __init__(self, messages: parse.Messages, whom: str='all'):
         """Inits the WeekdayRadialHeatmap object."""
 
-        # Extract relevant data from iMessages object
-        self._imessages = imessages
+        # Extract relevant data from the Messages object
+        self._messages = messages
         if whom == 'all':
-            self._data = self._imessages.all.get()
+            self._data = self._messages.get_all()
         elif whom == 'sender':
-            self._data = self._imessages.sent.get()
+            self._data = self._messages.get_sent()
         elif whom == 'recipient':
-            self._data = self._imessages.received.get()
+            self._data = self._messages.get_received()
         else:
             raise ValueError(f"'{whom}' is not a valid value for 'whom'.")
         
@@ -210,7 +210,7 @@ class WeekdayRadialHeatmap:
 
     def _construct_frequency_matrix(self, data: pd.DataFrame) -> pd.DataFrame:
         """
-        Takes iMessages object data and converts it into a usable matrix form
+        Takes Messages object data and converts it into a usable matrix form
         which contains text message frequency information for each hour of
         each day of the week.
         """
@@ -651,7 +651,7 @@ class CalendarHeatmap:
     """
 
     def __init__(self,
-        imessages: parser.iMessages, whom: str='all',
+        messages: parse.Messages, whom: str='all',
         year: Optional[int]=None, **kwargs,
     ):
         """Inits the CalendarHeatmap instance.
@@ -660,14 +660,14 @@ class CalendarHeatmap:
         for the calmap library.
         """
 
-        # Extract relevant data from iMessages object
-        self._imessages = imessages
+        # Extract relevant data from the Messages object
+        self._messages = messages
         if whom == 'all':
-            self._data = self._imessages.all.get()
+            self._data = self._messages.get_all()
         elif whom == 'sender':
-            self._data = self._imessages.sent.get()
+            self._data = self._messages.get_sent()
         elif whom == 'recipient':
-            self._data = self._imessages.received.get()
+            self._data = self._messages.get_received()
         else:
             raise ValueError(f"'{whom}' is not a valid value for 'whom'.")
         

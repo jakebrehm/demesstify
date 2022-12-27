@@ -1,3 +1,2 @@
-from . import analysis, database, parser, testing, visualize
-from .parser import iMessages
-from .visualize.cloud import MessageCloud
+from . import analysis, database, testing, visualize
+from .parse import Messages

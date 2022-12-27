@@ -2,21 +2,20 @@
 # -*- coding: utf-8 -*-
 
 """
-Provides functionality for creating a WordCloud from an iMessage conversation,
+Provides functionality for creating a WordCloud from a message conversation,
 as well as functionality for further analyzing of the messages.
 """
 
 
 import collections
 import random
-from typing import Callable, List, Dict, Tuple, Set, Union
+from typing import Callable, Dict, List, Set, Tuple, Union
 
 import numpy as np
 from PIL import Image
-from wordcloud import WordCloud, STOPWORDS, ImageColorGenerator
+from wordcloud import STOPWORDS, ImageColorGenerator, WordCloud
 
-from .. import errors
-from .. import parser
+from .. import errors, parse
 
 
 def requires_cloud(method):
@@ -46,7 +45,7 @@ class MessageCloud(WordCloud):
             The custom mask that is used when generating the WordCloud.
     """
 
-    def __init__(self, messages: Union[str, parser.iMessages]=None):
+    def __init__(self, messages: Union[str, parse.Messages]=None):
         """Inits the MessageCloud instance, optionally with messages."""
 
         # Store the messages, or raise an exception is class is invalid
@@ -87,13 +86,13 @@ class MessageCloud(WordCloud):
         else:
             raise ValueError(f'{type(value)} is not a valid type for a mask.')
 
-    def feed_messages(self, messages: Union[str, parser.iMessages]):
+    def feed_messages(self, messages: Union[str, parse.Messages]):
         """Analyzes and stores the given messages as a class variable."""
 
         if isinstance(messages, str):
             with open(messages, 'r') as text:
                 self._messages = text.read()
-        elif isinstance(messages, parser.iMessages):
+        elif isinstance(messages, parse.Messages):
             self._messages = messages.get_all()
         else:
             raise errors.MessageArgumentError(type(messages))
