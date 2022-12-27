@@ -24,7 +24,7 @@ class Sentiment(SentimentIntensityAnalyzer):
         # Store instance variables
         self._data = data
     
-    def get_average_sentiment(self):
+    def get_average_sentiment(self) -> float:
         """Gets the average sentiment of the data."""
         
         # Generate pandas series of compound polarity scores
@@ -35,4 +35,4 @@ class Sentiment(SentimentIntensityAnalyzer):
         )
 
         # Return the average polarity
-        return polarities.mean()
+        return polarities.mean().item()

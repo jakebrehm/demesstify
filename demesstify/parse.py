@@ -23,7 +23,7 @@ from .testing import messages
 def remove_urls(line: str) -> str:
     """Removes URLs from a given string."""
 
-    reacts = reactions.Reactions._REACTIONS
+    reacts = reactions.get_reaction_names()
     reactions_string = '|'.join(reacts)
 
     url_expression = (
@@ -420,6 +420,22 @@ class Messages:
         """Gets the main dataframe filtered by received messages."""
         return self._data[self._data['is_sender'] == 0]
 
+    def as_string(self, 
+            which: Union[str, Direction]=Direction.ALL,
+            include_reactions: bool=False,
+        ) -> str:
+        """Gets the message data as a string, separated by new lines."""
+        
+        # Get the appropriately filtered data
+        data = self.get(which=which)
+
+        # Remove reactions if specified
+        if not include_reactions:
+            data = self._remove_reactions(data)
+
+        # Return the message string
+        return '\n'.join(data['message'])
+
     def trim(self, start: str, end: str, replace: bool=True) -> pd.DataFrame:
         """
         Trims the data to messages sent between a specified time interval.
@@ -435,3 +451,7 @@ class Messages:
         if replace:
             self._data = trimmed
         return trimmed
+
+    def _remove_reactions(self, data: pd.DataFrame) -> pd.DataFrame:
+        """Filters out reactions from a message dataframe."""
+        return data[data['reaction'].isnull()]

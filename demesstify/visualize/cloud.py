@@ -48,7 +48,7 @@ class MessageCloud(WordCloud):
     def __init__(self, messages: Union[str, parse.Messages]=None):
         """Inits the MessageCloud instance, optionally with messages."""
 
-        # Store the messages, or raise an exception is class is invalid
+        # Store the messages, or raise an exception if class is invalid
         if messages is None:
             self._messages = None
         else:
@@ -93,7 +93,8 @@ class MessageCloud(WordCloud):
             with open(messages, 'r') as text:
                 self._messages = text.read()
         elif isinstance(messages, parse.Messages):
-            self._messages = messages.get_all()
+            self._messages = messages.as_string()
+            # TODO rework to allow for directional data
         else:
             raise errors.MessageArgumentError(type(messages))
 

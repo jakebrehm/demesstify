@@ -8,7 +8,7 @@ given message conversation.
 
 
 import collections
-from typing import List, Dict, Tuple, Union
+from typing import Dict, List, Tuple, Union
 
 import emoji
 import pandas as pd
@@ -24,14 +24,15 @@ class Emoji:
     """
 
     def __init__(self, emoji: str, data: pd.DataFrame):
-        """Inits the Emoji object."""
+        """Initializes the Emoji object."""
 
+        # Store instance variables
         self._emoji = emoji
         self._data = data
 
     @property
     def name(self) -> str:
-        """Returns the name/representation of the emoji."""
+        """Gets the name/representation of the emoji."""
         return self._emoji
 
     def get_all_messages(self) -> pd.DataFrame:
@@ -113,49 +114,52 @@ class Emojis:
     """
 
     def __init__(self, data: pd.DataFrame):
-        """"""
+        """Initializes the Emojis object."""
 
+        # Store instance variables
         self._data = data
-        messages = '\n'.join(self._data['message'])
+
+        # Initialize calculated instance variables
+        messages = '\n'.join(self._data['message']) # TODO easier way?
         self._unique_emojis = emoji.distinct_emoji_list(messages)
         self._emoji_objects = self._create_emoji_objects(self._unique_emojis)
         self._counts = self._count_emojis(self._emoji_objects)
 
     @property
     def uniques(self) -> List[str]:
-        """Returns a list of unique emojis that were found in the messages."""
+        """Gets a list of unique emojis that were found in the messages."""
         return self.get_uniques()
     
     @property
     def emojis(self) -> List[Emoji]:
-        """Returns a list of emoji objects."""
+        """Gets a list of emoji objects."""
         return list(self._emoji_objects.values())
 
     @property
     def emoji_objects(self) -> Dict[str, Emoji]:
-        """Returns a dictionary of emoji objects."""
+        """Gets a dictionary of emoji objects."""
         return self._emoji_objects
     
     def get_emoji_object(self, emoji: str) -> Emoji:
-        """Returns the associated emoji object for an emoji."""
+        """Gets the associated emoji object for an emoji."""
         return self.emoji_objects[emoji]
 
     def get_uniques(self) -> List[str]:
-        """Returns a list of unique emojis that were found in the messages."""
+        """Gets a list of unique emojis that were found in the messages."""
         return self._unique_emojis
     
     def get_count(self, emoji: str) -> int:
-        """Returns the number of times the specified emoji appeared."""
+        """Gets the number of times the specified emoji appeared."""
         return self._counts[emoji]
 
     def get_counts(self) -> Dict[str, int]:
-        """Returns the dictionary of emojis and their counts."""
+        """Gets the dictionary of emojis and their counts."""
         return self._counts
 
     def get_most_frequent(self,
             n: int, return_objects: bool=False
         ) -> List[Tuple[Union[str, Emoji], int]]:
-        """Returns the n most frequent emojis as a list of tuples."""
+        """Gets the n most frequent emojis as a list of tuples."""
 
         counter = collections.Counter(self.get_counts())
         most_common = counter.most_common(n)
@@ -173,7 +177,7 @@ class Emojis:
         return counts
 
     def _create_emoji_objects(self, emojis: str) -> Dict[str, Emoji]:
-        """Returns a dictionary of emoji objects."""
+        """Gets a dictionary of emoji objects."""
 
         messages = self._data
         emoji_objects = {}
@@ -184,5 +188,5 @@ class Emojis:
         return emoji_objects
     
     def __getitem__(self, emoji: str) -> Emoji:
-        """Returns the emoji object with the specified name."""
+        """Gets the emoji object with the specified name."""
         return self._emoji_objects[emoji]

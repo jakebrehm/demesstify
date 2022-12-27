@@ -14,7 +14,12 @@ import pandas as pd
 
 
 class ChatDB:
-    """Interacts with the local iMessage database."""
+    """Interacts with the local iMessage database.
+    
+    Properties:
+        db_location:
+            The filepath to the local iMessage database.
+    """
 
     def __init__(self, db_location: Optional[str]=None):
         """Inits the ChatDB instance.

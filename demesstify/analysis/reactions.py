@@ -8,11 +8,26 @@ a given message conversation.
 
 
 import re
-from typing import List, Tuple, Dict, Optional, Union
+from typing import Optional, Union
 
 import pandas as pd
 
 from .. import errors
+
+
+REACTION_NAMES = [
+    'Liked',
+    'Disliked',
+    'Loved',
+    'Laughed at',
+    'Emphasized',
+    'Questioned',
+]
+
+
+def get_reaction_names() -> list[str]:
+    """Gets the list of possible reaction names."""
+    return REACTION_NAMES
 
 
 class Reaction:
@@ -26,106 +41,77 @@ class Reaction:
     """
 
     def __init__(self, name: str):
-        """Inits the Reaction object.
-        
-        Args:
-            name:
-                The name of the reaction.
-        """
+        """Inititalizes the Reaction object."""
 
+        # Store instance variables
         self._name = name
-        self._messages = pd.DataFrame()
+
+        # Initialize the data dataframe
+        self._data = pd.DataFrame()
 
     @property
     def name(self) -> str:
-        """Returns the name of the reaction."""
+        """Gets the name of the reaction."""
         return self.get_name()
 
     @property
     def messages(self) -> pd.DataFrame:
-        """Returns the messages dataframe."""
+        """Gets the messages dataframe."""
         return self.get_messages()
 
     def get_name(self) -> str:
-        """Returns the name of the reaction."""
+        """Gets the name of the reaction."""
         return self._name
 
     def get_messages(self) -> pd.DataFrame:
-        """Returns the messages dataframe."""
-        return self._messages
+        """Gets the messages dataframe."""
+        return self._data
     
     def set_messages(self, messages: pd.DataFrame):
-        """Sets or overwrites the messages dataframe."""
-        self._messages = messages
+        """Sets the messages dataframe."""
+        self._data = messages
 
     def append_messages(self, new_messages: pd.DataFrame):
-        """Appends a new messages dataframe to the existing dataframe.
-        
-        Args:
-            new_messages:
-                The new messages dataframe to append.
-        """
-        
-        self._messages = pd.concat([self._messages, new_messages])
+        """Appends a new messages dataframe to the existing dataframe."""
+        self._data = pd.concat([self._data, new_messages])
     
     def get_count(self) -> int:
-        """Returns the number of times the reaction has appeared."""
-        return len(self._messages)
+        """Gets the number of times the reaction has appeared."""
+        return len(self._data)
 
 
 class Reactions:
     """Collection of Reaction objects.
     
     Properties:
-        names:
-            List of reaction names.
         reactions:
             List of reaction objects.
     """
 
-    _REACTIONS = [
-        'Liked',
-        'Disliked',
-        'Loved',
-        'Laughed at',
-        'Emphasized',
-        'Questioned',
-    ]
-
     def __init__(self, data: pd.DataFrame=None):
-        """Inits the Reactions object, with message data if specified."""
+        """Initializes the Reactions object, with message data if specified."""
 
+        # Create reaction objects
         self._reactions = self._create_reaction_objects()
+
+        # Update the stored data
         if data is not None:
             self.update(data)
-    
-    @property
-    def names(self) -> List[str]:
-        """Returns a list of reaction names."""
-        return self.get_reaction_names()
 
     @property
-    def reactions(self) -> List[Reaction]:
+    def reactions(self) -> list[Reaction]:
         """Returns a list of reaction objects."""
         return self.get_reaction_objects()
 
-    def get_reaction_names(self) -> List[str]:
-        """Returns a list of reaction names."""
-        return self._REACTIONS
-
-    def get_reaction_objects(self) -> List[Reaction]:
+    def get_reaction_objects(self) -> list[Reaction]:
         """Returns a list of reaction objects."""
         return list(self._reactions.values())
 
-    def get_count(self, name: str=None) -> Union[Dict[str, int], int]:
+    def get_count(self, name: str=None) -> Union[dict[str, int], int]:
         """
-        Returns the count of the specified reaction, or a dictionary of
+        Gets the count of the specified reaction, or a dictionary of
         reactions and their corresponding counts if no reaction name is
         specified.
-
-        Args:
-            name:
-                The name of the reaction to return the count of.
         """
 
         if not name:
@@ -133,22 +119,17 @@ class Reactions:
             return self._get_counts()
         else:
             # Otherwise, check if the specified name is valid
-            if name in self.names:
+            if name in REACTION_NAMES:
                 # If it is, return the count of the specified reaction
                 return self[name].get_count()
             else:
                 # Otherwise, raise an exception
-                raise errors.ReactionNameError(name, self.names)
+                raise errors.ReactionNameError(name, REACTION_NAMES)
 
-    def get_messages(self, name: str=None) -> Union[List[str], pd.DataFrame]:
+    def get_messages(self, name: str=None) -> pd.DataFrame:
         """
-        Returns the messages of the specified reaction, or a dictionary of
-        reactions and their corresponding messages if no reaction name is
-        specified.
-
-        Args:
-            name:
-                The name of the reaction to return the count of.
+        Gets a dataframe filtered by the specified reaction name, or all 
+        reaction names if no name is given.
         """
         
         if not name:
@@ -159,29 +140,24 @@ class Reactions:
             return messages
         else:
             # If it is, return the messages of the specified reaction
-            if name in self.names:
+            if name in REACTION_NAMES:
                 return self[name].get_messages()
             else:
                 # Otherwise, raise an exception
-                raise errors.ReactionNameError(name, self.names)
+                raise errors.ReactionNameError(name, REACTION_NAMES)
 
     def update(self, dataframe: pd.DataFrame):
-        """Adds messages to each reaction object from the supplied dataframe."""
+        """Adds messages from the supplied dataframe to each reaction object."""
 
         for reaction in self:
             data = dataframe[dataframe['reaction'] == reaction.name]
             reaction.set_messages(data)
 
     @staticmethod
-    def get_reaction(line: str) -> Tuple[Optional[str], str]:
-        """Determines if the line is a reaction message.
-        
-        Returns a tuple in the form (reaction name, message reacted to).
-        However, if the line is determined to not be a reaction message,
-        the reaction name will be None.
-        """
+    def get_reaction(line: str) -> Optional[str]:
+        """Gets the name of the reaction if there is one."""
 
-        for name in Reactions._REACTIONS:
+        for name in REACTION_NAMES:
             # Determine if the line is a reaction message
             search = re.match(fr'^{name} \"(.*)\"$', line)
             if search:
@@ -190,11 +166,11 @@ class Reactions:
         # Otherwise, return None
         return None
 
-    def _create_reaction_objects(self) -> Dict[str, Reaction]:
+    def _create_reaction_objects(self) -> dict[str, Reaction]:
         """Returns a dictionary of reaction objects."""
-        return {name: Reaction(name) for name in self._REACTIONS}
+        return {name: Reaction(name) for name in REACTION_NAMES}
     
-    def _get_counts(self) -> Dict[str, int]:
+    def _get_counts(self) -> dict[str, int]:
         """Returns a dictionary of reactions and their corresponding counts."""
         return {name: r.get_count() for name, r in self._reactions.items()}
 
@@ -211,14 +187,12 @@ class ReactionsIterable:
     """An iterable reactions object."""
 
     def __init__(self, reactions: Reactions):
-        """Inits the ReactionsIterable object.
-        
-        args:
-            reactions:
-                List of reaction objects to iterate over.
-        """
+        """Initializes the ReactionsIterable object."""
 
+        # Store instance variables
         self._reactions = reactions
+
+        # Initialize calculated instance variables
         self._number_of_reactions = len(self._reactions)
         self._current_index = 0
     
