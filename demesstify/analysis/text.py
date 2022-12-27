@@ -7,43 +7,94 @@ a given message conversation.
 """
 
 
+from datetime import datetime
+
 import pandas as pd
 
 
 class Text:
-    """Generates uses calculations about given message data."""
+    """Generates useful calculations about given message data."""
 
     def __init__(self, data: pd.DataFrame):
-        """Inits the Messages object with message data."""
+        """Initializes the Messages object with message data."""
 
+        # Store instance variables
         self._data = data
     
     def get_total(self) -> float:
-        """Returns the total number of messages exchanged."""
+        """Calculates the total number of messages exchanged."""
         return len(self._data['message'])
 
     def get_average_length(self) -> float:
-        """Returns the average length of individual messages."""
+        """Calculates the average length of individual messages."""
         return self._data['message'].str.len().mean()
     
     def get_least_per_day(self) -> float:
-        """Returns the least number of texts exchanged in a day."""
+        """Calculates the least number of texts exchanged in a day."""
         grouped = self._data['message'].groupby(self._data.index.date)
         return grouped.count().min()
     
     def get_most_per_day(self) -> float:
-        """Returns the greatest number of texts exchanged in a day."""
+        """Calculates the greatest number of texts exchanged in a day."""
         grouped = self._data['message'].groupby(self._data.index.date)
         return grouped.count().max()
     
     def get_average_per_day(self) -> float:
-        """Returns the average number of texts exchanged in a day."""
+        """Calculates the average number of texts exchanged in a day."""
         grouped = self._data['message'].groupby(self._data.index.date)
         return grouped.count().mean()
     
-    def get_count_of_word(self, word: str) -> int:
-        """Returns the number of occurrences of a word.
+    def get_count_of_substring(self, substring: str) -> int:
+        """Calculates the number of occurrences of a substring."""
+        return self._data['message'].str.count(substring).sum()
+    
+    def get_days_since_first_message(self, ceiling: bool=True) -> int:
+        """Calculates the number of days since the first message.
         
-        Note that this function also matches substrings (parts of a word).
+        By default, this method will round the number of days up by taking the
+        ceiling of the Timedelta object. If this is not desired, set the 
+        ceiling parameter to False.
         """
-        return self._data['message'].str.count(word).sum()
+        
+        # Get the datetimes of the first and last messages
+        first = self._data.first_valid_index()
+        last = self._data.last_valid_index()
+        # Return the number of days between these two datetimes
+        return (last - first).ceil('D').days if ceiling else (last - first).days
+    
+    def get_count_of_days_with_messages(self) -> int:
+        """Calculates the number of days where messages were exchanged."""
+        return self.get_days_since_first_message() - self.get_count_of_days_without_messages()
+    
+    def get_count_of_days_without_messages(self) -> int:
+        """Calculates the number of days where no messages were exchanged."""
+        
+        # Get the dates of the first and last messages
+        first = self._data.first_valid_index().date()
+        last = self._data.last_valid_index().date()
+        # Find the missing dates by comparing time range to index
+        dates_with_messages = self._data.index.date
+        all_dates = pd.date_range(start=first, end=last)
+        # Return the number of days where messages were not exchanged
+        return len(all_dates.difference(dates_with_messages))
+    
+    def get_most_consecutive(self) -> int:
+        """Calculates the most messages exchanged unidirectionally in a row.
+        
+        This method only works when the data includes all messages, i.e.
+        is not filtered by directionality.
+        """
+
+        # Get a local reference to the data
+        df = self._data
+        # Shift the dataframe by one to see where directionality changes
+        direction_change = df['is_sender'].ne(df['is_sender'].shift())
+        # Cumulative sum splits into blocks because False evaluates to 0
+        blocks = direction_change.cumsum()
+        # Group each block and extract the desired columns
+        grouped = df.groupby(blocks)['is_sender']
+        # Get the counts of each group
+        counts = grouped.transform('size')
+
+        # Return the max count
+        return max(counts)
