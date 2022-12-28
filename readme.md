@@ -10,7 +10,7 @@
 <a href="https://github.com/jakebrehm/demesstify"><img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/jakebrehm/demesstify?color=blue&logo=Git&logoColor=white&style=for-the-badge"></a>
 <a href="https://github.com/jakebrehm/demesstify/blob/master/license.txt"><img alt="GitHub license" src="https://img.shields.io/github/license/jakebrehm/demesstify?color=limegreen&style=for-the-badge"></a>
 <a href="https://pypi.org/project/demesstify/"><img alt="PyPI Page" src="https://img.shields.io/pypi/v/demesstify?color=blue&logo=pypi&logoColor=white&style=for-the-badge"></a>
-<a href="https://pypi.org/project/demesstify/"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/demesstify?color=limegreen&logo=pypi&logoColor=white&style=for-the-badge"></a>
+<a href="https://pypistats.org/packages/demesstify"><img alt="PyPI Downloads" src="https://img.shields.io/pypi/dm/demesstify?color=limegreen&logo=pypi&logoColor=white&style=for-the-badge"></a>
 
 <br>
 </div>
