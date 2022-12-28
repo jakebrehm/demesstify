@@ -39,7 +39,8 @@ Here are just a few things that `demesstify` can do:
 * Perform text analysis on your messages so you can see things like the average number of texts received per day or the most number of messages that were sent in a row
 * Analyze which emojis or reactions (if you're using iMessage) were most frequently used, among other thing
 * Perform sentiment analysis on your messages to see the polarity of your conversations
-* Generate tailored visualizations such as word clouds or a radial heatmap that plots hour of the day versus day of the week
+* Calculate statistics about the attachments you exchanged (if you're using iMessage)
+* Generate tailored visualizations such as word clouds or a radial heatmap that plots hour of the day against day of the week
 
 ## Installation
 
@@ -118,7 +119,7 @@ wordcloud.save('wordcloud.png')
 
 ## Future improvements
 
-- Add support for identifying attachments
+- Add support for reading the entire local iMessage database instead of just one conversation
 - Add support for other message sources, e.g. Android or social media platforms
 - Add unit tests
 
