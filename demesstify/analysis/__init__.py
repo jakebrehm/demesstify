@@ -1,1 +1,1 @@
-from . import emojis, reactions, sentiment, text
+from . import attachments, emojis, reactions, sentiment, text

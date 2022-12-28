@@ -2,19 +2,20 @@
 # -*- coding: utf-8 -*-
 
 """
-Provides functionality for interacting with the local iMessage database.
+Provides functionality for interacting with and extracting messages from
+the local iMessage database.
 """
 
 
 import os
 import sqlite3
-from typing import Optional
+from typing import Any, Optional
 
 import pandas as pd
 
 
 class ChatDB:
-    """Interacts with the local iMessage database.
+    """Interacts with the local iMessage database to get messages.
     
     Properties:
         db_location:
@@ -41,17 +42,14 @@ class ChatDB:
         # Store the database location as an instance variable
         self._db_location = db_location
     
-    def get_from_handle_id(self, handle_id: int) -> pd.DataFrame:
+    def get_messages_from_handle_id(self, handle_id: int) -> pd.DataFrame:
         """
-        Returns the dataframe of all messages with a user that has the
+        Gets the dataframe of all messages with a user that has the
         specified handle ID.
 
         The handle ID would come from prior knowledge or from deducing it
         by viewing the database directly.
         """
-
-        # Open the connection to the database
-        connection = sqlite3.connect(self.db_location)
 
         # Query the database
         query = f"""
@@ -60,17 +58,11 @@ class ChatDB:
             WHERE handle_id=?
             ORDER BY date;
         """
-        df = pd.read_sql_query(query, connection, params=(handle_id,))
+        return self.read_sql_query(query, params=(handle_id,))
 
-        # Close the database connection
-        connection.close()
-
-        # Return the dataframe
-        return df
-    
-    def get_from_phone(self, phone: str) -> pd.DataFrame:
+    def get_messages_from_phone(self, phone: str) -> pd.DataFrame:
         """
-        Returns the dataframe of all messages with a user that has the
+        Gets the dataframe of all messages with a user that has the
         specified phone number.
         """
 
@@ -79,32 +71,102 @@ class ChatDB:
             phone = f"%{phone}"
 
         # Return the resulting dataframe
-        return self._get_from_id(phone)
+        return self._get_messages_from_id(phone)
     
-    def get_from_email(self, email: str) -> pd.DataFrame:
+    def get_messages_from_email(self, email: str) -> pd.DataFrame:
         """
-        Returns the dataframe of all messages with a user that has the
+        Gets the dataframe of all messages with a user that has the
         specified email.
         """
 
         # Return the resulting dataframe
-        return self._get_from_id(email)
+        return self._get_messages_from_id(email)
+
+    def get_attachments_from_handle_id(self, handle_id: int) -> pd.DataFrame:
+        """
+        Gets the dataframe of all attachments in a conversation with a user
+        that has the specified handle ID.
+
+        The handle ID would come from prior knowledge or from deducing it
+        by viewing the database directly.
+        """
+
+        # Query the database
+        query = f"""
+            SELECT message.date, message.text, message.is_from_me AS is_sender,
+                attachment.filename, attachment.transfer_name
+            FROM message_attachment_join
+            INNER JOIN message
+                ON message_attachment_join.message_id=message.ROWID
+            INNER JOIN attachment
+                ON message_attachment_join.attachment_id=attachment.ROWID
+            WHERE message.handle_id LIKE ?
+            ORDER BY message.date;
+        """
+        return self.read_sql_query(query, params=(handle_id,))
+
+    def get_attachments_from_phone(self, phone: str) -> pd.DataFrame:
+        """
+        Gets the dataframe of all attachments in a conversation with a user
+        that has the specified phone number.
+        """
+
+        # Account for the possibility of a plus sign
+        if phone[0] != "+":
+            phone = f"%{phone}"
+
+        # Return the resulting dataframe
+        return self._get_attachments_from_id(phone)
     
-    def _get_from_id(self, id_: str) -> pd.DataFrame:
-        """Returns a dataframe of all messages with the specified user."""
+    def get_attachments_from_email(self, email: str) -> pd.DataFrame:
+        """
+        Gets the dataframe of all attachments in a conversation with a user
+        that has the specified email.
+        """
+
+        # Return the resulting dataframe
+        return self._get_attachments_from_id(email)
+
+    def _get_messages_from_id(self, id_: str) -> pd.DataFrame:
+        """Gets a dataframe of all messages with the specified user."""
+
+        # Query the database
+        query = """
+            SELECT message.date, message.is_from_me, message.text
+            FROM message
+            INNER JOIN handle ON message.handle_id=handle.ROWID
+            WHERE handle.id LIKE ?
+            ORDER BY message.date;
+        """
+        return self.read_sql_query(query, params=(id_,))
+
+    def _get_attachments_from_id(self, id_: str) -> pd.DataFrame:
+        """"""
+
+        # Query the database
+        query = """
+            SELECT message.date, message.text, message.is_from_me AS is_sender,
+                attachment.filename, attachment.transfer_name
+            FROM message_attachment_join
+            INNER JOIN message
+                ON message_attachment_join.message_id=message.ROWID
+            INNER JOIN attachment
+                ON message_attachment_join.attachment_id=attachment.ROWID
+            INNER JOIN handle
+                ON message.handle_id=handle.ROWID
+            WHERE handle.id LIKE ?
+            ORDER BY message.date;
+        """
+        return self.read_sql_query(query, params=(id_,))
+
+    def read_sql_query(self, query: str, params: Optional[Any]=None) -> pd.DataFrame:
+        """Queries with database with a specified SQL command."""
 
         # Open the connection to the database
         connection = sqlite3.connect(self.db_location)
 
         # Query the database
-        query = f"""
-            SELECT message.date, message.is_from_me, message.text
-            FROM message
-            INNER JOIN handle ON message.handle_id=handle.ROWID
-            WHERE handle.id LIKE ?
-            ORDER BY date;
-        """
-        df = pd.read_sql_query(query, connection, params=(id_,))
+        df = pd.read_sql_query(query, connection, params=params)
 
         # Close the database connection
         connection.close()
@@ -113,11 +175,11 @@ class ChatDB:
         return df
 
     @property
-    def db_location(self) -> str:
+    def db_location(self) -> Optional[str]:
         """Gets the location of the iMessage database."""
         return self._db_location
     
     @db_location.setter
-    def db_location(self, value: str):
+    def db_location(self, value: Optional[str]):
         """Sets the location of the iMessage database."""
         self._db_location = value

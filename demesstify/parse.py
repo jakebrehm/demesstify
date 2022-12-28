@@ -16,67 +16,9 @@ from typing import Any, Optional, Union
 import pandas as pd
 
 from . import database as db
+from . import clean
 from .analysis import reactions
 from .testing import messages
-
-
-def remove_urls(line: str) -> str:
-    """Removes URLs from a given string."""
-
-    reacts = reactions.get_reaction_names()
-    reactions_string = '|'.join(reacts)
-
-    url_expression = (
-        r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)"
-        r"(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s("
-        r")<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
-    )
-    url_reaction_expression = fr"({reactions_string}) \"{url_expression}\""
-    if re.match(url_reaction_expression, line):
-        return line
-    line = re.sub(url_expression, '', line)
-    return line
-
-
-def clean_line(line: str) -> str:
-    """Performs some cleaning operations on a string/line."""
-
-    line = line.replace('￼', '')    # Remove empty space
-    line = line.replace('“', '"')   # Replace quotes
-    line = line.replace('”', '"')   # Replace quotes
-    line = line.replace('’', "'")   # Replace quotes
-    line = line.replace('�', '')    # Remove iMessage games
-    line = line.replace('…', '...') # Replace unicode ellipses
-    line = line.strip()
-    return line
-
-
-def to_blocks(lines: list[str], regex: str, dead_lines: int=0):
-    """Splits a list into sublists.
-    
-    Will split wherever an element matches the specified regex expression.
-
-    dead_lines are the number of lines at the end of each sublist to toss away.
-    """
-
-    # Determine where each block starts and ends
-    block_starts = [i for i, line in enumerate(lines) if re.match(regex, line)]
-    block_ends = block_starts[1:] + [len(lines)]
-
-    # Split into blocks and return
-    return [lines[i:j-dead_lines] for i, j in zip(block_starts, block_ends)]
-
-
-def convert_mactime_to_datetime(date: str) -> datetime:
-    """Converts from Mac Absolute Time to a DateTime object.
-    
-    MacTime represents the number of nanoseconds since 01/01/2001
-    instead of seconds since 01/01/1970 (which is typical practice).
-    """
-
-    # Convert to seconds and add 31 years
-    converted = (int(date)/1e9) + 978307200
-    return datetime.fromtimestamp(converted)
 
 
 class Direction(Enum):
@@ -161,10 +103,10 @@ class Tansee(Parser):
         """Cleans the input text and separates into lines."""
 
         # Remove URLs from the text - done first to be more efficient
-        text = remove_urls(text)
+        text = clean.remove_urls(text)
 
         # Clean the rest of the text line-by-line
-        cleaned = [clean_line(line) for line in text.splitlines()]
+        cleaned = [clean.clean_line(line) for line in text.splitlines()]
 
         # Return the cleaned text
         return cleaned
@@ -177,7 +119,7 @@ class Tansee(Parser):
         """
         
         # Convert the given lines into message blocks
-        blocks = to_blocks(lines, self._BLOCK_EXPRESSION, dead_lines=1)
+        blocks = clean.to_blocks(lines, self._BLOCK_EXPRESSION, dead_lines=1)
         headers, messages = zip(*blocks)
         
         # Extract information from the headers of each block
@@ -262,7 +204,7 @@ class iMessageCSV(Parser):
         """Cleans the input csv text and separates into lines."""
 
         # Remove URLs from the text - done first to be more efficient
-        text = remove_urls(text)
+        text = clean.remove_urls(text)
 
         # Split the text by line and create a csv reader object
         lines = text.splitlines()[1:] # ignore the header
@@ -271,9 +213,9 @@ class iMessageCSV(Parser):
         # Clean each row of the csv file
         cleaned = []
         for r, (datetime, is_sender, message) in enumerate(reader):
-            datetime = convert_mactime_to_datetime(datetime)
+            datetime = clean.convert_mactime_to_datetime(datetime)
             is_sender = self._to_sender_bool(is_sender)
-            cleaned.append([datetime, is_sender, clean_line(message)])
+            cleaned.append([datetime, is_sender, clean.clean_line(message)])
 
         # Return the cleaned text
         return cleaned
@@ -341,11 +283,11 @@ class iMessageDB(iMessageCSV):
         # Query the database depending on what parameters were provided
         chatdb = db.chat.ChatDB(self._path)
         if self._handle_id:
-            df = chatdb.get_from_handle_id(self._handle_id)
+            df = chatdb.get_messages_from_handle_id(self._handle_id)
         elif self._phone:
-            df = chatdb.get_from_phone(self._phone)
+            df = chatdb.get_messages_from_phone(self._phone)
         elif self._email:
-            df = chatdb.get_from_email(self._email)
+            df = chatdb.get_messages_from_email(self._email)
         
         # Return the csv string
         return df.to_csv(index=False)
@@ -419,15 +361,15 @@ class Messages:
         elif which == Direction.RECEIVED:
             return self.get_received()
     
-    def get_all(self):
+    def get_all(self) -> pd.DataFrame:
         """Gets the unfiltered main dataframe."""
         return self._data
     
-    def get_sent(self):
+    def get_sent(self) -> pd.DataFrame:
         """Gets the main dataframe filtered by sent messages."""
         return self._data[self._data['is_sender'] == 1]
     
-    def get_received(self):
+    def get_received(self) -> pd.DataFrame:
         """Gets the main dataframe filtered by received messages."""
         return self._data[self._data['is_sender'] == 0]
 
