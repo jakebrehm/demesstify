@@ -213,16 +213,14 @@ class WeekdayRadialHeatmap:
         ).count()
         
         # Create a dataframe from the grouped data
-        matrix = pd.DataFrame({day: grouped[day] for day in self._DAYS})
+        matrix = pd.DataFrame({day: grouped.get(day) for day in self._DAYS})
 
         # Fill in missing values in the dataframe
-        new_index = list(range(matrix.index.min()+1, matrix.index.max()+2))
+        new_index = list(range(0, 23+1))
         return matrix.reindex(new_index, fill_value=0).fillna(0)
     
     def _military_to_standard(self, hour: int) -> str:
-        """
-        Converts a military hour (24 hours) to a standard hour (12 hour am/pm).
-        """
+        """Converts military hours (24 hours) to standard hours (am/pm)."""
 
         if not (1 <= hour <= 24):
             raise ValueError((
