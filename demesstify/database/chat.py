@@ -22,7 +22,7 @@ class ChatDB:
     """
 
     def __init__(self, db_location: Optional[str]=None):
-        """Inits the ChatDB instance.
+        """Initializes the ChatDB instance.
         
         The chat.db file is located in: ~/Library/Messages/chat.db
 

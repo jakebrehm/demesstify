@@ -6,7 +6,7 @@ Provides functionality for visualizing messages.
 """
 
 
-from typing import List, Optional, Tuple, Union
+from typing import Optional, Union
 
 import calmap
 import matplotlib as mpl
@@ -30,26 +30,18 @@ class WeekdayRadialHeatmap:
     _DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday',
              'Friday', 'Saturday']
 
-    def __init__(self, messages: parse.Messages, whom: str='all'):
-        """Inits the WeekdayRadialHeatmap object."""
+    def __init__(self, data: pd.DataFrame):
+        """Initializes the WeekdayRadialHeatmap object."""
 
-        # Extract relevant data from the Messages object
-        self._messages = messages
-        if whom == 'all':
-            self._data = self._messages.get_all()
-        elif whom == 'sender':
-            self._data = self._messages.get_sent()
-        elif whom == 'recipient':
-            self._data = self._messages.get_received()
-        else:
-            raise ValueError(f"'{whom}' is not a valid value for 'whom'.")
+        # Store instance variables
+        self._data = data
         
         # Construct the frequency matrix
         self._matrix_df = self._construct_frequency_matrix(self._data)
         self._matrix = self._matrix_df.to_numpy()
 
     def generate(self,
-            figsize: Tuple[int, int]=(7, 7),
+            figsize: tuple[int, int]=(7, 7),
             cmap: Union[str, mpl.colors.Colormap]='viridis',
             outline_color: str='black',
             grid_color: str='black',
@@ -216,8 +208,9 @@ class WeekdayRadialHeatmap:
         """
 
         # Group the data by weekday and then by hour, and count frequencies
-        grouped = data['message'].groupby([data.index.day_name(),
-                                           data['datetime'].dt.hour]).count()
+        grouped = data['message'].groupby(
+            [data.index.day_name(), data.index.hour]
+        ).count()
         
         # Create a dataframe from the grouped data
         matrix = pd.DataFrame({day: grouped[day] for day in self._DAYS})
@@ -260,10 +253,10 @@ class FrequencyBarChart:
     _VALID_TICKS = ['major', 'minor']
 
     def __init__(self,
-            data: List[Tuple[emojis.Emoji, int]],
-            figsize: Tuple[int, int]=(7, 7),
+            data: list[tuple[emojis.Emoji, int]],
+            figsize: tuple[int, int]=(7, 7),
         ):
-        """Inits the FrequencyBarChart object."""
+        """Initializes the FrequencyBarChart object."""
         
         # Store the specified argument values
         self._data = data
@@ -278,7 +271,7 @@ class FrequencyBarChart:
 
     def generate(self,
         bar_color: str='blue',
-        grid_color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+        grid_color: tuple[float, float, float, float]=(0, 0, 0, 1),
         x_tick_size: Union[int, float]=10,
         x_tick_color: str='black',
         y_tick_size: Union[int, float]=10,
@@ -401,7 +394,7 @@ class FrequencyBarChart:
     def set_grid_color(self,
             axes: str,
             which: str,
-            color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+            color: tuple[float, float, float, float]=(0, 0, 0, 1),
         ):
         """Set the color of the gridlines. Also makes the grids visible."""
 
@@ -449,16 +442,16 @@ class FrequencyBarChart:
             for tick in which:
                 self.axis.grid(visible, axis=axis, which=tick)
 
-    def enable_spines(self, spines: Optional[Union[str, List[str]]]=None):
+    def enable_spines(self, spines: Optional[Union[str, list[str]]]=None):
         """Enables all specified spines of the chart."""
         self.toggle_spines(spines, visible=True)
 
-    def disable_spines(self, spines: Optional[Union[str, List[str]]]=None):
+    def disable_spines(self, spines: Optional[Union[str, list[str]]]=None):
         """Disabes all specified spines of the chart."""
         self.toggle_spines(spines, visible=False)
 
     def toggle_spines(self,
-            spines: Optional[Union[str, List[str]]]=None,
+            spines: Optional[Union[str, list[str]]]=None,
             visible: bool=False,
         ):
         """Sets the visibility of all specified spines of the chart."""
@@ -476,7 +469,7 @@ class FrequencyBarChart:
             self.axis.spines[spine].set_visible(visible)
 
     def set_spine_color(self,
-            spines: Optional[Union[str, List[str]]]=None,
+            spines: Optional[Union[str, list[str]]]=None,
             color: str='black',
         ):
         """Sets the color of all specified spines of the chart."""
@@ -501,7 +494,7 @@ class FrequencyBarChart:
         """Wrapper around plt.show()."""
         plt.show()
 
-    def _move_ticks_around_bars(self, ticks: List[int]) -> List[int]:
+    def _move_ticks_around_bars(self, ticks: list[int]) -> list[int]:
         """
         Takes a list of ticks that are placed at the center of bars and
         calculates a new list of ticks that are placed outside the bars.
@@ -509,7 +502,7 @@ class FrequencyBarChart:
         ticks = [tick+0.5 for tick in ticks]
         return [ticks[0] - 1] + ticks
 
-    def _check_valid_axes(self, axes: Optional[Union[str, List[str]]]):
+    def _check_valid_axes(self, axes: Optional[Union[str, list[str]]]):
         """Raises an error if the user-specified axes are not valid."""
 
         if any(axis not in self._VALID_AXES for axis in axes):
@@ -518,7 +511,7 @@ class FrequencyBarChart:
             f'Valid values are {self._VALID_AXES}'
         ))
 
-    def _check_valid_ticks(self, ticks: Optional[Union[str, List[str]]]):
+    def _check_valid_ticks(self, ticks: Optional[Union[str, list[str]]]):
         """Raises an error if the user-specified ticks are not valid."""
 
         if any(tick not in self._VALID_TICKS for tick in ticks):
@@ -527,7 +520,7 @@ class FrequencyBarChart:
             f'Valid values are {self._VALID_TICKS}'
         ))
 
-    def _check_valid_spines(self, spines: Optional[Union[str, List[str]]]):
+    def _check_valid_spines(self, spines: Optional[Union[str, list[str]]]):
         """Raises an error if the user-specified spines are not valid."""
 
         if any(spine not in self._VALID_SPINES for spine in spines):
@@ -546,10 +539,10 @@ class StackedFrequencyBarChart(FrequencyBarChart):
     _VALID_LEGEND_LOCATIONS = ['top', 'bottom']
 
     def __init__(self,
-            data: List[Tuple[emojis.Emoji, int, int, int]],
-            figsize: Tuple[int, int]=(7, 7),
+            data: list[tuple[emojis.Emoji, int, int, int]],
+            figsize: tuple[int, int]=(7, 7),
         ):
-        """Inits the StackedFrequencyBarChart object."""
+        """Initializes the StackedFrequencyBarChart object."""
         
         # Store the specified argument values
         self._data = data
@@ -565,12 +558,12 @@ class StackedFrequencyBarChart(FrequencyBarChart):
         self.figure, self.axis = plt.subplots(figsize=self._figsize)
 
     def generate(self,
-        figsize: Tuple[int, int]=(7, 7),
+        figsize: tuple[int, int]=(7, 7),
         sent_label: str='Sent',
         sent_color: str='blue',
         received_label: str='Received',
         received_color: str='orange',
-        grid_color: Tuple[float, float, float, float]=(0, 0, 0, 1),
+        grid_color: tuple[float, float, float, float]=(0, 0, 0, 1),
         x_tick_size: Union[int, float]=10,
         x_tick_color: str='black',
         y_tick_size: Union[int, float]=10,
@@ -635,7 +628,7 @@ class StackedFrequencyBarChart(FrequencyBarChart):
         self.toggle_spines(['top', 'right', 'bottom'], visible=False)
         self.set_spine_color('left', color=grid_color)
 
-    def _check_valid_legend(self, location: Optional[Union[str, List[str]]]):
+    def _check_valid_legend(self, location: Optional[Union[str, list[str]]]):
         """Raises an error if the user-specified location is not valid."""
 
         if location not in self._VALID_LEGEND_LOCATIONS:
@@ -646,30 +639,17 @@ class StackedFrequencyBarChart(FrequencyBarChart):
 
 
 class CalendarHeatmap:
-    """
-    Class to create a calendar heatmap similar to Github's contributions plot.
-    """
+    """Create a calendar heatmap similar to Github's contributions plot."""
 
-    def __init__(self,
-        messages: parse.Messages, whom: str='all',
-        year: Optional[int]=None, **kwargs,
-    ):
-        """Inits the CalendarHeatmap instance.
+    def __init__(self, data: pd.DataFrame, year: Optional[int]=None, **kwargs):
+        """Initializes the CalendarHeatmap instance.
         
         For information on keyword arguments, please see the documentation
         for the calmap library.
         """
 
-        # Extract relevant data from the Messages object
-        self._messages = messages
-        if whom == 'all':
-            self._data = self._messages.get_all()
-        elif whom == 'sender':
-            self._data = self._messages.get_sent()
-        elif whom == 'recipient':
-            self._data = self._messages.get_received()
-        else:
-            raise ValueError(f"'{whom}' is not a valid value for 'whom'.")
+        # Store instance variables
+        self._data = data
         
         # Group the data by date and get the frequency for each
         grouped = self._data['message'].groupby([self._data.index.date]).count()

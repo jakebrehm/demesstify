@@ -8,7 +8,7 @@ Provides functionality for creating sample message text files.
 
 import random
 from datetime import datetime
-from typing import List, Union, Optional
+from typing import Union, Optional
 
 import lorem
 import numpy as np
@@ -22,7 +22,7 @@ def generate_datetimes(
         end: Optional[datetime]=None,
         periods: Optional[int]=None,
         as_string: bool=True,
-    ) -> Union[pd.DatetimeIndex, List[str]]:
+    ) -> Union[pd.DatetimeIndex, list[str]]:
     """Generates a datetime between two datetime objects."""
 
     if start is None:
