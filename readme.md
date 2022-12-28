@@ -23,16 +23,27 @@
 
 ## Table of contents
 
+* [Main features](#main-features)
 * [Installation](#installation)
     * [Dependencies](#dependencies)
 * [Example usage](#example-usage)
-    * [Basic example](#basic-example)
+    * [Analyzing the messages](#analyzing-the-messages)
+    * [Creating a word cloud](#creating-a-word-cloud)
 * [Future improvements](#future-improvements)
 * [Authors](#authors)
 
+## Main features
+
+Here are just a few things that `demesstify` can do:
+* Read message data from various sources, including your local iMessages database, a [Tansee](https://www.tansee.com) text file, or some randomly generated dummy text
+* Perform text analysis on your messages so you can see things like the average number of texts received per day or the most number of messages that were sent in a row
+* Analyze which emojis or reactions (if you're using iMessage) were most frequently used, among other thing
+* Perform sentiment analysis on your messages to see the polarity of your conversations
+* Generate tailored visualizations such as word clouds or a radial heatmap that plots hour of the day versus day of the week
+
 ## Installation
 
-*demesstify* can be installed via pip:
+`demesstify` can be installed via pip:
 
 ```
 pip install demesstify
@@ -42,7 +53,7 @@ The source code can be viewed on GitHub [here](https://github.com/jakebrehm/deme
 
 ### Dependencies
 
-*demesstify* depends on the following packages:
+`demesstify` depends on the following packages:
 
 | Package                                                | Description                           |
 | ------------------------------------------------------ | ------------------------------------- |
@@ -56,72 +67,59 @@ The source code can be viewed on GitHub [here](https://github.com/jakebrehm/deme
 
 ## Example usage
 
-### Basic example
-
-First, import the `demesstify` library.
+### Analyzing the messages
 
 ```python
 import demesstify as dm
+from demesstify.analysis import emojis, sentiment, text
+
+# Create the messages object and dataframes from dummy text
+messages = dm.Messages.from_random(total_messages=1000)
+all_df = messages.get_all()
+sent_df = messages.get_sent()
+received_df = messages.get_received()
+
+# Determine the 3 most frequent emojis
+most_frequent_emojis = emojis.Emojis(all_df).get_most_frequent(3)
+
+# Determine the total number of messages sent
+total_messages_sent = text.Text(sent_df).get_total()
+
+# Determine the average number of messages received per day
+average_received_daily = text.Text(received_df).get_average_per_day()
+
+# Determine the number of times "velit" appear as a substring
+velit_count = text.Text(all_df).get_count_of_substring('velit')
+
+# Determine the average polarity of the messages
+average_polarity = sentiment.Sentiment(all_df).get_average_sentiment()
 ```
 
-Next, create the iMessages object.
-
-For this example, we will use the `from_random` class method, which allows us to randomly generate the specified number of messages. These messages will be populated using lorem ipsum dummy text.
+### Creating a word cloud
 
 ```python
-imessages = dm.iMessages.from_random(total_messages=10)
+import demesstify as dm
+from demesstify.visualize import cloud
+
+# Create and save a Cloud object
+wordcloud = cloud.Cloud(messages.as_string('all'))
+wordcloud.min_word_length = 3
+wordcloud.repeat = False                # will not repeat any words
+wordcloud.collocations = False          # will not include pairs of words
+wordcloud.include_numbers = False       # will not include numbers
+wordcloud.generate()
+wordcloud.save('wordcloud.png')
 ```
 
-Now that we've created the iMessages object, we can analyze the messages.
+<div align="center">
+<img src="https://raw.githubusercontent.com/jakebrehm/demesstify/master/img/wordcloud.png" alt="Sample WordCloud"/>
+</div>
 
-For example, we can find the 3 most frequently used emojis and the number of times they appeared in the messages.
-
-```python
-imessages.emojis.get_most_frequent(3)
-```
-
-Next, we can determine the total number of messages that were exchanged.
-
-```python
-imessages.sent.get_total()
-```
-
-We can also find the average number of messages received per day.
-
-```python
-imessages.received.get_average_per_day()
-```
-
-Then, we can calculate the number of times *velit* appears in the messages.
-
-```python
-imessages.all.get_count_of_word('velit')
-```
-
-For even more analytics, we can create a MessageCloud object.
-
-Because the `MessageCloud` object is essentially a wrapper around the `WordCloud` object of the [wordcloud](https://github.com/amueller/word_cloud) library, we have access to its parameters as well. This way, we can specify exactly what time of words we want to include in the statistics.
-
-```python
-cloud = dm.MessageCloud(imessages)
-cloud.min_word_length = 3
-cloud.repeat = False                # will not repeat any words
-cloud.collocations = False          # will not include pairs of words
-cloud.include_numbers = False       # will not include numbers
-cloud.generate()
-```
-
-With the MessageCloud object, we can see which words were used the most frequently and how often.
-
-```python
-cloud.words.get_most_frequent(5)
-```
 
 ## Future improvements
 
 - Add support for identifying attachments
 - Add support for other message sources, e.g. Android or social media platforms
-- Add more interesting calculations and analyses
 - Add unit tests
 
 ## Authors

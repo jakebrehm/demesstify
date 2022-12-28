@@ -205,17 +205,24 @@ class Tansee(Parser):
 
 
 class Random(Tansee):
-    """Parses a dummy text file."""
+    """Parses a dummy text file.
+    
+    For kwarg information, see the generate_sample_text function of the
+    demesstify.testing.messages module.
+    """
 
-    def __init__(self):
+    def __init__(self, **kwargs):
         """Initializes the Random instance."""
+
+        # Store instance variables
+        self._kwargs = kwargs
         
         # Parse the input
         self._parsed = self.parse()
 
     def load(self) -> str:
         """Generates dummy text and returns the data as a string."""
-        return messages.generate_sample_text()
+        return messages.generate_sample_text(**self._kwargs)
 
 
 class iMessageCSV(Parser):
@@ -364,7 +371,7 @@ class Messages:
 
         # Get the data from the appropriate parser
         if self._source == Source.RANDOM:
-            parser = Random()
+            parser = Random(**kwargs)
         elif self._source == Source.TANSEE:
             parser = Tansee(self._path)
         elif self._source == Source.IMESSAGE_CSV:
@@ -374,9 +381,13 @@ class Messages:
         self._data = parser.get()
 
     @classmethod
-    def from_random(cls) -> 'Messages':
-        """Initializes a Messages object using randomly generated dummy text."""
-        return cls(source=Source.RANDOM)
+    def from_random(cls, **kwargs) -> 'Messages':
+        """Initializes a Messages object using randomly generated dummy text.
+        
+        For kwarg information, see the generate_sample_text function of the
+        demesstify.testing.messages module.
+        """
+        return cls(source=Source.RANDOM, **kwargs)
 
     @classmethod
     def from_tansee(cls, path: str) -> 'Messages':
@@ -385,7 +396,7 @@ class Messages:
 
     @classmethod
     def from_imessage_csv(cls, path: str) -> 'Messages':
-        """Initializess a Messages object using an iMessage CSV file."""
+        """Initializes a Messages object using an iMessage CSV file."""
         return cls(path=path, source=Source.IMESSAGE_CSV)
 
     @classmethod
