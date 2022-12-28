@@ -22,11 +22,75 @@ class Attachment:
     def __init__(self, data: pd.DataFrame):
         """Initializes the Attachment object."""
 
+        # Store instance variables
         self._data = data
 
-    def get_count(self) -> int:
-        """Gets the number of attachments that were exchanged."""
+    def get_total(self) -> int:
+        """Calculates the total number of attachments exchanged."""
         return len(self._data)
+    
+    def get_average_per_day(self) -> float:
+        """Calculates the average number of attachments exchanged in a day."""
+        grouped = self._data['message'].groupby(self._data.index.date)
+        return grouped.count().mean()
+
+    def get_least_per_day(self) -> float:
+        """Calculates the least number of attachments in a day."""
+        grouped = self._data['filename'].groupby(self._data.index.date)
+        return grouped.count().min()
+    
+    def get_most_per_day(self) -> float:
+        """Calculates the greatest number of attachments in a day."""
+        grouped = self._data['filename'].groupby(self._data.index.date)
+        return grouped.count().max()
+
+    def get_days_since_first_attachment(self, ceiling: bool=True) -> int:
+        """Calculates the number of days since the first attachment.
+        
+        By default, this method will round the number of days up by taking the
+        ceiling of the Timedelta object. If this is not desired, set the 
+        ceiling parameter to False.
+        """
+        
+        # Get the datetimes of the first and last attachments
+        first = self._data.first_valid_index()
+        last = self._data.last_valid_index()
+        # Return the number of days between these two datetimes
+        return (last - first).ceil('D').days if ceiling else (last - first).days
+
+    def get_count_of_days_with_attachments(self) -> int:
+        """Calculates the number of days where attachments were exchanged."""
+
+        # The number of days with attachments is total days minus days without
+        total_days = self.get_days_since_first_attachment()
+        days_without = self.get_count_of_days_without_attachments()
+        return (total_days - days_without)
+    
+    def get_count_of_days_without_attachments(self) -> int:
+        """Calculates the number of days where no attachments were exchanged."""
+        
+        # Get the dates of the first and last attachments
+        first = self._data.first_valid_index().date()
+        last = self._data.last_valid_index().date()
+        # Find the missing dates by comparing time range to index
+        dates_with_attachments = self._data.index.date
+        all_dates = pd.date_range(start=first, end=last)
+        # Return the number of days where attachments were not exchanged
+        return len(all_dates.difference(dates_with_attachments))
+
+    def get_attachments_with_filetype(self, extension: str) -> pd.DataFrame:
+        """Gets the attachments dataframe filtered by the specified filetype."""
+        
+        # Add a period if necessary
+        if extension[0] != '.':
+            extension = f".{extension}"
+
+        # Count the number of attachments that have that extension
+        return self._data[self._data['transfer_name'].str.endswith(extension)]
+
+    def get_count_of_filetype(self, extension: str) -> int:
+        """Calculates the number of attachments with the specified filetype."""
+        return len(self.get_attachments_with_filetype(extension))
 
 
 class Attachments:
@@ -119,7 +183,7 @@ class Attachments:
         # Rename the columns
         dataframe = dataframe.rename(columns={
             'date': 'datetime',
-            'test': 'message',
+            'text': 'message',
         })
 
         # Set the index to the datetime column and return

@@ -64,7 +64,11 @@ class Text:
     
     def get_count_of_days_with_messages(self) -> int:
         """Calculates the number of days where messages were exchanged."""
-        return self.get_days_since_first_message() - self.get_count_of_days_without_messages()
+
+        # The number of days with messages is total days minus days without
+        total_days = self.get_days_since_first_message()
+        days_without = self.get_count_of_days_without_messages()
+        return (total_days - days_without)
     
     def get_count_of_days_without_messages(self) -> int:
         """Calculates the number of days where no messages were exchanged."""
