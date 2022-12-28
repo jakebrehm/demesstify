@@ -79,6 +79,14 @@ class Reaction:
         """Gets the number of times the reaction has appeared."""
         return len(self._data)
 
+    def __repr__(self) -> str:
+        """Returns a representation of an instance of Reaction."""
+        return f"{self.__class__.__name__}('{self.name}')"
+
+    def __str__(self) -> str:
+        """Returns a string representation of the reaction."""
+        return self.name
+
 
 class Reactions:
     """Collection of Reaction objects.

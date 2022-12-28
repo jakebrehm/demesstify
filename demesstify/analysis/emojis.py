@@ -8,15 +8,14 @@ given message conversation.
 
 
 import collections
-from typing import Dict, List, Tuple, Union
+from typing import Union
 
 import emoji
 import pandas as pd
 
 
 class Emoji:
-    """
-    Class that tracks and represents a generic Emoji.
+    """Class that tracks and represents a generic Emoji.
     
     Properties:
         name:
@@ -35,72 +34,27 @@ class Emoji:
         """Gets the name/representation of the emoji."""
         return self._emoji
 
-    def get_all_messages(self) -> pd.DataFrame:
+    def get_messages(self) -> pd.DataFrame:
         """Gets all messages that contain the emoji."""
         return self._data
     
-    def get_sent_messages(self) -> pd.DataFrame:
-        """Gets all messages from the sender that contain the emoji."""
-
-        messages = self.get_all_messages()
-        return messages[messages['is_sender'] == 1]
-    
-    def get_received_messages(self) -> pd.DataFrame:
-        """Gets all messages from the receiver that contain the emoji."""
-
-        messages = self.get_all_messages()
-        return messages[messages['is_sender'] == 0]
-    
-    def get_count(self, which: str='all') -> int:
-        """Gets the number of occurrences of the emoji.
-        
-        Kwargs:
-            which:
-                Whether to get the count of all messages, or only messages
-                from either the sender or the receiver. Possible values are
-                'all' (default), 'sent', 'received'.
-        """
-
-        if which == 'all':
-            return self.get_all_count()
-        elif which == 'sent':
-            return self.get_sent_count()
-        elif which == 'received':
-            return self.get_received_count()
-        else:
-            raise ValueError(f"{which} is not a valid value for 'which'.")
-
-    def get_all_count(self) -> int:
-        """Gets the number of occurrences of the emoji across all messages."""
+    def get_count(self) -> int:
+        """Gets the number of occurrences of the emoji."""
 
         return self._count_emojis(self._data)
-    
-    def get_sent_count(self) -> int:
-        """
-        Gets the number of occurrences of the emoji in the sender's messages.
-        """
 
-        return self._count_emojis(self.get_sent_messages())
-    
-    def get_received_count(self) -> int:
-        """
-        Gets the number of occurrences of the emoji in the receiver's messages.
-        """
-
-        return self._count_emojis(self.get_received_messages())
-    
     def _count_emojis(self, df: pd.DataFrame) -> int:
         """Counts the number of occurrences of the emoji in a dataframe."""
 
         return df['message'].str.count(self.name).sum()
+    
+    def __repr__(self) -> str:
+        """Returns a representation of an instance of Emoji."""
+        return f"{self.__class__.__name__}('{self.name}')"
 
     def __str__(self) -> str:
         """Returns a string representation of the emoji."""
         return self.name
-    
-    def __repr__(self) -> str:
-        """Returns a printable string representation of an instance of Emoji."""
-        return f'{self.__class__.__name__}({self.name})'
 
 
 class Emojis:
@@ -120,23 +74,23 @@ class Emojis:
         self._data = data
 
         # Initialize calculated instance variables
-        messages = '\n'.join(self._data['message']) # TODO easier way?
+        messages = '\n'.join(self._data['message'])
         self._unique_emojis = emoji.distinct_emoji_list(messages)
         self._emoji_objects = self._create_emoji_objects(self._unique_emojis)
         self._counts = self._count_emojis(self._emoji_objects)
 
     @property
-    def uniques(self) -> List[str]:
+    def uniques(self) -> list[str]:
         """Gets a list of unique emojis that were found in the messages."""
         return self.get_uniques()
     
     @property
-    def emojis(self) -> List[Emoji]:
+    def emojis(self) -> list[Emoji]:
         """Gets a list of emoji objects."""
         return list(self._emoji_objects.values())
 
     @property
-    def emoji_objects(self) -> Dict[str, Emoji]:
+    def emoji_objects(self) -> dict[str, Emoji]:
         """Gets a dictionary of emoji objects."""
         return self._emoji_objects
     
@@ -144,7 +98,7 @@ class Emojis:
         """Gets the associated emoji object for an emoji."""
         return self.emoji_objects[emoji]
 
-    def get_uniques(self) -> List[str]:
+    def get_uniques(self) -> list[str]:
         """Gets a list of unique emojis that were found in the messages."""
         return self._unique_emojis
     
@@ -152,13 +106,13 @@ class Emojis:
         """Gets the number of times the specified emoji appeared."""
         return self._counts[emoji]
 
-    def get_counts(self) -> Dict[str, int]:
+    def get_counts(self) -> dict[str, int]:
         """Gets the dictionary of emojis and their counts."""
         return self._counts
 
     def get_most_frequent(self,
             n: int, return_objects: bool=False
-        ) -> List[Tuple[Union[str, Emoji], int]]:
+        ) -> list[tuple[Union[str, Emoji], int]]:
         """Gets the n most frequent emojis as a list of tuples."""
 
         counter = collections.Counter(self.get_counts())
@@ -168,7 +122,7 @@ class Emojis:
                 most_common[e] = (self.get_emoji_object(emoji), count)
         return most_common
 
-    def _count_emojis(self, emoji_objects: Dict[str, Emoji]):
+    def _count_emojis(self, emoji_objects: dict[str, Emoji]):
         """Counts the number of occurences of each unique emoji."""
 
         counts = {}
@@ -176,7 +130,7 @@ class Emojis:
             counts[emoji_name] = emoji_object.get_count()
         return counts
 
-    def _create_emoji_objects(self, emojis: str) -> Dict[str, Emoji]:
+    def _create_emoji_objects(self, emojis: str) -> dict[str, Emoji]:
         """Gets a dictionary of emoji objects."""
 
         messages = self._data
