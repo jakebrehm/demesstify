@@ -26,6 +26,7 @@
 * [Main features](#main-features)
 * [Installation](#installation)
     * [Dependencies](#dependencies)
+* [Documentation](#documentation)
 * [Example usage](#example-usage)
     * [Analyzing the messages](#analyzing-the-messages)
     * [Creating a word cloud](#creating-a-word-cloud)
@@ -65,6 +66,10 @@ The source code can be viewed on GitHub [here](https://github.com/jakebrehm/deme
 | [calmap](https://github.com/martijnvermaat/calmap)    | For creating calendar heatmaps               |
 | [emoji](https://github.com/carpedm20/emoji)            | For working with emojis               |
 | [lorem](https://github.com/sfischer13/python-lorem)    | For creating dummy text               |
+
+## Documentation
+
+For information on how to use `demesstify`, please see the [documentation](https://demesstify.readthedocs.io/).
 
 ## Example usage
 
