@@ -94,7 +94,7 @@ total_messages_sent = text.Text(sent_df).get_total()
 # Determine the average number of messages received per day
 average_received_daily = text.Text(received_df).get_average_per_day()
 
-# Determine the number of times "velit" appear as a substring
+# Determine the number of times "velit" appears as a substring
 velit_count = text.Text(all_df).get_count_of_substring('velit')
 
 # Determine the average polarity of the messages
