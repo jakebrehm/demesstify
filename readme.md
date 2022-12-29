@@ -102,6 +102,9 @@ average_polarity = sentiment.Sentiment(all_df).get_average_sentiment()
 import demesstify as dm
 from demesstify.visualize import cloud
 
+# Create the messages object and dataframes from dummy text
+messages = dm.Messages.from_random(total_messages=1000)
+
 # Create and save a Cloud object
 wordcloud = cloud.Cloud(messages.as_string('all'))
 wordcloud.min_word_length = 3
