@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>demesstify package &mdash; demesstify  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="demesstify.analysis package" href="demesstify.analysis.html" />
+    <link rel="prev" title="demesstify" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> demesstify
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">demesstify</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">demesstify package</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#subpackages">Subpackages</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html">demesstify.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.clean.html">demesstify.clean package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html">demesstify.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.testing.html">demesstify.testing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html">demesstify.visualize package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-demesstify.errors">demesstify.errors module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.errors.CloudNotGeneratedError"><code class="docutils literal notranslate"><span class="pre">CloudNotGeneratedError</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.errors.ReactionNameError"><code class="docutils literal notranslate"><span class="pre">ReactionNameError</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-demesstify.parse">demesstify.parse module</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Direction"><code class="docutils literal notranslate"><span class="pre">Direction</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Messages"><code class="docutils literal notranslate"><span class="pre">Messages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Parser"><code class="docutils literal notranslate"><span class="pre">Parser</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Random"><code class="docutils literal notranslate"><span class="pre">Random</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Source"><code class="docutils literal notranslate"><span class="pre">Source</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.Tansee"><code class="docutils literal notranslate"><span class="pre">Tansee</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.iMessageCSV"><code class="docutils literal notranslate"><span class="pre">iMessageCSV</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#demesstify.parse.iMessageDB"><code class="docutils literal notranslate"><span class="pre">iMessageDB</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#module-demesstify">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">demesstify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">demesstify</a></li>
+      <li class="breadcrumb-item active">demesstify package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/demesstify.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="demesstify-package">
+<h1>demesstify package<a class="headerlink" href="#demesstify-package" title="Permalink to this heading"></a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading"></a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="demesstify.analysis.html">demesstify.analysis package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis.attachments">demesstify.analysis.attachments module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment"><code class="docutils literal notranslate"><span class="pre">Attachment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_attachments_with_filetype"><code class="docutils literal notranslate"><span class="pre">Attachment.get_attachments_with_filetype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_average_per_day"><code class="docutils literal notranslate"><span class="pre">Attachment.get_average_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_count_of_days_with_attachments"><code class="docutils literal notranslate"><span class="pre">Attachment.get_count_of_days_with_attachments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_count_of_days_without_attachments"><code class="docutils literal notranslate"><span class="pre">Attachment.get_count_of_days_without_attachments()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_count_of_filetype"><code class="docutils literal notranslate"><span class="pre">Attachment.get_count_of_filetype()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_datetime_of_longest_silence"><code class="docutils literal notranslate"><span class="pre">Attachment.get_datetime_of_longest_silence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_days_since_first_attachment"><code class="docutils literal notranslate"><span class="pre">Attachment.get_days_since_first_attachment()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_least_per_day"><code class="docutils literal notranslate"><span class="pre">Attachment.get_least_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_longest_silence"><code class="docutils literal notranslate"><span class="pre">Attachment.get_longest_silence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_most_per_day"><code class="docutils literal notranslate"><span class="pre">Attachment.get_most_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachment.get_total"><code class="docutils literal notranslate"><span class="pre">Attachment.get_total()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments"><code class="docutils literal notranslate"><span class="pre">Attachments</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments.get"><code class="docutils literal notranslate"><span class="pre">Attachments.get()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments.get_all"><code class="docutils literal notranslate"><span class="pre">Attachments.get_all()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments.get_received"><code class="docutils literal notranslate"><span class="pre">Attachments.get_received()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments.get_sent"><code class="docutils literal notranslate"><span class="pre">Attachments.get_sent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.attachments.Attachments.path"><code class="docutils literal notranslate"><span class="pre">Attachments.path</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis.emojis">demesstify.analysis.emojis module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emoji"><code class="docutils literal notranslate"><span class="pre">Emoji</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emoji.get_count"><code class="docutils literal notranslate"><span class="pre">Emoji.get_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emoji.get_messages"><code class="docutils literal notranslate"><span class="pre">Emoji.get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emoji.name"><code class="docutils literal notranslate"><span class="pre">Emoji.name</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis"><code class="docutils literal notranslate"><span class="pre">Emojis</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.emoji_objects"><code class="docutils literal notranslate"><span class="pre">Emojis.emoji_objects</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.emojis"><code class="docutils literal notranslate"><span class="pre">Emojis.emojis</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.get_count"><code class="docutils literal notranslate"><span class="pre">Emojis.get_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.get_counts"><code class="docutils literal notranslate"><span class="pre">Emojis.get_counts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.get_emoji_object"><code class="docutils literal notranslate"><span class="pre">Emojis.get_emoji_object()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.get_most_frequent"><code class="docutils literal notranslate"><span class="pre">Emojis.get_most_frequent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.get_uniques"><code class="docutils literal notranslate"><span class="pre">Emojis.get_uniques()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.emojis.Emojis.uniques"><code class="docutils literal notranslate"><span class="pre">Emojis.uniques</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis.reactions">demesstify.analysis.reactions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction"><code class="docutils literal notranslate"><span class="pre">Reaction</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.append_messages"><code class="docutils literal notranslate"><span class="pre">Reaction.append_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.get_count"><code class="docutils literal notranslate"><span class="pre">Reaction.get_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.get_messages"><code class="docutils literal notranslate"><span class="pre">Reaction.get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.get_name"><code class="docutils literal notranslate"><span class="pre">Reaction.get_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.messages"><code class="docutils literal notranslate"><span class="pre">Reaction.messages</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.name"><code class="docutils literal notranslate"><span class="pre">Reaction.name</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reaction.set_messages"><code class="docutils literal notranslate"><span class="pre">Reaction.set_messages()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions"><code class="docutils literal notranslate"><span class="pre">Reactions</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.get_count"><code class="docutils literal notranslate"><span class="pre">Reactions.get_count()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.get_messages"><code class="docutils literal notranslate"><span class="pre">Reactions.get_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.get_reaction"><code class="docutils literal notranslate"><span class="pre">Reactions.get_reaction()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.get_reaction_objects"><code class="docutils literal notranslate"><span class="pre">Reactions.get_reaction_objects()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.reactions"><code class="docutils literal notranslate"><span class="pre">Reactions.reactions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.Reactions.update"><code class="docutils literal notranslate"><span class="pre">Reactions.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.ReactionsIterable"><code class="docutils literal notranslate"><span class="pre">ReactionsIterable</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.reactions.get_reaction_names"><code class="docutils literal notranslate"><span class="pre">get_reaction_names()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis.sentiment">demesstify.analysis.sentiment module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.sentiment.Sentiment"><code class="docutils literal notranslate"><span class="pre">Sentiment</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.sentiment.Sentiment.get_average_sentiment"><code class="docutils literal notranslate"><span class="pre">Sentiment.get_average_sentiment()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis.text">demesstify.analysis.text module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text"><code class="docutils literal notranslate"><span class="pre">Text</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_average_length"><code class="docutils literal notranslate"><span class="pre">Text.get_average_length()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_average_per_day"><code class="docutils literal notranslate"><span class="pre">Text.get_average_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_count_of_days_with_messages"><code class="docutils literal notranslate"><span class="pre">Text.get_count_of_days_with_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_count_of_days_without_messages"><code class="docutils literal notranslate"><span class="pre">Text.get_count_of_days_without_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_count_of_substring"><code class="docutils literal notranslate"><span class="pre">Text.get_count_of_substring()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_datetime_of_longest_silence"><code class="docutils literal notranslate"><span class="pre">Text.get_datetime_of_longest_silence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_days_since_first_message"><code class="docutils literal notranslate"><span class="pre">Text.get_days_since_first_message()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_least_per_day"><code class="docutils literal notranslate"><span class="pre">Text.get_least_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_longest_silence"><code class="docutils literal notranslate"><span class="pre">Text.get_longest_silence()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_most_consecutive"><code class="docutils literal notranslate"><span class="pre">Text.get_most_consecutive()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_most_per_day"><code class="docutils literal notranslate"><span class="pre">Text.get_most_per_day()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.analysis.html#demesstify.analysis.text.Text.get_total"><code class="docutils literal notranslate"><span class="pre">Text.get_total()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.analysis.html#module-demesstify.analysis">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demesstify.clean.html">demesstify.clean package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.clean.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.clean.html#module-demesstify.clean.clean">demesstify.clean.clean module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.clean.html#demesstify.clean.clean.clean_line"><code class="docutils literal notranslate"><span class="pre">clean_line()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.clean.html#demesstify.clean.clean.convert_mactime_to_datetime"><code class="docutils literal notranslate"><span class="pre">convert_mactime_to_datetime()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.clean.html#demesstify.clean.clean.remove_urls"><code class="docutils literal notranslate"><span class="pre">remove_urls()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.clean.html#demesstify.clean.clean.to_blocks"><code class="docutils literal notranslate"><span class="pre">to_blocks()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.clean.html#module-demesstify.clean">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demesstify.database.html">demesstify.database package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.database.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.database.html#module-demesstify.database.chat">demesstify.database.chat module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB"><code class="docutils literal notranslate"><span class="pre">ChatDB</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.db_location"><code class="docutils literal notranslate"><span class="pre">ChatDB.db_location</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_attachments_from_email"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_attachments_from_email()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_attachments_from_handle_id"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_attachments_from_handle_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_attachments_from_phone"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_attachments_from_phone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_messages_from_email"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_messages_from_email()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_messages_from_handle_id"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_messages_from_handle_id()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.get_messages_from_phone"><code class="docutils literal notranslate"><span class="pre">ChatDB.get_messages_from_phone()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html#demesstify.database.chat.ChatDB.read_sql_query"><code class="docutils literal notranslate"><span class="pre">ChatDB.read_sql_query()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.database.html#module-demesstify.database">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demesstify.testing.html">demesstify.testing package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.testing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.testing.html#module-demesstify.testing.messages">demesstify.testing.messages module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.generate_block_sizes"><code class="docutils literal notranslate"><span class="pre">generate_block_sizes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.generate_datetimes"><code class="docutils literal notranslate"><span class="pre">generate_datetimes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.generate_sample_text"><code class="docutils literal notranslate"><span class="pre">generate_sample_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.randomly_add_emoji"><code class="docutils literal notranslate"><span class="pre">randomly_add_emoji()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.write_header"><code class="docutils literal notranslate"><span class="pre">write_header()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.testing.html#demesstify.testing.messages.write_message_block"><code class="docutils literal notranslate"><span class="pre">write_message_block()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.testing.html#module-demesstify.testing.settings">demesstify.testing.settings module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.testing.html#module-demesstify.testing">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="demesstify.visualize.html">demesstify.visualize package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.visualize.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.visualize.html#module-demesstify.visualize.cloud">demesstify.visualize.cloud module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud"><code class="docutils literal notranslate"><span class="pre">Cloud</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.add_stopwords"><code class="docutils literal notranslate"><span class="pre">Cloud.add_stopwords()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.feed_messages"><code class="docutils literal notranslate"><span class="pre">Cloud.feed_messages()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.generate"><code class="docutils literal notranslate"><span class="pre">Cloud.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.mask"><code class="docutils literal notranslate"><span class="pre">Cloud.mask</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.save"><code class="docutils literal notranslate"><span class="pre">Cloud.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Cloud.words"><code class="docutils literal notranslate"><span class="pre">Cloud.words</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Words"><code class="docutils literal notranslate"><span class="pre">Words</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Words.get_counts"><code class="docutils literal notranslate"><span class="pre">Words.get_counts()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Words.get_most_frequent"><code class="docutils literal notranslate"><span class="pre">Words.get_most_frequent()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Words.is_valid"><code class="docutils literal notranslate"><span class="pre">Words.is_valid()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.Words.update"><code class="docutils literal notranslate"><span class="pre">Words.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.cloud.requires_cloud"><code class="docutils literal notranslate"><span class="pre">requires_cloud()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.visualize.html#module-demesstify.visualize.color_funcs">demesstify.visualize.color_funcs module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.color_funcs.constant_hue"><code class="docutils literal notranslate"><span class="pre">constant_hue()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.color_funcs.random_color"><code class="docutils literal notranslate"><span class="pre">random_color()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.color_funcs.random_gray"><code class="docutils literal notranslate"><span class="pre">random_gray()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.visualize.html#module-demesstify.visualize.plots">demesstify.visualize.plots module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.CalendarHeatmap"><code class="docutils literal notranslate"><span class="pre">CalendarHeatmap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.CalendarHeatmap.save"><code class="docutils literal notranslate"><span class="pre">CalendarHeatmap.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.CalendarHeatmap.show"><code class="docutils literal notranslate"><span class="pre">CalendarHeatmap.show()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.disable_spines"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.disable_spines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.enable_spines"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.enable_spines()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.generate"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.invert_yaxis"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.invert_yaxis()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.move_grid_below_plot"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.move_grid_below_plot()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.save"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_grid_color"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_grid_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_grid_visibility"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_grid_visibility()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_left_tick_visibility"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_left_tick_visibility()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_spine_color"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_spine_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_tick_colors"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_tick_colors()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_tick_label_color"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_tick_label_color()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.set_tick_label_size"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.set_tick_label_size()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.show"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.show()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.FrequencyBarChart.toggle_spines"><code class="docutils literal notranslate"><span class="pre">FrequencyBarChart.toggle_spines()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.StackedFrequencyBarChart"><code class="docutils literal notranslate"><span class="pre">StackedFrequencyBarChart</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.StackedFrequencyBarChart.generate"><code class="docutils literal notranslate"><span class="pre">StackedFrequencyBarChart.generate()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.WeekdayRadialHeatmap"><code class="docutils literal notranslate"><span class="pre">WeekdayRadialHeatmap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.WeekdayRadialHeatmap.generate"><code class="docutils literal notranslate"><span class="pre">WeekdayRadialHeatmap.generate()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.WeekdayRadialHeatmap.save"><code class="docutils literal notranslate"><span class="pre">WeekdayRadialHeatmap.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html#demesstify.visualize.plots.WeekdayRadialHeatmap.show"><code class="docutils literal notranslate"><span class="pre">WeekdayRadialHeatmap.show()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="demesstify.visualize.html#module-demesstify.visualize">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-demesstify.errors">
+<span id="demesstify-errors-module"></span><h2>demesstify.errors module<a class="headerlink" href="#module-demesstify.errors" title="Permalink to this heading"></a></h2>
+<p>Contains custom errors.</p>
+<dl class="py exception">
+<dt class="sig sig-object py" id="demesstify.errors.CloudNotGeneratedError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.errors.</span></span><span class="sig-name descname"><span class="pre">CloudNotGeneratedError</span></span><a class="headerlink" href="#demesstify.errors.CloudNotGeneratedError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>An exception that is thrown when trying to access something that requires
+a wordcloud to be generated first.</p>
+</dd></dl>
+
+<dl class="py exception">
+<dt class="sig sig-object py" id="demesstify.errors.ReactionNameError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.errors.</span></span><span class="sig-name descname"><span class="pre">ReactionNameError</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">invalid_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.errors.ReactionNameError" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Exception</span></code></p>
+<p>An exception that is thrown when an invalid reaction name is used.</p>
+</dd></dl>
+
+</section>
+<section id="module-demesstify.parse">
+<span id="demesstify-parse-module"></span><h2>demesstify.parse module<a class="headerlink" href="#module-demesstify.parse" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for parsing and analyzing an iMessage conversation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Direction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Direction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.Direction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enumeration for valid message sending directionality.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Direction.ALL">
+<span class="sig-name descname"><span class="pre">ALL</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'all'</span></em><a class="headerlink" href="#demesstify.parse.Direction.ALL" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Direction.RECEIVED">
+<span class="sig-name descname"><span class="pre">RECEIVED</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'received'</span></em><a class="headerlink" href="#demesstify.parse.Direction.RECEIVED" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Direction.SENT">
+<span class="sig-name descname"><span class="pre">SENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'sent'</span></em><a class="headerlink" href="#demesstify.parse.Direction.SENT" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Messages">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#demesstify.parse.Source" title="demesstify.parse.Source"><span class="pre">Source</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Source.IMESSAGE_DB</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.Messages" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The main object to handle message data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.as_string">
+<span class="sig-name descname"><span class="pre">as_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#demesstify.parse.Direction" title="demesstify.parse.Direction"><span class="pre">Direction</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Direction.ALL</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.as_string" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the message data as a string, separated by new lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.from_imessage_csv">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_imessage_csv</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#demesstify.parse.Messages" title="demesstify.parse.Messages"><span class="pre">Messages</span></a></span></span><a class="headerlink" href="#demesstify.parse.Messages.from_imessage_csv" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes a Messages object using an iMessage CSV file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.from_imessage_db">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_imessage_db</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#demesstify.parse.Messages" title="demesstify.parse.Messages"><span class="pre">Messages</span></a></span></span><a class="headerlink" href="#demesstify.parse.Messages.from_imessage_db" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes a Messages object using the local iMessage database.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.from_random">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#demesstify.parse.Messages" title="demesstify.parse.Messages"><span class="pre">Messages</span></a></span></span><a class="headerlink" href="#demesstify.parse.Messages.from_random" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes a Messages object using randomly generated dummy text.</p>
+<p>For kwarg information, see the generate_sample_text function of the
+demesstify.testing.messages module.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.from_tansee">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_tansee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#demesstify.parse.Messages" title="demesstify.parse.Messages"><span class="pre">Messages</span></a></span></span><a class="headerlink" href="#demesstify.parse.Messages.from_tansee" title="Permalink to this definition"></a></dt>
+<dd><p>Initializes a Messages object using a Tansee text file.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#demesstify.parse.Direction" title="demesstify.parse.Direction"><span class="pre">Direction</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Direction.ALL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the message dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.get_all">
+<span class="sig-name descname"><span class="pre">get_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.get_all" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the unfiltered main dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.get_received">
+<span class="sig-name descname"><span class="pre">get_received</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.get_received" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the main dataframe filtered by received messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.get_sent">
+<span class="sig-name descname"><span class="pre">get_sent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.get_sent" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the main dataframe filtered by sent messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Messages.trim">
+<span class="sig-name descname"><span class="pre">trim</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">end</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">replace</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Messages.trim" title="Permalink to this definition"></a></dt>
+<dd><p>Trims the data to messages sent between a specified time interval.</p>
+<p>The start and end arguments generally should follow one of the
+following previoulsly-tested formats:</p>
+<blockquote>
+<div><p>%Y-%m-%d %H:%M:%S
+%Y-%m-%d</p>
+</div></blockquote>
+<p>That said, other formats may work.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Parser">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Parser</span></span><a class="headerlink" href="#demesstify.parse.Parser" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">ABC</span></code></p>
+<p>Parses the input messages and converts into a standardized form.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Parser.clean">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.parse.Parser.clean" title="Permalink to this definition"></a></dt>
+<dd><p>Meant to clean the input text and separate into lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Parser.get">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Parser.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the standardized dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Parser.load">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.Parser.load" title="Permalink to this definition"></a></dt>
+<dd><p>Meant to load the data from the source.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Parser.parse">
+<span class="sig-name descname"><span class="pre">parse</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Parser.parse" title="Permalink to this definition"></a></dt>
+<dd><p>Parses the input and outputs it in a standardized form.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Parser.standardize">
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Parser.standardize" title="Permalink to this definition"></a></dt>
+<dd><p>Standardizes the given lines of text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Random">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Random</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.Random" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#demesstify.parse.Tansee" title="demesstify.parse.Tansee"><code class="xref py py-class docutils literal notranslate"><span class="pre">Tansee</span></code></a></p>
+<p>Parses a dummy text file.</p>
+<p>For kwarg information, see the generate_sample_text function of the
+demesstify.testing.messages module.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Random.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.Random.load" title="Permalink to this definition"></a></dt>
+<dd><p>Generates dummy text and returns the data as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Source">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Source</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.Source" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>Enumeration for valid data sources.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Source.IMESSAGE_CSV">
+<span class="sig-name descname"><span class="pre">IMESSAGE_CSV</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'iMessage</span> <span class="pre">CSV'</span></em><a class="headerlink" href="#demesstify.parse.Source.IMESSAGE_CSV" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Source.IMESSAGE_DB">
+<span class="sig-name descname"><span class="pre">IMESSAGE_DB</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'iMessage</span> <span class="pre">DB'</span></em><a class="headerlink" href="#demesstify.parse.Source.IMESSAGE_DB" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Source.RANDOM">
+<span class="sig-name descname"><span class="pre">RANDOM</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Random'</span></em><a class="headerlink" href="#demesstify.parse.Source.RANDOM" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="demesstify.parse.Source.TANSEE">
+<span class="sig-name descname"><span class="pre">TANSEE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'Tansee'</span></em><a class="headerlink" href="#demesstify.parse.Source.TANSEE" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.Tansee">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">Tansee</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.Tansee" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#demesstify.parse.Parser" title="demesstify.parse.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a></p>
+<p>Parses a Tansee text file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Tansee.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.parse.Tansee.clean" title="Permalink to this definition"></a></dt>
+<dd><p>Cleans the input text and separates into lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Tansee.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Tansee.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the standardized dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Tansee.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.Tansee.load" title="Permalink to this definition"></a></dt>
+<dd><p>Loads and returns the data from the source.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.Tansee.standardize">
+<span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.Tansee.standardize" title="Permalink to this definition"></a></dt>
+<dd><p>Standardizes the given lines of text.</p>
+<p>Converts the given lines of (presumably cleaned) text into a 
+dataframe that follows a standardized format.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageCSV">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">iMessageCSV</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.iMessageCSV" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#demesstify.parse.Parser" title="demesstify.parse.Parser"><code class="xref py py-class docutils literal notranslate"><span class="pre">Parser</span></code></a></p>
+<p>Parses an iMessage csv.</p>
+<p>Parses a csv file that was generated by querying the local iMessage
+database (chat.db).</p>
+<dl class="simple">
+<dt>The csv file should only have three columns:</dt><dd><p>date, is_from_me, text</p>
+</dd>
+</dl>
+<p>All of these columns come from the message table of the database.
+It is also assumed that there is a header in this csv file.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageCSV.clean">
+<span class="sig-name descname"><span class="pre">clean</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.parse.iMessageCSV.clean" title="Permalink to this definition"></a></dt>
+<dd><p>Cleans the input csv text and separates into lines.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageCSV.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.iMessageCSV.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the standardized dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageCSV.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.iMessageCSV.load" title="Permalink to this definition"></a></dt>
+<dd><p>Loads the csv file and returns the data as a string.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageCSV.standardize">
+<span class="sig-name descname"><span class="pre">standardize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lines</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.parse.iMessageCSV.standardize" title="Permalink to this definition"></a></dt>
+<dd><p>Standardizes the given lines of text.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageDB">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.parse.</span></span><span class="sig-name descname"><span class="pre">iMessageDB</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.parse.iMessageDB" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#demesstify.parse.iMessageCSV" title="demesstify.parse.iMessageCSV"><code class="xref py py-class docutils literal notranslate"><span class="pre">iMessageCSV</span></code></a></p>
+<p>Parses results from a query to the local iMessage database.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.parse.iMessageDB.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.parse.iMessageDB.load" title="Permalink to this definition"></a></dt>
+<dd><p>Loads the csv file and returns the data as a string.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-demesstify">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-demesstify" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="demesstify" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="demesstify.analysis.html" class="btn btn-neutral float-right" title="demesstify.analysis package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jake Brehm.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

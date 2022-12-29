@@ -7,6 +7,7 @@ were exchanged in a given message conversation.
 """
 
 
+from datetime import datetime, timedelta
 from typing import Optional, Union
 
 import pandas as pd

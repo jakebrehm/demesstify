@@ -23,6 +23,7 @@ from .testing import messages
 
 class Direction(Enum):
     """Enumeration for valid message sending directionality."""
+
     ALL = 'all'
     SENT = 'sent'
     RECEIVED = 'received'
@@ -30,6 +31,7 @@ class Direction(Enum):
 
 class Source(Enum):
     """Enumeration for valid data sources."""
+
     RANDOM = 'Random'
     TANSEE = 'Tansee'
     IMESSAGE_CSV = 'iMessage CSV'

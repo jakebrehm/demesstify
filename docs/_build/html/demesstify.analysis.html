@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>demesstify.analysis package &mdash; demesstify  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/sphinx_highlight.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="demesstify.clean package" href="demesstify.clean.html" />
+    <link rel="prev" title="demesstify package" href="demesstify.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> demesstify
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">demesstify</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="demesstify.html">demesstify package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="demesstify.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">demesstify.analysis package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.clean.html">demesstify.clean package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.database.html">demesstify.database package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.testing.html">demesstify.testing package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="demesstify.visualize.html">demesstify.visualize package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.html#module-demesstify.errors">demesstify.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.html#module-demesstify.parse">demesstify.parse module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="demesstify.html#module-demesstify">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">demesstify</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">demesstify</a></li>
+          <li class="breadcrumb-item"><a href="demesstify.html">demesstify package</a></li>
+      <li class="breadcrumb-item active">demesstify.analysis package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/demesstify.analysis.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="demesstify-analysis-package">
+<h1>demesstify.analysis package<a class="headerlink" href="#demesstify-analysis-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-demesstify.analysis.attachments">
+<span id="demesstify-analysis-attachments-module"></span><h2>demesstify.analysis.attachments module<a class="headerlink" href="#module-demesstify.analysis.attachments" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for tracking and analyzing the attachments that
+were exchanged in a given message conversation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.attachments.</span></span><span class="sig-name descname"><span class="pre">Attachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Analyzes attachments data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_attachments_with_filetype">
+<span class="sig-name descname"><span class="pre">get_attachments_with_filetype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_attachments_with_filetype" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the attachments dataframe filtered by the specified filetype.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_average_per_day">
+<span class="sig-name descname"><span class="pre">get_average_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_average_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the average number of attachments exchanged in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_count_of_days_with_attachments">
+<span class="sig-name descname"><span class="pre">get_count_of_days_with_attachments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_count_of_days_with_attachments" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days where attachments were exchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_count_of_days_without_attachments">
+<span class="sig-name descname"><span class="pre">get_count_of_days_without_attachments</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_count_of_days_without_attachments" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days where no attachments were exchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_count_of_filetype">
+<span class="sig-name descname"><span class="pre">get_count_of_filetype</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">extension</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_count_of_filetype" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of attachments with the specified filetype.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_datetime_of_longest_silence">
+<span class="sig-name descname"><span class="pre">get_datetime_of_longest_silence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_datetime_of_longest_silence" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the datetime of the longest time between attachments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_days_since_first_attachment">
+<span class="sig-name descname"><span class="pre">get_days_since_first_attachment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ceiling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_days_since_first_attachment" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days since the first attachment.</p>
+<p>By default, this method will round the number of days up by taking the
+ceiling of the Timedelta object. If this is not desired, set the 
+ceiling parameter to False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_least_per_day">
+<span class="sig-name descname"><span class="pre">get_least_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_least_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the least number of attachments in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_longest_silence">
+<span class="sig-name descname"><span class="pre">get_longest_silence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">timedelta</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_longest_silence" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the longest time between attachments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_most_per_day">
+<span class="sig-name descname"><span class="pre">get_most_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_most_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the greatest number of attachments in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachment.get_total">
+<span class="sig-name descname"><span class="pre">get_total</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachment.get_total" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the total number of attachments exchanged.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.attachments.</span></span><span class="sig-name descname"><span class="pre">Attachments</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">handle_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">phone</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">email</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.attachments.Attachments" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Tracks and analyzes attachments from the local iMessage database.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><dl class="simple">
+<dt>path:</dt><dd><p>The filepath to the local iMessage database.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments.get">
+<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="demesstify.html#demesstify.parse.Direction" title="demesstify.parse.Direction"><span class="pre">Direction</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Direction.ALL</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachments.get" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the attachments dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments.get_all">
+<span class="sig-name descname"><span class="pre">get_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachments.get_all" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the unfiltered attachments dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments.get_received">
+<span class="sig-name descname"><span class="pre">get_received</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachments.get_received" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the attachments dataframe filtered by received messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments.get_sent">
+<span class="sig-name descname"><span class="pre">get_sent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.attachments.Attachments.get_sent" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the attachments dataframe filtered by sent messages.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.attachments.Attachments.path">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">path</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#demesstify.analysis.attachments.Attachments.path" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the location of the iMessage database.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-demesstify.analysis.emojis">
+<span id="demesstify-analysis-emojis-module"></span><h2>demesstify.analysis.emojis module<a class="headerlink" href="#module-demesstify.analysis.emojis" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for tracking and analyzing the emojis that appear in a
+given message conversation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emoji">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.emojis.</span></span><span class="sig-name descname"><span class="pre">Emoji</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.emojis.Emoji" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class that tracks and represents a generic Emoji.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><dl class="simple">
+<dt>name:</dt><dd><p>The name/representation of the emoji.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emoji.get_count">
+<span class="sig-name descname"><span class="pre">get_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emoji.get_count" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the number of occurrences of the emoji.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emoji.get_messages">
+<span class="sig-name descname"><span class="pre">get_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emoji.get_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Gets all messages that contain the emoji.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emoji.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#demesstify.analysis.emojis.Emoji.name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name/representation of the emoji.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.emojis.</span></span><span class="sig-name descname"><span class="pre">Emojis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Collection of Emoji objects.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><dl class="simple">
+<dt>uniques:</dt><dd><p>List of unique emojis that were found in the messages.</p>
+</dd>
+<dt>emojis:</dt><dd><p>List of emoji objects.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.emoji_objects">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emoji_objects</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#demesstify.analysis.emojis.Emoji" title="demesstify.analysis.emojis.Emoji"><span class="pre">demesstify.analysis.emojis.Emoji</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.emoji_objects" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a dictionary of emoji objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.emojis">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">emojis</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#demesstify.analysis.emojis.Emoji" title="demesstify.analysis.emojis.Emoji"><span class="pre">demesstify.analysis.emojis.Emoji</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.emojis" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a list of emoji objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.get_count">
+<span class="sig-name descname"><span class="pre">get_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.get_count" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the number of times the specified emoji appeared.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.get_counts">
+<span class="sig-name descname"><span class="pre">get_counts</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.get_counts" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the dictionary of emojis and their counts.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.get_emoji_object">
+<span class="sig-name descname"><span class="pre">get_emoji_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">emoji</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#demesstify.analysis.emojis.Emoji" title="demesstify.analysis.emojis.Emoji"><span class="pre">Emoji</span></a></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.get_emoji_object" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the associated emoji object for an emoji.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.get_most_frequent">
+<span class="sig-name descname"><span class="pre">get_most_frequent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference internal" href="#demesstify.analysis.emojis.Emoji" title="demesstify.analysis.emojis.Emoji"><span class="pre">demesstify.analysis.emojis.Emoji</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.get_most_frequent" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the n most frequent emojis as a list of tuples.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.get_uniques">
+<span class="sig-name descname"><span class="pre">get_uniques</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.get_uniques" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a list of unique emojis that were found in the messages.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.emojis.Emojis.uniques">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">uniques</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#demesstify.analysis.emojis.Emojis.uniques" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a list of unique emojis that were found in the messages.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-demesstify.analysis.reactions">
+<span id="demesstify-analysis-reactions-module"></span><h2>demesstify.analysis.reactions module<a class="headerlink" href="#module-demesstify.analysis.reactions" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for tracking and analyzing the reactions that occur in
+a given message conversation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.reactions.</span></span><span class="sig-name descname"><span class="pre">Reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class for a generic iMessage reaction message.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><dl class="simple">
+<dt>name:</dt><dd><p>The name of the reaction.</p>
+</dd>
+<dt>messages:</dt><dd><p>Dataframe of messages that include this reaction.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.append_messages">
+<span class="sig-name descname"><span class="pre">append_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">new_messages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.append_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Appends a new messages dataframe to the existing dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.get_count">
+<span class="sig-name descname"><span class="pre">get_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.get_count" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the number of times the reaction has appeared.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.get_messages">
+<span class="sig-name descname"><span class="pre">get_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.get_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the messages dataframe.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.get_name">
+<span class="sig-name descname"><span class="pre">get_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.get_name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the reaction.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.messages">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">messages</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataFrame</span></em><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.messages" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the messages dataframe.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.name" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the reaction.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reaction.set_messages">
+<span class="sig-name descname"><span class="pre">set_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">messages</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.Reaction.set_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Sets the messages dataframe.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.reactions.</span></span><span class="sig-name descname"><span class="pre">Reactions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Collection of Reaction objects.</p>
+<dl class="simple">
+<dt>Properties:</dt><dd><dl class="simple">
+<dt>reactions:</dt><dd><p>List of reaction objects.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.get_count">
+<span class="sig-name descname"><span class="pre">get_count</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.get_count" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the count of the specified reaction, or a dictionary of
+reactions and their corresponding counts if no reaction name is
+specified.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.get_messages">
+<span class="sig-name descname"><span class="pre">get_messages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.get_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Gets a dataframe filtered by the specified reaction name, or all 
+reaction names if no name is given.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.get_reaction">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_reaction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">line</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.get_reaction" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the name of the reaction if there is one.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.get_reaction_objects">
+<span class="sig-name descname"><span class="pre">get_reaction_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#demesstify.analysis.reactions.Reaction" title="demesstify.analysis.reactions.Reaction"><span class="pre">demesstify.analysis.reactions.Reaction</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.get_reaction_objects" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of reaction objects.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.reactions">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reactions</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#demesstify.analysis.reactions.Reaction" title="demesstify.analysis.reactions.Reaction"><span class="pre">demesstify.analysis.reactions.Reaction</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.reactions" title="Permalink to this definition"></a></dt>
+<dd><p>Returns a list of reaction objects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.Reactions.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.Reactions.update" title="Permalink to this definition"></a></dt>
+<dd><p>Adds messages from the supplied dataframe to each reaction object.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.ReactionsIterable">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.reactions.</span></span><span class="sig-name descname"><span class="pre">ReactionsIterable</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">reactions</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#demesstify.analysis.reactions.Reactions" title="demesstify.analysis.reactions.Reactions"><span class="pre">Reactions</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.reactions.ReactionsIterable" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>An iterable reactions object.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="demesstify.analysis.reactions.get_reaction_names">
+<span class="sig-prename descclassname"><span class="pre">demesstify.analysis.reactions.</span></span><span class="sig-name descname"><span class="pre">get_reaction_names</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#demesstify.analysis.reactions.get_reaction_names" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the list of possible reaction names.</p>
+</dd></dl>
+
+</section>
+<section id="module-demesstify.analysis.sentiment">
+<span id="demesstify-analysis-sentiment-module"></span><h2>demesstify.analysis.sentiment module<a class="headerlink" href="#module-demesstify.analysis.sentiment" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for performing sentiment analysis.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.sentiment.Sentiment">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.sentiment.</span></span><span class="sig-name descname"><span class="pre">Sentiment</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.sentiment.Sentiment" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">SentimentIntensityAnalyzer</span></code></p>
+<p>Performs sentiment analysis on message data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.sentiment.Sentiment.get_average_sentiment">
+<span class="sig-name descname"><span class="pre">get_average_sentiment</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.sentiment.Sentiment.get_average_sentiment" title="Permalink to this definition"></a></dt>
+<dd><p>Gets the average sentiment of the data.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-demesstify.analysis.text">
+<span id="demesstify-analysis-text-module"></span><h2>demesstify.analysis.text module<a class="headerlink" href="#module-demesstify.analysis.text" title="Permalink to this heading"></a></h2>
+<p>Provides functionality for tracking and analyzing the reactions that occur in
+a given message conversation.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">demesstify.analysis.text.</span></span><span class="sig-name descname"><span class="pre">Text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#demesstify.analysis.text.Text" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Generates useful calculations about given message data.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_average_length">
+<span class="sig-name descname"><span class="pre">get_average_length</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_average_length" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the average length of individual messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_average_per_day">
+<span class="sig-name descname"><span class="pre">get_average_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_average_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the average number of texts exchanged in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_count_of_days_with_messages">
+<span class="sig-name descname"><span class="pre">get_count_of_days_with_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_count_of_days_with_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days where messages were exchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_count_of_days_without_messages">
+<span class="sig-name descname"><span class="pre">get_count_of_days_without_messages</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_count_of_days_without_messages" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days where no messages were exchanged.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_count_of_substring">
+<span class="sig-name descname"><span class="pre">get_count_of_substring</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">substring</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_count_of_substring" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of occurrences of a substring.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_datetime_of_longest_silence">
+<span class="sig-name descname"><span class="pre">get_datetime_of_longest_silence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">datetime</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_datetime_of_longest_silence" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the datetime of the longest time between messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_days_since_first_message">
+<span class="sig-name descname"><span class="pre">get_days_since_first_message</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ceiling</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_days_since_first_message" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the number of days since the first message.</p>
+<p>By default, this method will round the number of days up by taking the
+ceiling of the Timedelta object. If this is not desired, set the 
+ceiling parameter to False.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_least_per_day">
+<span class="sig-name descname"><span class="pre">get_least_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_least_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the least number of texts exchanged in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_longest_silence">
+<span class="sig-name descname"><span class="pre">get_longest_silence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">timedelta</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_longest_silence" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the longest time between messages.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_most_consecutive">
+<span class="sig-name descname"><span class="pre">get_most_consecutive</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_most_consecutive" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the most messages exchanged unidirectionally in a row.</p>
+<p>This method only works when the data includes all messages, i.e.
+is not filtered by directionality.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_most_per_day">
+<span class="sig-name descname"><span class="pre">get_most_per_day</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_most_per_day" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the greatest number of texts exchanged in a day.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="demesstify.analysis.text.Text.get_total">
+<span class="sig-name descname"><span class="pre">get_total</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#demesstify.analysis.text.Text.get_total" title="Permalink to this definition"></a></dt>
+<dd><p>Calculates the total number of messages exchanged.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-demesstify.analysis">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-demesstify.analysis" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="demesstify.html" class="btn btn-neutral float-left" title="demesstify package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="demesstify.clean.html" class="btn btn-neutral float-right" title="demesstify.clean package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, Jake Brehm.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
