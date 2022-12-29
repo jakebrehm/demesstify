@@ -119,18 +119,14 @@ class Attachments:
         If no path is provided, the database will be assumed to be at its
         default location.
 
-        At least one of the following parameters must be specified:
+        At least one of the following parameters can be specified:
             handle_id, phone, email
         If more than one of them is provided, only the first will be used
         (assuming the previously listed order).
+
+        However, if none of the parameters are specified, the entire 
+        database will be read.
         """
-        
-        # Check for valid arguments
-        if all(parameter is None for parameter in [handle_id, phone, email]):
-            raise ValueError(
-                f"At least one of the following parameters must be specified: "
-                f"handle_id, phone, email"
-            )
 
         # Store instance variables
         self._path = path
@@ -179,6 +175,8 @@ class Attachments:
             df = chatdb.get_attachments_from_phone(self._phone)
         elif self._email:
             df = chatdb.get_attachments_from_email(self._email)
+        else:
+            df = chatdb.get_all_attachments()
         return self._clean(df)
 
     def _clean(self, dataframe: pd.DataFrame) -> pd.DataFrame:

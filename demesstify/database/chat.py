@@ -42,6 +42,17 @@ class ChatDB:
         # Store the database location as an instance variable
         self._db_location = db_location
     
+    def get_all_messages(self) -> pd.DataFrame:
+        """Gets the dataframe of all messages ever exchanged."""
+
+        # Query the database
+        query = """
+            SELECT date, is_from_me,  text
+            FROM message
+            ORDER BY date;
+        """
+        return self.read_sql_query(query)
+
     def get_messages_from_handle_id(self, handle_id: int) -> pd.DataFrame:
         """
         Gets the dataframe of all messages with a user that has the
@@ -52,7 +63,7 @@ class ChatDB:
         """
 
         # Query the database
-        query = f"""
+        query = """
             SELECT date, is_from_me,  text
             FROM message
             WHERE handle_id=?
@@ -82,6 +93,22 @@ class ChatDB:
         # Return the resulting dataframe
         return self._get_messages_from_id(email)
 
+    def get_all_attachments(self) -> pd.DataFrame:
+        """Gets the dataframe of all attachments ever exchanged."""
+
+        # Query the database
+        query = """
+            SELECT message.date, message.text, message.is_from_me AS is_sender,
+                attachment.filename, attachment.transfer_name
+            FROM message_attachment_join
+            INNER JOIN message
+                ON message_attachment_join.message_id=message.ROWID
+            INNER JOIN attachment
+                ON message_attachment_join.attachment_id=attachment.ROWID
+            ORDER BY message.date;
+        """
+        return self.read_sql_query(query)
+
     def get_attachments_from_handle_id(self, handle_id: int) -> pd.DataFrame:
         """
         Gets the dataframe of all attachments in a conversation with a user
@@ -92,7 +119,7 @@ class ChatDB:
         """
 
         # Query the database
-        query = f"""
+        query = """
             SELECT message.date, message.text, message.is_from_me AS is_sender,
                 attachment.filename, attachment.transfer_name
             FROM message_attachment_join

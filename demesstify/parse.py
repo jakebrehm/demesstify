@@ -254,18 +254,14 @@ class iMessageDB(iMessageCSV):
         If no path is provided, the database will be assumed to be at its
         default location.
 
-        At least one of the following parameters must be specified:
+        At least one of the following parameters can be specified:
             handle_id, phone, email
         If more than one of them is provided, only the first will be used
         (assuming the previously listed order).
-        """
 
-        # Check for valid arguments
-        if all(parameter is None for parameter in [handle_id, phone, email]):
-            raise ValueError(
-                f"At least one of the following parameters must be specified: "
-                f"handle_id, phone, email"
-            )
+        However, if none of the parameters are specified, the entire 
+        database will be read.
+        """
 
         # Store instance variables
         self._path = path
@@ -290,9 +286,11 @@ class iMessageDB(iMessageCSV):
             df = chatdb.get_messages_from_phone(self._phone)
         elif self._email:
             df = chatdb.get_messages_from_email(self._email)
-        
-        # Return the csv string
-        return df.to_csv(index=False)
+        else:
+            df = chatdb.get_all_messages()
+
+        # Return the csv string with \r\n terminator to avoid parsing errors
+        return df.to_csv(index=False, line_terminator='\r\n')
 
 
 class Messages:

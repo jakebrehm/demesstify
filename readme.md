@@ -127,7 +127,6 @@ wordcloud.save('wordcloud.png')
 
 ## Future improvements
 
-- Add support for reading the entire local iMessage database instead of just one conversation
 - Add support for other message sources, e.g. Android or social media platforms
 - Add unit tests
 
