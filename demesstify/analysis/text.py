@@ -7,7 +7,7 @@ a given message conversation.
 """
 
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 import pandas as pd
 
@@ -102,3 +102,11 @@ class Text:
 
         # Return the max count
         return max(counts)
+    
+    def get_datetime_of_longest_silence(self) -> datetime:
+        """Calculates the datetime of the longest time between messages."""
+        return self._data.index.to_series().diff().idxmax().to_pydatetime()
+
+    def get_longest_silence(self) -> timedelta:
+        """Calculates the longest time between messages."""
+        return self._data.index.to_series().diff().max().to_pytimedelta()

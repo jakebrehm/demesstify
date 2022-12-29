@@ -78,6 +78,14 @@ class Attachment:
         # Return the number of days where attachments were not exchanged
         return len(all_dates.difference(dates_with_attachments))
 
+    def get_datetime_of_longest_silence(self) -> datetime:
+        """Calculates the datetime of the longest time between attachments."""
+        return self._data.index.to_series().diff().idxmax().to_pydatetime()
+
+    def get_longest_silence(self) -> timedelta:
+        """Calculates the longest time between attachments."""
+        return self._data.index.to_series().diff().max().to_pytimedelta()
+
     def get_attachments_with_filetype(self, extension: str) -> pd.DataFrame:
         """Gets the attachments dataframe filtered by the specified filetype."""
         
